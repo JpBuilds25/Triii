@@ -4,626 +4,624 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Cosmic Fear Garou | Absolute Evil</title>
-    <!-- Google Fonts: Aggressive Geometric & Modern Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts for clean sans-serif and serif accents -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* RESET & GLOBAL */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
+            user-select: none; /* optional, keeps cinematic feel */
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: #03050b;
+            background-color: #000000;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            color: #eef5ff;
+            color: #e0e0e0;
         }
 
-        /* ---------- DYNAMIC NEBULA BACKGROUND (layered parallax) ---------- */
-        .nebula-bg {
+        /* Canvas for Three.js starfield & galaxy background */
+        #canvas-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            overflow: hidden;
+            z-index: 0;
+            display: block;
         }
 
-        .nebula-layer {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle at 30% 40%, rgba(45, 0, 75, 0.7), rgba(10, 5, 30, 0.95));
-            filter: blur(60px);
-            animation: nebulaDrift 28s infinite alternate ease-in-out;
+        /* Main content layer - glassmorphism + premium stacking */
+        .content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
         }
 
-        .nebula-layer2 {
-            background: radial-gradient(ellipse at 70% 60%, rgba(0, 80, 120, 0.5), rgba(30, 0, 60, 0.8));
-            animation: nebulaDriftReverse 32s infinite alternate;
-            mix-blend-mode: screen;
-        }
-
-        .nebula-layer3 {
-            background: radial-gradient(circle at 50% 20%, rgba(80, 0, 160, 0.6), rgba(0, 30, 60, 0.9));
-            animation: nebulaSway 20s infinite alternate;
-            filter: blur(90px);
-        }
-
-        /* violent electric swirls */
-        .energy-swirl {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: repeating-radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.08) 0px, rgba(0, 150, 200, 0) 80px);
-            mix-blend-mode: overlay;
-            animation: electricPulse 6s infinite;
-        }
-
-        @keyframes nebulaDrift {
-            0% { transform: translate(0%, 0%) scale(1); opacity: 0.7; }
-            100% { transform: translate(5%, -3%) scale(1.1); opacity: 1; }
-        }
-        @keyframes nebulaDriftReverse {
-            0% { transform: translate(-2%, 2%) scale(1.2); opacity: 0.6; }
-            100% { transform: translate(3%, -2%) scale(1); opacity: 0.9; }
-        }
-        @keyframes nebulaSway {
-            0% { transform: translate(0%, 0%) scale(1); }
-            100% { transform: translate(-4%, 4%) scale(1.15); }
-        }
-        @keyframes electricPulse {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.5; filter: blur(3px); }
-            100% { opacity: 0.2; }
-        }
-
-        /* Random flicker / "Fear" Pulse (screen shake & color shift) */
-        .fear-pulse {
-            animation: fearGlitch 0.08s 2 linear;
-        }
-        @keyframes fearGlitch {
-            0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
-            25% { transform: translate(2px, -1px); filter: hue-rotate(5deg) brightness(1.1); }
-            50% { transform: translate(-2px, 1px); filter: hue-rotate(-4deg) brightness(1.2); }
-            75% { transform: translate(1px, 2px); filter: hue-rotate(3deg); }
-            100% { transform: translate(0, 0); filter: hue-rotate(0deg); }
-        }
-
-        /* global glitch + neon breathing */
-        .glow-breathing {
-            box-shadow: 0 0 12px rgba(0, 200, 255, 0.4);
-            transition: box-shadow 0.2s;
-            animation: breathNeon 3s infinite alternate;
-        }
-        @keyframes breathNeon {
-            0% { text-shadow: 0 0 2px #00b7ff, 0 0 4px #7a2eff; }
-            100% { text-shadow: 0 0 12px #00f7ff, 0 0 20px #b100ff; }
-        }
-
-        /* scrollbar styling */
-        ::-webkit-scrollbar { width: 6px; background: #0a0718; }
-        ::-webkit-scrollbar-thumb { background: #2a5f8a; border-radius: 6px; }
-
-        /* header + nav (disappear on scroll) */
-        .glass-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1rem 2rem;
+        /* Navigation - minimal sci-fi glass */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 20, 0.6);
+            padding: 2rem 4rem;
+            background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(12px);
-            z-index: 1000;
-            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
-        .nav-hidden { transform: translateY(-100%); }
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-icon { font-size: 1.5rem; cursor: pointer; transition: 0.2s; color: #bbf0ff; }
-        .nav-icon:hover { color: #0af; text-shadow: 0 0 8px cyan; transform: scale(1.05);}
-        .year-text { font-family: 'Syne', monospace; letter-spacing: 2px; font-weight: 500; background: linear-gradient(135deg, #aaccff, #6a4eff); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-        /* hero section */
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #c0c0c0, #f0e68c, #ffd700, #a56eff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ccc;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        /* sophisticated hover: plasma glitch + localized effect via js? we add electric pulse */
+        .nav-links a:hover {
+            color: #00e5ff;
+            border-bottom-color: #00e5ff;
+            text-shadow: 0 0 6px #00e5ff;
+            transform: translateY(-1px);
+        }
+
+        /* HERO SECTION */
         .hero {
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
-            padding: 2rem;
-        }
-        .character-model {
-            position: relative;
-            width: min(90vw, 550px);
-            aspect-ratio: 1 / 1.2;
-            background: rgba(0,0,0,0.2);
-            border-radius: 48px;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        /* animated cosmic garou canvas */
-        #cosmicCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            border-radius: 36px;
-            box-shadow: 0 0 40px rgba(0, 120, 255, 0.3);
-            transition: all 0.3s;
-        }
-        .glitch-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2.4rem, 10vw, 5rem);
-            font-weight: 800;
-            text-transform: uppercase;
             text-align: center;
-            letter-spacing: 8px;
-            background: linear-gradient(90deg, #00c6ff, #b026ff, #ff44cc);
+            min-height: 85vh;
+            padding: 0 2rem;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #e6e9f0, #c3cfe0, #ffd966, #b87cff, #00e5ff);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 6px rgba(0,255,255,0.4);
-            animation: glitchScreen 0.2s infinite alternate;
-            margin-top: 1rem;
-        }
-        @keyframes glitchScreen {
-            0% { transform: skew(0deg, 0deg); opacity: 1; text-shadow: 2px 0 cyan; }
-            100% { transform: skew(1deg, -0.5deg); opacity: 0.98; text-shadow: -2px 0 magenta; }
+            animation: cosmicShift 8s ease infinite;
+            text-shadow: 0 0 12px rgba(0,229,255,0.3);
         }
 
-        /* core power section (constellation interactive) */
-        .power-section {
-            padding: 5rem 2rem;
-            background: rgba(0, 0, 0, 0.5);
+        @keyframes cosmicShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .japanese-sub {
+            font-size: 1.2rem;
+            font-family: 'Inter', monospace;
+            letter-spacing: 2px;
+            color: #aaddff;
+            border-left: 3px solid #00e5ff;
+            border-right: 3px solid #00e5ff;
+            padding: 0 1rem;
             backdrop-filter: blur(4px);
-            border-top: 1px solid rgba(0, 255, 255, 0.2);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            background: rgba(0,0,0,0.4);
+            display: inline-block;
+            margin-bottom: 1.5rem;
         }
-        .section-title {
-            font-size: 2rem;
-            font-family: 'Syne';
-            text-align: center;
-            margin-bottom: 3rem;
-            letter-spacing: 3px;
-        }
-        .constellation-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .power-node {
-            background: rgba(10, 15, 35, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 200, 255, 0.3);
-            border-radius: 28px;
-            padding: 1.2rem 1.8rem;
-            width: 200px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            font-family: 'Space Grotesk';
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #b0c4de;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            font-weight: 300;
             letter-spacing: 1px;
         }
-        .power-node:hover {
-            transform: scale(1.05);
-            border-color: cyan;
-            box-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
-            background: rgba(30, 20, 60, 0.8);
-        }
-        .power-name { font-size: 1.3rem; color: #b5f0ff; }
-        .power-desc { font-size: 0.8rem; margin-top: 8px; color: #cceeff; }
-        #fissionFeedback {
-            text-align: center;
-            margin-top: 3rem;
-            font-size: 1.1rem;
-            padding: 1rem;
-            background: rgba(0,0,0,0.6);
-            border-radius: 60px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-            transition: 0.2s;
-            border-left: 4px solid cyan;
+
+        .cta-button {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid #00e5ff;
+            color: #00e5ff;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 0 10px rgba(0,229,255,0.3);
+            border-radius: 0px;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* gallery transformation log */
-        .gallery {
-            padding: 5rem 2rem;
+        .cta-button:hover {
+            background: rgba(0, 229, 255, 0.2);
+            box-shadow: 0 0 20px #00e5ff, 0 0 8px #00e5ff inset;
+            transform: scale(1.02);
+            color: white;
+            border-color: #fff;
         }
-        .scroll-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.8rem;
-            max-width: 1300px;
+
+        /* Dynamic scrolling panel with the comic text (激突 quote) */
+        .cosmic-panel {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0,229,255,0.5);
+            border-bottom: 1px solid rgba(0,229,255,0.5);
+            margin: 3rem 4rem;
+            padding: 2rem;
+            border-radius: 0px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+            transition: transform 0.2s;
+        }
+
+        .panel-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            text-align: center;
+            color: #dfe6e9;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        .gallery-card {
-            background: #0a0c1c;
-            border-radius: 28px;
-            overflow: hidden;
-            transition: 0.3s;
-            filter: grayscale(0.8);
-            border: 1px solid #2a3f6e;
-        }
-        .gallery-card:hover {
-            filter: grayscale(0%);
-            transform: translateY(-8px);
-            box-shadow: 0 0 28px rgba(0, 150, 255, 0.4);
-            border-color: #0af;
-        }
-        .card-img {
-            height: 180px;
-            background: radial-gradient(ellipse at 30% 40%, #1a0f3a, #010014);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-        .card-info { padding: 1rem; }
-        .card-info h4 { color: #7bc8ff; }
-        .footer {
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(0, 255, 255, 0.3);
-            font-family: 'Syne';
-            letter-spacing: 2px;
-            background: #02010ae0;
-        }
-        .glitch-text {
-            animation: glitchFlicker 1.2s infinite;
-        }
-        @keyframes glitchFlicker {
-            0% { opacity: 1; text-shadow: -1px 0 #0af; }
-            25% { opacity: 0.9; text-shadow: 2px 0 #f0f; }
-            50% { opacity: 1; text-shadow: -1px 0 #0af; }
-            75% { opacity: 0.95; text-shadow: 1px 0 #f0f; }
-        }
-        button, .power-node { cursor: pointer; }
 
+        .panel-text strong {
+            color: #00e5ff;
+            font-weight: 600;
+            text-shadow: 0 0 4px #00e5ff;
+        }
+
+        .japanese-quote {
+            font-family: monospace;
+            font-size: 1rem;
+            color: #ffd966;
+            margin-top: 1rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* bottom Jump Comics logo */
+        .footer-logo {
+            text-align: center;
+            padding: 2rem 0 3rem 0;
+        }
+
+        .jc-logo {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(145deg, #fff6d5, #e6c27a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 4px;
+            border-top: 2px solid #ffd966;
+            border-bottom: 2px solid #ffd966;
+            padding: 0.5rem 1rem;
+        }
+
+        /* Scroll-triggered entry animation (fracture slide) */
+        .scroll-section {
+            opacity: 0;
+            transform: translateY(40px) skewY(2deg);
+            transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s ease;
+        }
+
+        .scroll-section.visible {
+            opacity: 1;
+            transform: translateY(0) skewY(0deg);
+        }
+
+        /* Additional particle aura canvas (local glow) but we also add animated electric particles using JS */
+        #plasma-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .constellation-grid { gap: 1rem; }
-            .power-node { width: 160px; padding: 0.8rem; }
-            .glitch-title { letter-spacing: 4px; }
+            .navbar {
+                padding: 1rem 2rem;
+            }
+            .main-title {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+            .cosmic-panel {
+                margin: 2rem 1rem;
+                padding: 1.2rem;
+            }
+        }
+
+        /* custom glow for title characters */
+        .glow-text {
+            text-shadow: 0 0 5px #00e5ff;
         }
     </style>
 </head>
 <body>
 
-<div class="nebula-bg">
-    <div class="nebula-layer"></div>
-    <div class="nebula-layer nebula-layer2"></div>
-    <div class="nebula-layer nebula-layer3"></div>
-    <div class="energy-swirl"></div>
-</div>
+    <!-- 3D background canvas for dynamic starfield & galaxy -->
+    <div id="canvas-container"></div>
+    
+    <!-- extra canvas for plasma aura particles -->
+    <canvas id="plasma-canvas"></canvas>
 
-<nav id="navbar" class="glass-nav">
-    <div class="year-text">✦ ESTD. 2025 ✦</div>
-    <div class="nav-links">
-        <span class="nav-icon" data-section="hero">🌀</span>
-        <span class="nav-icon" data-section="powers">⚡</span>
-        <span class="nav-icon" data-section="gallery">🖼️</span>
-        <span class="nav-icon" data-section="footer">⛓️</span>
+    <div class="content">
+        <nav class="navbar">
+            <div class="logo">⚡ COSMIC EDGE</div>
+            <ul class="nav-links">
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Cosmic Power</a></li>
+                <li><a href="#">Abilities</a></li>
+                <li><a href="#">Timeline</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero">
+            <h1 class="main-title scroll-section">COSMIC FEAR GAROU</h1>
+            <div class="japanese-sub scroll-section">—— 絶対的な悪の覚醒 ——</div>
+            <p class="tagline scroll-section">The universe within. The absolute evil that shatters destiny.</p>
+            <button class="cta-button scroll-section" id="powerBtn">UNLEASH POWER</button>
+        </div>
+
+        <!-- Comic text panel: dynamic content from the prompt (original japanese & translation) -->
+        <div class="cosmic-panel scroll-section" id="dynamicPanel">
+            <div class="panel-text">
+                <strong>⚡ イタマとカロの激突 ⚡</strong><br>
+                イタマは少年の夢を見る力を失い、カロは彼女に加えて、イタマの圧倒的実力に反攻を覚悟した時、<br>
+                ある者の声が響き、カロは超絶な力を入手し？ —— 宇宙の恐怖、牙をむく。
+            </div>
+            <div class="japanese-quote">"The clash between Itama and Karo. When Karo, alongside her, resolved to counter Itama's overwhelming strength — a voice echoed from the void. Thus, Karo obtained transcendent power."</div>
+        </div>
+
+        <div class="footer-logo">
+            <div class="jc-logo">JUMP COMICS</div>
+        </div>
     </div>
-</nav>
 
-<main>
-    <!-- Hero Section with cosmic garou canvas -->
-    <section id="hero" class="hero">
-        <div class="character-model">
-            <canvas id="cosmicCanvas" width="600" height="720" style="width:100%; height:auto; max-width:600px; aspect-ratio: 600/720"></canvas>
-        </div>
-        <h1 class="glitch-title">COSMIC FEAR GAROU</h1>
-        <div style="margin-top: 1rem; font-size: 0.9rem; letter-spacing: 2px;">⚡ absolute evil awakens ⚡</div>
-    </section>
-
-    <!-- Core Power Section (Interactive Constellation Nodes) -->
-    <section id="powers" class="power-section">
-        <h2 class="section-title glow-breathing">⎯⎯  GOD SLAYER CONSTELLATION ⎯⎯</h2>
-        <div class="constellation-grid">
-            <div class="power-node" data-power="mode:fission" data-color="#ff44cc">
-                <div class="power-name">⚡ MODE: FISSION</div>
-                <div class="power-desc">Nuclear fission divine replication</div>
-            </div>
-            <div class="power-node" data-power="gravity:distortion" data-color="#00c8ff">
-                <div class="power-name">🌌 GRAVITY DISTORTION</div>
-                <div class="power-desc">Bend spacetime & singularity crush</div>
-            </div>
-            <div class="power-node" data-power="cosmic:radiation" data-color="#b000ff">
-                <div class="power-name">☢️ COSMIC RADIATION</div>
-                <div class="power-desc">Galactic gamma burst</div>
-            </div>
-            <div class="power-node" data-power="portal:genesis" data-color="#2effb0">
-                <div class="power-name">🌀 PORTAL GENESIS</div>
-                <div class="power-desc">Rift between dimensions</div>
-            </div>
-        </div>
-        <div id="fissionFeedback">
-            ✦ touch a constellation node to awaken fission reaction ✦
-        </div>
-    </section>
-
-    <!-- Gallery (Transformation Log) -->
-    <section id="gallery" class="gallery">
-        <h2 class="section-title">⎯ TRANSFORMATION LOG ⎯</h2>
-        <div class="scroll-grid">
-            <div class="gallery-card">
-                <div class="card-img">🌌🌀</div>
-                <div class="card-info"><h4>Spiral Nemesis</h4><p>Infinite cosmic collapse pattern</p></div>
-            </div>
-            <div class="gallery-card">
-                <div class="card-img">⚫🕳️</div>
-                <div class="card-info"><h4>Black Hole Core</h4><p>Event horizon manifest</p></div>
-            </div>
-            <div class="gallery-card">
-                <div class="card-img">✨🌠</div>
-                <div class="card-info"><h4>Star Forging</h4><p>Nuclear fusion avatar</p></div>
-            </div>
-            <div class="gallery-card">
-                <div class="card-img">💢👁️</div>
-                <div class="card-info"><h4>God Slayer Fist</h4><p>Divine inversion technique</p></div>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer id="footer" class="footer">
-    <div class="glitch-text">⛓️ CONTACT: cosmic.fear@void.energy | ABSOLUTE EVIL ⛓️</div>
-    <div style="margin-top: 0.8rem; font-size: 0.7rem;">✦ cosmic fear pulsation | divine retribution ✦</div>
-</footer>
-
-<script>
-    (function(){
-        // ---------- COSMIC GAROU CANVAS: semi-transparent skin with internal galaxy texture + central black hole ----------
-        const canvas = document.getElementById('cosmicCanvas');
-        const ctx = canvas.getContext('2d');
-        let width = 600, height = 720;
-        canvas.width = width; canvas.height = height;
-
-        let timeOffset = 0;
-        let starField = [];
-        // internal galaxy flow stars
-        for(let i=0;i<400;i++){
-            starField.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                radius: 1 + Math.random() * 2.5,
-                speedX: (Math.random() - 0.5) * 0.3,
-                speedY: (Math.random() - 0.5) * 0.2,
-                alpha: 0.6 + Math.random() * 0.4,
-                color: `hsl(${200 + Math.random() * 100}, 80%, 65%)`
-            });
+    <!-- Three.js library -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
         }
+    </script>
 
-        function drawCosmicGarou(now){
-            if(!ctx) return;
-            ctx.clearRect(0,0,width,height);
-            // --- semi-transparent base silhouette (garou body shape) ---
-            ctx.save();
-            // main torso and head shape
-            ctx.beginPath();
-            // head (angular, beast-like)
-            ctx.ellipse(width*0.5, height*0.2, width*0.18, height*0.13, 0, 0, Math.PI*2);
-            // neck / shoulders
-            ctx.rect(width*0.4, height*0.26, width*0.2, height*0.08);
-            // chest / torso dynamic
-            ctx.moveTo(width*0.35, height*0.32);
-            ctx.lineTo(width*0.65, height*0.32);
-            ctx.lineTo(width*0.6, height*0.68);
-            ctx.lineTo(width*0.4, height*0.68);
-            ctx.fill();
-            ctx.beginPath();
-            // arms extending (muscular)
-            ctx.moveTo(width*0.38, height*0.38);
-            ctx.lineTo(width*0.2, height*0.55);
-            ctx.lineTo(width*0.28, height*0.6);
-            ctx.lineTo(width*0.4, height*0.45);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.moveTo(width*0.62, height*0.38);
-            ctx.lineTo(width*0.8, height*0.55);
-            ctx.lineTo(width*0.72, height*0.6);
-            ctx.lineTo(width*0.6, height*0.45);
-            ctx.fill();
-            ctx.beginPath();
-            // legs
-            ctx.rect(width*0.42, height*0.68, width*0.08, height*0.2);
-            ctx.rect(width*0.5, height*0.68, width*0.08, height*0.2);
-            ctx.fill();
+    <script type="module">
+        import * as THREE from 'three';
 
-            // set global composite as source-in to create semi-transparent skin that reveals internal galaxy
-            ctx.globalCompositeOperation = 'source-in';
-            // draw flowing galaxy gradient texture (internal nebula moving)
-            const grad = ctx.createLinearGradient(0, now%200 - 100, width, height*0.5+ Math.sin(now*0.002)*20);
-            grad.addColorStop(0, 'rgba(10, 5, 40, 0.9)');
-            grad.addColorStop(0.3, 'rgba(70, 20, 130, 0.8)');
-            grad.addColorStop(0.6, 'rgba(0, 70, 120, 0.85)');
-            grad.addColorStop(1, 'rgba(120, 0, 200, 0.7)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0,0,width,height);
-            
-            // draw moving stars (cosmic river)
-            for(let s of starField){
-                ctx.beginPath();
-                ctx.arc(s.x + Math.sin(now*0.003 + s.y)*1.5, s.y + Math.cos(now*0.002 + s.x)*1.2, s.radius, 0, Math.PI*2);
-                ctx.fillStyle = s.color;
-                ctx.shadowBlur = 6;
-                ctx.shadowColor = '#0af';
-                ctx.fill();
-            }
-            // additional cosmic dust flow (moving nebula veins)
-            for(let i=0;i<60;i++){
-                let xOff = width*0.2 + Math.sin(now*0.004 + i)*30;
-                let yOff = height*0.3 + Math.cos(now*0.003 + i*2)*40;
-                ctx.beginPath();
-                ctx.arc(xOff, yOff, 3+ Math.sin(now*0.01 + i)*2, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(0, 200, 255, ${0.3+Math.sin(now*0.005+i)*0.2})`;
-                ctx.fill();
-            }
-
-            // CENTRAL BLACK HOLE SILHOUETTE (pulsing)
-            ctx.globalCompositeOperation = 'source-over';
-            const blackHoleX = width*0.5, blackHoleY = height*0.5;
-            const pulse = 1 + Math.sin(now * 0.008) * 0.05;
-            const radiusBH = 32 * pulse;
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = '#000';
-            ctx.beginPath();
-            ctx.arc(blackHoleX, blackHoleY, radiusBH, 0, Math.PI*2);
-            ctx.fillStyle = '#000000';
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(blackHoleX, blackHoleY, radiusBH-8, 0, Math.PI*2);
-            ctx.fillStyle = '#110022';
-            ctx.fill();
-            // accretion disk effect
-            for(let ang=0; ang<Math.PI*2; ang+=0.5){
-                let xRim = blackHoleX + Math.cos(ang + now*0.01)* (radiusBH+6);
-                let yRim = blackHoleY + Math.sin(ang + now*0.01)* (radiusBH+6);
-                ctx.beginPath();
-                ctx.arc(xRim, yRim, 3, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(255, 80, 200, 0.8)`;
-                ctx.fill();
-            }
-            // restore default comp
-            ctx.globalCompositeOperation = 'source-over';
-            // outline neon edge breathing
-            ctx.strokeStyle = `rgba(0, 200, 255, ${0.6+Math.sin(now*0.005)*0.4})`;
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.ellipse(width*0.5, height*0.2, width*0.18, height*0.13, 0, 0, Math.PI*2);
-            ctx.moveTo(width*0.35, height*0.32);
-            ctx.lineTo(width*0.65, height*0.32);
-            ctx.lineTo(width*0.6, height*0.68);
-            ctx.lineTo(width*0.4, height*0.68);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.restore();
-            requestAnimationFrame((t) => drawCosmicGarou(performance.now()));
-        }
-
-        function animateCanvas(){
-            drawCosmicGarou(performance.now());
-        }
-        animateCanvas();
-
-        // --- FEAR PULSE random screen shake + color shift (subtle)---
-        let fearInterval = setInterval(()=>{
-            if(Math.random() < 0.2){ // ~20% chance every 10 sec, but more aggressive
-                document.body.classList.add('fear-pulse');
-                setTimeout(()=> document.body.classList.remove('fear-pulse'), 150);
-                // additional color flicker effect on body background overlay
-                const overlay = document.createElement('div');
-                overlay.style.position = 'fixed';
-                overlay.style.top = 0; overlay.style.left=0; overlay.style.width='100%'; overlay.style.height='100%';
-                overlay.style.backgroundColor = `rgba(80,0,255,0.05)`;
-                overlay.style.pointerEvents = 'none';
-                overlay.style.zIndex = 9999;
-                document.body.appendChild(overlay);
-                setTimeout(()=> overlay.remove(), 80);
-            }
-        }, 4800);
-
-        // --- Parallax scroll effect on nebula layers + scroll-trigger reveal
-        window.addEventListener('scroll', ()=>{
-            const scrolled = window.scrollY;
-            const layers = document.querySelectorAll('.nebula-layer');
-            layers.forEach((layer, idx)=>{
-                let speed = 0.1 + idx*0.05;
-                layer.style.transform = `translate(${scrolled * speed * 0.2}px, ${scrolled * speed * 0.1}px) scale(1)`;
-            });
-            // reveal animations (fade-up for power section & gallery)
-            const powerSection = document.querySelector('#powers');
-            const gallerySection = document.querySelector('#gallery');
-            const heroTitle = document.querySelector('.glitch-title');
-            if(powerSection && window.scrollY + window.innerHeight > powerSection.offsetTop + 150){
-                powerSection.style.opacity = '1';
-                powerSection.style.transform = 'translateY(0)';
-            } else if(powerSection){
-                powerSection.style.opacity = '0.8';
-                powerSection.style.transform = 'translateY(10px)';
-            }
-            if(gallerySection && window.scrollY + window.innerHeight > gallerySection.offsetTop + 100){
-                gallerySection.style.opacity = '1';
-            } else if(gallerySection) gallerySection.style.opacity = '0.9';
-        });
-        // initial style for smooth reveal
-        document.querySelector('#powers').style.transition = 'all 0.6s cubic-bezier(0.2,0.9,0.4,1.1)';
-        document.querySelector('#gallery').style.transition = 'opacity 0.7s';
+        // --- 1. setup Three.js scene: infinite cosmic background + galaxy swirl core (matching the "contained universe" vibe)
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x01010c);
         
-        // --- interactive nodes: FISSION ANIMATION (galaxy texture expansion / color change)
-        const nodes = document.querySelectorAll('.power-node');
-        const feedbackDiv = document.getElementById('fissionFeedback');
-        nodes.forEach(node => {
-            node.addEventListener('click', () => {
-                const powerName = node.querySelector('.power-name')?.innerText || 'unknown';
-                const color = node.getAttribute('data-color') || '#00ffff';
-                // trigger fission effect: change canvas galaxy tint & flash
-                const canvasElement = document.getElementById('cosmicCanvas');
-                canvasElement.style.transition = 'box-shadow 0.2s';
-                canvasElement.style.boxShadow = `0 0 40px ${color}, 0 0 70px rgba(0,200,255,0.8)`;
-                setTimeout(()=> canvasElement.style.boxShadow = '0 0 20px rgba(0,120,255,0.5)', 500);
-                // change feedback text with cosmic data
-                let desc = '';
-                if(powerName.includes('FISSION')) desc = 'Mode: FISSION activated → Cellular division across space-time continuum. Galaxy texture expands.';
-                else if(powerName.includes('GRAVITY')) desc = 'GRAVITY DISTORTION: localized singularity pull. Black hole pulse intensifies.';
-                else if(powerName.includes('RADIATION')) desc = 'COSMIC RADIATION: gamma burst irradiates internal nebula.';
-                else desc = 'PORTAL GENESIS: dimensional rift opens, galaxy core collapses and reforms.';
-                feedbackDiv.innerHTML = `✦ ${powerName} ✦<br> ${desc} <br> <span style="font-size:0.8rem;">[cosmic fission resonance]</span>`;
-                feedbackDiv.style.borderLeftColor = color;
-                feedbackDiv.style.backgroundColor = `rgba(0,0,0,0.8)`;
-                // additional galaxy shift: force random star movement
-                for(let i=0;i<30;i++){
-                    if(starField[i]) starField[i].x += (Math.random()-0.5)*6;
+        // camera: perspective
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 12);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+        
+        // ---- Starfield particle system: dense stars + subtle nebula effect
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 2500;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+            starPositions[i*3] = (Math.random() - 0.5) * 200;
+            starPositions[i*3+1] = (Math.random() - 0.5) * 120;
+            starPositions[i*3+2] = (Math.random() - 0.5) * 80 - 30;
+        }
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+        
+        // second layer: larger glowing stars (fewer)
+        const bigStarGeo = new THREE.BufferGeometry();
+        const bigCount = 800;
+        const bigPos = new Float32Array(bigCount * 3);
+        for (let i = 0; i < bigCount; i++) {
+            bigPos[i*3] = (Math.random() - 0.5) * 180;
+            bigPos[i*3+1] = (Math.random() - 0.5) * 100;
+            bigPos[i*3+2] = (Math.random() - 0.5) * 70 - 20;
+        }
+        bigStarGeo.setAttribute('position', new THREE.BufferAttribute(bigPos, 3));
+        const bigStarMat = new THREE.PointsMaterial({ color: 0xaaccff, size: 0.22, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+        const bigStars = new THREE.Points(bigStarGeo, bigStarMat);
+        scene.add(bigStars);
+        
+        // Galaxy spiral texture: create a custom sprite-like central galaxy disk (spiral shape)
+        // Using a ring of particles and a central glowing orb to mimic galaxy core
+        const galaxyCoreGeo = new THREE.SphereGeometry(0.65, 32, 32);
+        const coreMat = new THREE.MeshStandardMaterial({ color: 0xcc88ff, emissive: 0x441177, emissiveIntensity: 1.2, roughness: 0.3, metalness: 0.8 });
+        const coreGlow = new THREE.Mesh(galaxyCoreGeo, coreMat);
+        scene.add(coreGlow);
+        
+        // create spiral arms using points arranged logarithmically
+        const armPoints = [];
+        const arms = 3;
+        const particlesPerArm = 800;
+        const armColor = [0xffaa66, 0x88aaff, 0xdd88ff];
+        for (let a = 0; a < arms; a++) {
+            for (let i = 0; i < particlesPerArm; i++) {
+                const t = i / particlesPerArm; // 0 to 1
+                const radius = 1.2 + t * 3.5;
+                const angle = a * (Math.PI * 2 / arms) + t * 12;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                const y = Math.sin(angle * 2) * 0.2;
+                armPoints.push({ x, y, z, color: armColor[a % armColor.length] });
+            }
+        }
+        const spiralGeo = new THREE.BufferGeometry();
+        const spiralPositions = [];
+        const spiralColors = [];
+        armPoints.forEach(p => {
+            spiralPositions.push(p.x, p.y, p.z);
+            const col = new THREE.Color(p.color);
+            spiralColors.push(col.r, col.g, col.b);
+        });
+        spiralGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(spiralPositions), 3));
+        spiralGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(spiralColors), 3));
+        const spiralMatPoints = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, blending: THREE.AdditiveBlending, transparent: true });
+        const spiralArm = new THREE.Points(spiralGeo, spiralMatPoints);
+        scene.add(spiralArm);
+        
+        // Add extra dust cloud (fog particle cloud)
+        const dustCount = 1200;
+        const dustGeo = new THREE.BufferGeometry();
+        const dustPos = [];
+        for (let i=0; i<dustCount; i++) {
+            const rad = 2 + Math.random() * 4;
+            const ang = Math.random() * Math.PI * 2;
+            const xOff = Math.cos(ang) * rad;
+            const zOff = Math.sin(ang) * rad;
+            dustPos.push(xOff + (Math.random() - 0.5)*1.2, (Math.random() - 0.5)*1.5, zOff + (Math.random() - 0.5)*1.2);
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(dustPos), 3));
+        const dustMat = new THREE.PointsMaterial({ color: 0x8866cc, size: 0.03, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
+        const dustCloud = new THREE.Points(dustGeo, dustMat);
+        scene.add(dustCloud);
+        
+        // Electric blue plasma aura: dynamic rim light effect (additional particles that move)
+        const auraCount = 400;
+        const auraGeo = new THREE.BufferGeometry();
+        const auraPositions = new Float32Array(auraCount * 3);
+        for (let i=0; i<auraCount; i++) {
+            // random points in a sphere radius 1.8-2.3
+            const rad = 1.7 + Math.random() * 0.8;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const x = rad * Math.sin(phi) * Math.cos(theta);
+            const y = rad * Math.sin(phi) * Math.sin(theta);
+            const z = rad * Math.cos(phi);
+            auraPositions[i*3] = x;
+            auraPositions[i*3+1] = y;
+            auraPositions[i*3+2] = z;
+        }
+        auraGeo.setAttribute('position', new THREE.BufferAttribute(auraPositions, 3));
+        const auraMat = new THREE.PointsMaterial({ color: 0x00bbff, size: 0.045, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.7 });
+        const auraPoints = new THREE.Points(auraGeo, auraMat);
+        scene.add(auraPoints);
+        
+        // subtle rotating nebula effect (ring)
+        const ringGeo = new THREE.TorusGeometry(1.8, 0.05, 64, 500);
+        const ringMat = new THREE.MeshStandardMaterial({ color: 0x3a86ff, emissive: 0x0044aa, emissiveIntensity: 0.6, transparent: true, opacity: 0.5 });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        scene.add(ring);
+        
+        // add a second outer ring
+        const outerRingGeo = new THREE.TorusGeometry(2.4, 0.04, 64, 500);
+        const outerRingMat = new THREE.MeshStandardMaterial({ color: 0xff66cc, emissive: 0x551133, emissiveIntensity: 0.4, transparent: true });
+        const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+        scene.add(outerRing);
+        
+        // lights to enhance depth
+        const ambientLight = new THREE.AmbientLight(0x111122);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0x4466ff, 0.8, 20);
+        pointLight.position.set(2, 1, 3);
+        scene.add(pointLight);
+        const backLight = new THREE.PointLight(0xff66aa, 0.5);
+        backLight.position.set(-1, 1, -3);
+        scene.add(backLight);
+        
+        // mouse parallax: subtle movement
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+        });
+        
+        let time = 0;
+        
+        // animation loop: rotate galaxy, shift stars, plasma flicker
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.008;
+            
+            // rotate galaxy elements
+            spiralArm.rotation.y = time * 0.2;
+            dustCloud.rotation.y = time * 0.1;
+            dustCloud.rotation.x = Math.sin(time * 0.2) * 0.1;
+            coreGlow.rotation.y = time * 0.05;
+            ring.rotation.x = Math.sin(time * 0.3) * 0.2;
+            ring.rotation.z = time * 0.1;
+            outerRing.rotation.x = time * 0.15;
+            outerRing.rotation.z = time * 0.08;
+            auraPoints.rotation.y = time * 0.2;
+            auraPoints.rotation.x = Math.sin(time * 0.5) * 0.1;
+            
+            // stars rotate slowly
+            stars.rotation.y += 0.0005;
+            bigStars.rotation.x += 0.0003;
+            
+            // camera parallax effect based on mouse
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.05;
+            camera.lookAt(0, 0, 0);
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // ---------- 2. Plasma Canvas effect: additional particle aura matching electric blue ----------
+        const plasmaCanvas = document.getElementById('plasma-canvas');
+        const ctx = plasmaCanvas.getContext('2d');
+        let width = window.innerWidth, height = window.innerHeight;
+        let particles = [];
+        const PARTICLE_COUNT = 110;
+        
+        function resizePlasma() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            plasmaCanvas.width = width;
+            plasmaCanvas.height = height;
+        }
+        window.addEventListener('resize', resizePlasma);
+        resizePlasma();
+        
+        class PlasmaParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 2.5 + 1;
+                this.alpha = Math.random() * 0.5 + 0.2;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.glow = `rgba(0, 200, 255, ${this.alpha})`;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+                // flicker
+                this.alpha = 0.3 + Math.sin(Date.now() * 0.003 * this.radius) * 0.2;
+                this.glow = `rgba(0, 180, 255, ${this.alpha})`;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.glow;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#00e5ff';
+                ctx.fill();
+            }
+        }
+        
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(new PlasmaParticle());
+        }
+        
+        function animatePlasma() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animatePlasma);
+        }
+        animatePlasma();
+        
+        // ---------- Scroll trigger animation using Intersection Observer (fracture slide) ----------
+        const scrollElements = document.querySelectorAll('.scroll-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
-                // random screen flicker for impact
-                document.body.classList.add('fear-pulse');
-                setTimeout(()=> document.body.classList.remove('fear-pulse'), 120);
             });
+        }, { threshold: 0.2 });
+        scrollElements.forEach(el => observer.observe(el));
+        
+        // trigger additional instant effect for button
+        const unleashBtn = document.getElementById('powerBtn');
+        unleashBtn.addEventListener('click', () => {
+            // Simulate cosmic surge: temporary increase in plasma particles brightness + three.js aura intensification
+            auraMat.color.setHex(0x44ccff);
+            setTimeout(() => {
+                auraMat.color.setHex(0x00bbff);
+            }, 400);
+            // also create a flash effect on canvas
+            const flashDiv = document.createElement('div');
+            flashDiv.style.position = 'fixed';
+            flashDiv.style.top = 0;
+            flashDiv.style.left = 0;
+            flashDiv.style.width = '100%';
+            flashDiv.style.height = '100%';
+            flashDiv.style.backgroundColor = 'rgba(0,200,255,0.2)';
+            flashDiv.style.pointerEvents = 'none';
+            flashDiv.style.zIndex = 1000;
+            document.body.appendChild(flashDiv);
+            setTimeout(() => flashDiv.remove(), 200);
         });
-
-        // --- Nav disappear on scroll + reappear + smooth scroll
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', ()=>{
-            const currentScroll = window.scrollY;
-            if(currentScroll > lastScroll && currentScroll > 80) navbar.classList.add('nav-hidden');
-            else navbar.classList.remove('nav-hidden');
-            lastScroll = currentScroll;
-        });
-        const navIcons = document.querySelectorAll('.nav-icon');
-        navIcons.forEach(icon => {
-            icon.addEventListener('click', (e)=>{
-                const targetId = icon.getAttribute('data-section');
-                if(targetId){
-                    const section = document.getElementById(targetId);
-                    if(section) section.scrollIntoView({behavior: 'smooth', block: 'start'});
-                }
+        
+        // add initial visible class to some elements already in view
+        setTimeout(() => {
+            scrollElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) el.classList.add('visible');
             });
-        });
-        // breath neon glow on all edges
-        setInterval(()=>{
-            const glowEl = document.querySelectorAll('.power-node, .gallery-card, .glitch-title');
-            glowEl.forEach(el => {
-                if(Math.random()<0.1) el.style.transition = '0.1s';
-            });
-        }, 2000);
-    })();
-</script>
+        }, 200);
+    </script>
 </body>
-  </html>
+</html>
