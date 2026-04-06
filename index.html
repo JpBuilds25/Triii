@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>L-DRAGO | Dragon Emperor</title>
+  <!-- Google Fonts: Aggressive Techno + Clean Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Three.js library for 3D Beyblade model rotation -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a010f;
+      font-family: 'Exo 2', 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      color: white;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e0126;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff00c3;
+      border-radius: 10px;
+    }
+
+    /* Main container with parallax layers */
+    .parallax-container {
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background nebula smoke texture (animated and moves with parallax) */
+    .bg-nebula {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at 20% 30%, #2b0b3a 0%, #080011 80%);
+      background-image: repeating-radial-gradient(circle at 30% 50%, rgba(156, 0, 210, 0.15) 1px, transparent 2px),
+                        radial-gradient(ellipse at 40% 60%, rgba(255, 0, 255, 0.08) 0%, transparent 70%);
+      z-index: -2;
+      pointer-events: none;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    /* secondary moving smoke overlay */
+    .moving-smoke {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" opacity="0.3"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" /></svg>');
+      background-repeat: repeat;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: -1;
+      animation: driftSmoke 22s linear infinite;
+    }
+
+    @keyframes driftSmoke {
+      0% { transform: translate(0, 0) scale(1);}
+      100% { transform: translate(-5%, -5%) scale(1.05);}
+    }
+
+    /* Header minimal */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid rgba(255, 0, 212, 0.3);
+      position: relative;
+      z-index: 20;
+    }
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #ff44e6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 2px;
+      text-shadow: 0 0 5px #ff00c3;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .nav-links a:hover {
+      color: #ff44e6;
+      text-shadow: 0 0 5px magenta;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      position: relative;
+      z-index: 5;
+    }
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 10vw, 5.8rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      color: white;
+      text-shadow: 0 0 15px #fff, 0 0 30px #ff00aa;
+      letter-spacing: 4px;
+      animation: flickerGlow 1.8s infinite alternate;
+    }
+    @keyframes flickerGlow {
+      0% { text-shadow: 0 0 2px #fff, 0 0 8px #ff44e6; opacity: 0.95; }
+      100% { text-shadow: 0 0 15px #ff44ff, 0 0 35px #ff00c3, 0 0 5px magenta; opacity: 1; }
+    }
+    .diamond-icon {
+      margin: 2rem auto;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ffd966, #b873ff);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      animation: pulseDiamond 1.2s infinite ease-in-out;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+    @keyframes pulseDiamond {
+      0% { transform: scale(1); opacity: 0.7; box-shadow: 0 0 0 0 rgba(255, 200, 0, 0.5);}
+      100% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 15px rgba(255, 200, 0, 0);}
+    }
+
+    /* Core Feature Section: 3D Model + text overlay */
+    .core-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin: 4rem 2rem;
+      position: relative;
+      gap: 2rem;
+    }
+    .model-container {
+      flex: 1.2;
+      min-width: 280px;
+      height: 500px;
+      position: relative;
+      background: radial-gradient(ellipse at center, rgba(80, 0, 100, 0.3) 0%, rgba(0,0,0,0) 80%);
+      border-radius: 40px;
+    }
+    .feature-text-overlay {
+      flex: 0.8;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      padding: 1.8rem;
+      border-radius: 2rem;
+      border-left: 4px solid #ff00c3;
+      position: relative;
+    }
+    .feature-text-overlay p {
+      margin: 1.2rem 0;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px dashed rgba(255, 0, 212, 0.4);
+      padding-bottom: 8px;
+    }
+    .feature-text-overlay span {
+      font-weight: bold;
+      color: #ff66e8;
+    }
+    .connector {
+      width: 8px;
+      height: 8px;
+      background: magenta;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 6px magenta;
+    }
+
+    /* Gallery/Power Section */
+    .gallery {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .gallery h2 {
+      font-size: 2.5rem;
+      font-family: 'Orbitron';
+      margin-bottom: 2rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+    .grid-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .gallery-card {
+      overflow: hidden;
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      filter: grayscale(70%);
+      border: 1px solid #3a1b4b;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .gallery-card:hover {
+      filter: grayscale(0%);
+      transform: scale(1.02);
+      border-color: #ff44e6;
+      box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+    }
+    .gallery-card:hover img {
+      transform: scale(1.08);
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      padding: 2rem;
+      text-align: center;
+      border-top: 2px solid magenta;
+      margin-top: 3rem;
+    }
+    .footer p {
+      margin: 0.5rem 0;
+      color: #ccc;
+    }
+    .social-links a {
+      color: #ff88f0;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .social-links a:hover {
+      text-shadow: 0 0 5px magenta;
+    }
+    .estd {
+      font-family: monospace;
+      letter-spacing: 2px;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* reveal on scroll projection effect */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px) scale(0.96);
+      transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* particle canvas sparks */
+    #particle-canvas {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+      .nav-links {
+        gap: 1rem;
+      }
+      .core-section {
+        flex-direction: column;
+      }
+      .model-container {
+        height: 380px;
+        width: 100%;
+      }
+      .feature-text-overlay {
+        width: 90%;
+      }
+    }
+    /* additional glows */
+    .crimson-eye {
+      color: #ff2d5a;
+      text-shadow: 0 0 3px red;
+    }
+  </style>
+</head>
+<body>
+<div class="parallax-container">
+  <div class="bg-nebula" id="nebulaBg"></div>
+  <div class="moving-smoke"></div>
+
+  <!-- header -->
+  <header class="header">
+    <div class="logo">✦ L-DRAGO ✦</div>
+    <div class="nav-links">
+      <a href="#">DOMINION</a>
+      <a href="#">POWER</a>
+      <a href="#">AWAKEN</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>L-DRAGO: DRAGON EMPEROR</h1>
+    <div class="diamond-icon"></div>
+    <p style="font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(135deg, #ddd, #ff66cc); -webkit-background-clip: text; background-clip: text; color: transparent;">EMPEROR OF CHAOS</p>
+  </section>
+
+  <!-- Core Feature: 3D Model + Text Descriptions -->
+  <section class="core-section reveal">
+    <div class="model-container" id="threeContainer"></div>
+    <div class="feature-text-overlay">
+      <p><span class="connector"></span> <span>INFINITY DRAGON WING</span> — Unleashes shockwave pressure on each rotation</p>
+      <p><span class="connector"></span> <span>♢ CRIMSON EYE BEARING</span> — <span class="crimson-eye">[WARNING]</span> Destabilization force +230%</p>
+      <p><span class="connector"></span> <span>ELECTRIC MAGENTA CORE</span> — Energy glows intensify with battle rhythm</p>
+      <p><span class="connector"></span> <span>DARK PURGE METAL</span> — Abyssal alloy, chaos resonance</p>
+    </div>
+  </section>
+
+  <!-- Gallery / Power Section -->
+  <section class="gallery reveal">
+    <h2>✦ DRACONIC ERUPTION ✦</h2>
+    <div class="grid-gallery">
+      <div class="gallery-card"><img src="https://placehold.co/600x400/1f0a2a/ff33cc?text=DRAGON+FLARE" alt="Dragon Flare"></div>
+      <div class="gallery-card"><img src="https://placehold.co/600x400/2e0b3a/ff44dd?text=INFERNO+BLAST" alt="Inferno Blast"></div>
+      <div class="gallery-card"><img src="https://placehold.co/600x400/1a0525/ff66f0?text=EMPEROR+STRIKE" alt="Emperor Strike"></div>
+      <div class="gallery-card"><img src="https://placehold.co/600x400/281135/ff33bb?text=CHAOS+CONTROL" alt="Chaos Control"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>📍 DRAGON'S NEST | HYPERION DOME | SHADOW REALM</p>
+    <div class="social-links">
+      <a href="#">⚡ TWITTER</a> | <a href="#">🔥 INSTAGRAM</a> | <a href="#">🌀 DISCORD</a>
+    </div>
+    <div class="estd">ESTD 2025 | ∞ L-DRAGO ∞</div>
+  </footer>
+</div>
+
+<canvas id="particle-canvas"></canvas>
+
+<script type="module">
+  import * as THREE from 'three';
+
+  // ----- 3D Beyblade Model (Rotating realistic style, resembles L-Drago metallic + purple)
+  const container = document.getElementById('threeContainer');
+  const scene = new THREE.Scene();
+  scene.background = null; // transparent to show gradient bg
+  scene.fog = new THREE.FogExp2(0x05000a, 0.008);
+
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(0, 2, 8);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0x330033);
+  scene.add(ambientLight);
+  const mainLight = new THREE.DirectionalLight(0xff66ff, 1);
+  mainLight.position.set(2, 5, 3);
+  scene.add(mainLight);
+  const backLight = new THREE.PointLight(0xff00aa, 0.5);
+  backLight.position.set(-2, 1, -4);
+  scene.add(backLight);
+  const fillLight = new THREE.PointLight(0xaa44ff, 0.6);
+  fillLight.position.set(1, 2, 2);
+  scene.add(fillLight);
+  
+  // Create Beyblade group: metallic ring + dragon-like spikes + core
+  const beybladeGroup = new THREE.Group();
+  
+  // Main Attack Ring (metallic purple)
+  const ringGeo = new THREE.TorusGeometry(1.6, 0.25, 64, 128);
+  const ringMat = new THREE.MeshStandardMaterial({ color: 0xaa44ff, metalness: 0.85, roughness: 0.3, emissive: 0x330066, emissiveIntensity: 0.5 });
+  const mainRing = new THREE.Mesh(ringGeo, ringMat);
+  mainRing.rotation.x = Math.PI / 2;
+  beybladeGroup.add(mainRing);
+  
+  // Upper Dragon Layer (spikes)
+  const spikeMat = new THREE.MeshStandardMaterial({ color: 0xff33cc, metalness: 0.9, emissive: 0xcc00aa, emissiveIntensity: 0.4 });
+  for (let i = 0; i < 8; i++) {
+    const spike = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.7, 8), spikeMat);
+    const angle = (i / 8) * Math.PI * 2;
+    spike.position.set(Math.cos(angle) * 1.85, 0.35, Math.sin(angle) * 1.85);
+    spike.rotation.z = angle;
+    beybladeGroup.add(spike);
+  }
+  
+  // Core energy gem (crimson eye)
+  const coreGem = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 32), new THREE.MeshStandardMaterial({ color: 0xff1155, emissive: 0xff0044, emissiveIntensity: 0.9, metalness: 0.2 }));
+  beybladeGroup.add(coreGem);
+  
+  // outer dragon motif rings
+  const outerRing = new THREE.Mesh(new THREE.TorusGeometry(1.95, 0.12, 64, 200), new THREE.MeshStandardMaterial({ color: 0xff66ff, metalness: 0.95, emissive: 0xaa33aa }));
+  outerRing.rotation.x = Math.PI / 2;
+  beybladeGroup.add(outerRing);
+  
+  // additional bottom layer
+  const bottomRing = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.18, 48, 96), new THREE.MeshStandardMaterial({ color: 0x8822aa, metalness: 0.7 }));
+  bottomRing.rotation.x = Math.PI / 2;
+  bottomRing.position.y = -0.3;
+  beybladeGroup.add(bottomRing);
+  
+  scene.add(beybladeGroup);
+  
+  // small particles around for spark effect
+  const particleRing = new THREE.BufferGeometry();
+  const particleCount = 180;
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    const rad = 2.2 + Math.random() * 0.6;
+    const theta = Math.random() * Math.PI * 2;
+    positions[i*3] = Math.cos(theta) * rad;
+    positions[i*3+1] = (Math.random() - 0.5) * 0.8;
+    positions[i*3+2] = Math.sin(theta) * rad;
+  }
+  particleRing.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({ color: 0xff44ff, size: 0.05, transparent: true, blending: THREE.AdditiveBlending });
+  const dust = new THREE.Points(particleRing, particleMat);
+  scene.add(dust);
+  
+  let rotationSpeed = 0.012;
+  let hoverBoost = false;
+  
+  function animateModel() {
+    let speed = rotationSpeed;
+    if (hoverBoost) speed = 0.045;
+    beybladeGroup.rotation.y += speed;
+    dust.rotation.y += 0.008;
+    dust.rotation.x = Math.sin(Date.now() * 0.002) * 0.1;
+    coreGem.material.emissiveIntensity = 0.8 + Math.sin(Date.now() * 0.015) * 0.4;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animateModel);
+  }
+  
+  animateModel();
+  
+  // Hover to spin faster
+  container.addEventListener('mouseenter', () => { hoverBoost = true; });
+  container.addEventListener('mouseleave', () => { hoverBoost = false; });
+  
+  // Resize handler
+  window.addEventListener('resize', () => {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  });
+  
+  // initial resize call
+  setTimeout(() => {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }, 100);
+  
+  // Small rotation animation on idle tilt
+  let time = 0;
+  function idleTilt() {
+    requestAnimationFrame(idleTilt);
+    time += 0.008;
+    if(!hoverBoost) beybladeGroup.rotation.z = Math.sin(time * 0.6) * 0.08;
+    else beybladeGroup.rotation.z = Math.sin(time * 1.8) * 0.12;
+  }
+  idleTilt();
+  
+  // Parallax effect for background nebula based on scroll
+  const nebulaDiv = document.getElementById('nebulaBg');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if(nebulaDiv) {
+      nebulaDiv.style.transform = `translateY(${scrollY * 0.15}px) translateX(${scrollY * 0.05}px)`;
+    }
+    // foreground text parallax (hero)
+    const heroText = document.querySelector('.hero h1');
+    if(heroText) {
+      heroText.style.transform = `translateY(${scrollY * 0.2}px)`;
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  // Reveal on scroll (projection effect)
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+  revealElements.forEach(el => observer.observe(el));
+
+  // Energy sparks particle system (canvas based)
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let particles = [];
+  
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  
+  class Spark {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = height + 5;
+      this.size = Math.random() * 3 + 1.5;
+      this.speedY = Math.random() * 2 + 1.8;
+      this.speedX = (Math.random() - 0.5) * 0.8;
+      this.color = `hsl(${Math.random() > 0.6 ? 300 : 280}, 100%, 60%)`;
+      this.life = 1;
+      this.decay = 0.008 + Math.random() * 0.01;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y -= this.speedY;
+      this.life -= this.decay;
+      return this.life > 0 && this.y > -30;
+    }
+    draw() {
+      ctx.globalAlpha = this.life * 0.9;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ff44ff';
+    }
+  }
+  
+  function createSparkBurst() {
+    for(let i = 0; i < 2; i++) {
+      if(particles.length < 220) particles.push(new Spark());
+    }
+  }
+  setInterval(createSparkBurst, 45);
+  
+  function animateSparks() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = particles.length-1; i >= 0; i--) {
+      const p = particles[i];
+      const alive = p.update();
+      if(alive) p.draw();
+      else particles.splice(i,1);
+    }
+    requestAnimationFrame(animateSparks);
+  }
+  animateSparks();
+  
+  // Additional flicker for "L-DRAGO" text in hero? Already done with CSS
+  // Add continuous random magenta flicker effect to any "L-DRAGO" text if desired.
+  const allLdragoTexts = document.querySelectorAll('.logo, .hero h1');
+  setInterval(() => {
+    allLdragoTexts.forEach(el => {
+      if(Math.random() > 0.85) {
+        el.style.textShadow = '0 0 18px #ff33ff, 0 0 35px magenta';
+        setTimeout(() => {
+          if(el) el.style.textShadow = '';
+        }, 90);
+      } else {
+        el.style.textShadow = '0 0 5px #ff44e6';
+      }
+    });
+  }, 300);
+</script>
+</body>
+    </html>
