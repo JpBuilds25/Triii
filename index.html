@@ -3,625 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Cosmic Fear Garou | Absolute Evil</title>
-    <!-- Google Fonts for clean sans-serif and serif accents -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <title>Abyssal Knight | Dark Fantasy Realm</title>
+    <!-- Google Fonts: Aggressive headers + clean body -->
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (CDN) + Basic overrides -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP Core + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* RESET & GLOBAL */
+        /* ---------- CUSTOM RESET & PREMIUM OVERRIDES ---------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* optional, keeps cinematic feel */
+            cursor: none; /* hide default to show custom cursor */
         }
 
         body {
-            background-color: #000000;
+            background-color: #050505;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            color: #e0e0e0;
+            color: #C0C0C0;
         }
 
-        /* Canvas for Three.js starfield & galaxy background */
-        #canvas-container {
+        /* Custom Scrollbar (sharp, dark) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8B0000;
+            border-radius: 0px;
+        }
+
+        /* CUSTOM CURSOR (red dot + outer ring effect) */
+        .custom-cursor {
+            width: 12px;
+            height: 12px;
+            background: #8B0000;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+            box-shadow: 0 0 8px rgba(139,0,0,0.8);
+            will-change: transform;
+        }
+
+        /* Hover effect for interactive elements (magnetic buttons enlarge cursor) */
+        .custom-cursor.hover-active {
+            width: 28px;
+            height: 28px;
+            background: rgba(139,0,0,0.5);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 20px #8B0000;
+        }
+
+        /* Grain Texture Overlay (premium feel) */
+        .grain-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            display: block;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.12;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            mix-blend-mode: overlay;
         }
 
-        /* Main content layer - glassmorphism + premium stacking */
-        .content {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
+        /* Sharp containers, no rounded corners */
+        .sharp-card, .navbar, .hero-btn, .footer {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Glassmorphism Navbar */
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #C0C0C0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        /* metallic text gradient */
+        .metallic-text {
+            background: linear-gradient(135deg, #E0E0E0 0%, #C0C0C0 40%, #A0A0A0 70%, #FFFFFF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Glow pulse animation */
+        @keyframes redPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(139, 0, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 0, 0, 0);
+            }
+        }
+        .glow-pulse {
+            animation: redPulse 2s infinite;
+        }
+
+        /* Card hover tilt effect (will be applied with GSAP or CSS transform, but we use JS + tilt library? we do custom magnetic + slight transform in js) but adding base transition */
+        .feature-card {
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.3s ease;
+            background: rgba(10, 10, 10, 0.8);
+            border-left: 2px solid #8B0000;
+            border-bottom: 1px solid #2a2a2a;
             backdrop-filter: blur(2px);
         }
 
-        /* Navigation - minimal sci-fi glass */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 4rem;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            font-size: 1.6rem;
-            background: linear-gradient(135deg, #c0c0c0, #f0e68c, #ffd700, #a56eff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(0,0,0,0.5);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #ccc;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-        }
-
-        /* sophisticated hover: plasma glitch + localized effect via js? we add electric pulse */
-        .nav-links a:hover {
-            color: #00e5ff;
-            border-bottom-color: #00e5ff;
-            text-shadow: 0 0 6px #00e5ff;
-            transform: translateY(-1px);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 85vh;
-            padding: 0 2rem;
-        }
-
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 5.5rem;
-            font-weight: 900;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #e6e9f0, #c3cfe0, #ffd966, #b87cff, #00e5ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: cosmicShift 8s ease infinite;
-            text-shadow: 0 0 12px rgba(0,229,255,0.3);
-        }
-
-        @keyframes cosmicShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .japanese-sub {
-            font-size: 1.2rem;
-            font-family: 'Inter', monospace;
-            letter-spacing: 2px;
-            color: #aaddff;
-            border-left: 3px solid #00e5ff;
-            border-right: 3px solid #00e5ff;
-            padding: 0 1rem;
-            backdrop-filter: blur(4px);
-            background: rgba(0,0,0,0.4);
-            display: inline-block;
-            margin-bottom: 1.5rem;
-        }
-
-        .tagline {
-            font-size: 1.1rem;
-            color: #b0c4de;
-            max-width: 600px;
-            margin-bottom: 2rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .cta-button {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            border: 1.5px solid #00e5ff;
-            color: #00e5ff;
-            padding: 1rem 2.5rem;
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-            transition: all 0.4s;
-            box-shadow: 0 0 10px rgba(0,229,255,0.3);
-            border-radius: 0px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .cta-button:hover {
-            background: rgba(0, 229, 255, 0.2);
-            box-shadow: 0 0 20px #00e5ff, 0 0 8px #00e5ff inset;
-            transform: scale(1.02);
-            color: white;
-            border-color: #fff;
-        }
-
-        /* Dynamic scrolling panel with the comic text (激突 quote) */
-        .cosmic-panel {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(0,229,255,0.5);
-            border-bottom: 1px solid rgba(0,229,255,0.5);
-            margin: 3rem 4rem;
-            padding: 2rem;
-            border-radius: 0px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
-            transition: transform 0.2s;
-        }
-
-        .panel-text {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            text-align: center;
-            color: #dfe6e9;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .panel-text strong {
-            color: #00e5ff;
-            font-weight: 600;
-            text-shadow: 0 0 4px #00e5ff;
-        }
-
-        .japanese-quote {
-            font-family: monospace;
-            font-size: 1rem;
-            color: #ffd966;
-            margin-top: 1rem;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        /* bottom Jump Comics logo */
-        .footer-logo {
-            text-align: center;
-            padding: 2rem 0 3rem 0;
-        }
-
-        .jc-logo {
-            display: inline-block;
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            font-size: 1.8rem;
-            background: linear-gradient(145deg, #fff6d5, #e6c27a);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 4px;
-            border-top: 2px solid #ffd966;
-            border-bottom: 2px solid #ffd966;
-            padding: 0.5rem 1rem;
-        }
-
-        /* Scroll-triggered entry animation (fracture slide) */
-        .scroll-section {
-            opacity: 0;
-            transform: translateY(40px) skewY(2deg);
-            transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s ease;
-        }
-
-        .scroll-section.visible {
-            opacity: 1;
-            transform: translateY(0) skewY(0deg);
-        }
-
-        /* Additional particle aura canvas (local glow) but we also add animated electric particles using JS */
-        #plasma-canvas {
+        /* mobile menu styles */
+        .mobile-menu {
             position: fixed;
             top: 0;
+            right: -100%;
+            width: 75%;
+            max-width: 320px;
+            height: 100vh;
+            background: #050505cc;
+            backdrop-filter: blur(20px);
+            border-left: 1px solid #8B0000;
+            transition: right 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1000;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .mobile-menu.open {
+            right: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* sharp hamburger icon */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 30px;
+            cursor: pointer;
+            z-index: 1002;
+            position: relative;
+        }
+        .hamburger span {
+            height: 2px;
+            background: #C0C0C0;
+            transition: 0.3s;
+        }
+
+        /* Social icons hover */
+        .social-icon {
+            transition: all 0.2s ease;
+        }
+        .social-icon:hover {
+            color: #8B0000;
+            transform: translateY(-3px);
+            filter: drop-shadow(0 0 6px #8B0000);
+        }
+
+        /* Underline effect for nav links (desktop) */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
             left: 0;
-            pointer-events: none;
-            z-index: 15;
+            width: 0%;
+            height: 1.5px;
+            background: #8B0000;
+            transition: width 0.25s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 2rem;
+        /* responsive typography */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.5rem !important;
             }
-            .main-title {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
+            .hero-sub {
+                font-size: 0.9rem !important;
             }
-            .nav-links {
-                gap: 1.2rem;
-            }
-            .cosmic-panel {
-                margin: 2rem 1rem;
-                padding: 1.2rem;
-            }
-        }
-
-        /* custom glow for title characters */
-        .glow-text {
-            text-shadow: 0 0 5px #00e5ff;
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D background canvas for dynamic starfield & galaxy -->
-    <div id="canvas-container"></div>
-    
-    <!-- extra canvas for plasma aura particles -->
-    <canvas id="plasma-canvas"></canvas>
+    <!-- Grain Texture Overlay Premium -->
+    <div class="grain-overlay"></div>
 
-    <div class="content">
-        <nav class="navbar">
-            <div class="logo">⚡ COSMIC EDGE</div>
-            <ul class="nav-links">
-                <li><a href="#">Overview</a></li>
-                <li><a href="#">Cosmic Power</a></li>
-                <li><a href="#">Abilities</a></li>
-                <li><a href="#">Timeline</a></li>
-            </ul>
-        </nav>
+    <!-- Custom Cursor Element -->
+    <div class="custom-cursor" id="customCursor"></div>
 
-        <div class="hero">
-            <h1 class="main-title scroll-section">COSMIC FEAR GAROU</h1>
-            <div class="japanese-sub scroll-section">—— 絶対的な悪の覚醒 ——</div>
-            <p class="tagline scroll-section">The universe within. The absolute evil that shatters destiny.</p>
-            <button class="cta-button scroll-section" id="powerBtn">UNLEASH POWER</button>
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="flex justify-end">
+            <button id="closeMenuBtn" class="text-3xl text-gray-300 hover:text-red-700">&times;</button>
         </div>
-
-        <!-- Comic text panel: dynamic content from the prompt (original japanese & translation) -->
-        <div class="cosmic-panel scroll-section" id="dynamicPanel">
-            <div class="panel-text">
-                <strong>⚡ イタマとカロの激突 ⚡</strong><br>
-                イタマは少年の夢を見る力を失い、カロは彼女に加えて、イタマの圧倒的実力に反攻を覚悟した時、<br>
-                ある者の声が響き、カロは超絶な力を入手し？ —— 宇宙の恐怖、牙をむく。
-            </div>
-            <div class="japanese-quote">"The clash between Itama and Karo. When Karo, alongside her, resolved to counter Itama's overwhelming strength — a voice echoed from the void. Thus, Karo obtained transcendent power."</div>
-        </div>
-
-        <div class="footer-logo">
-            <div class="jc-logo">JUMP COMICS</div>
-        </div>
+        <a href="#" class="text-2xl font-bold text-white border-b border-red-800 pb-2 w-fit">ABYSS</a>
+        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Armory</a>
+        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Legion</a>
+        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Artifacts</a>
+        <a href="#" class="mt-4 inline-block bg-red-900/60 border border-red-700 text-center py-2 px-4 text-white uppercase tracking-wider text-sm hover:bg-red-800 transition">Join the Legion</a>
     </div>
 
-    <!-- Three.js library -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-            }
-        }
-    </script>
+    <!-- MAIN WEBSITE -->
+    <div class="relative z-10">
+        <!-- Navbar (Glassmorphism, sharp edges) -->
+        <nav class="glass-nav fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-12 flex justify-between items-center">
+            <div class="text-2xl md:text-3xl font-bold tracking-wider">
+                <span class="metallic-text">SKULL<span class="text-red-700">KNIGHT</span></span>
+            </div>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Armory</a>
+                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Legion</a>
+                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Artifacts</a>
+                <button id="desktopCta" class="cta-button ml-4 px-6 py-2 border border-red-700 bg-black/50 text-white uppercase tracking-wider text-sm font-bold transition-all duration-300 hover:bg-red-800 hover:border-red-400 hover:shadow-[0_0_18px_rgba(139,0,0,0.7)]">
+                    RISE, KNIGHT
+                </button>
+            </div>
+            <!-- Hamburger (Mobile) -->
+            <div class="md:hidden hamburger" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
 
-    <script type="module">
-        import * as THREE from 'three';
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-28 pb-16">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-wider metallic-text leading-tight" id="heroTitle">
+                ETERNAL <br> ABYSS
+            </h1>
+            <p class="hero-sub text-gray-400 max-w-2xl mx-auto mt-6 text-lg md:text-xl tracking-wide font-light" id="heroSub">
+                Forged in the flames of damnation, rise as the undying vanguard. <br class="hidden sm:block"> The void watches.
+            </p>
+            <div class="mt-12" id="heroBtnContainer">
+                <button class="glow-pulse cta-button px-10 py-4 bg-transparent border-2 border-red-700 text-white uppercase font-bold text-lg tracking-wider transition-all duration-300 hover:bg-red-800 hover:border-white hover:scale-105" id="primaryHeroBtn">
+                    AWAKEN THE BLADE
+                </button>
+            </div>
+        </section>
 
-        // --- 1. setup Three.js scene: infinite cosmic background + galaxy swirl core (matching the "contained universe" vibe)
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x01010c);
-        
-        // camera: perspective
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 12);
-        
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
-        
-        // ---- Starfield particle system: dense stars + subtle nebula effect
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2500;
-        const starPositions = new Float32Array(starCount * 3);
-        for (let i = 0; i < starCount; i++) {
-            starPositions[i*3] = (Math.random() - 0.5) * 200;
-            starPositions[i*3+1] = (Math.random() - 0.5) * 120;
-            starPositions[i*3+2] = (Math.random() - 0.5) * 80 - 30;
-        }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
-        const stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
-        
-        // second layer: larger glowing stars (fewer)
-        const bigStarGeo = new THREE.BufferGeometry();
-        const bigCount = 800;
-        const bigPos = new Float32Array(bigCount * 3);
-        for (let i = 0; i < bigCount; i++) {
-            bigPos[i*3] = (Math.random() - 0.5) * 180;
-            bigPos[i*3+1] = (Math.random() - 0.5) * 100;
-            bigPos[i*3+2] = (Math.random() - 0.5) * 70 - 20;
-        }
-        bigStarGeo.setAttribute('position', new THREE.BufferAttribute(bigPos, 3));
-        const bigStarMat = new THREE.PointsMaterial({ color: 0xaaccff, size: 0.22, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
-        const bigStars = new THREE.Points(bigStarGeo, bigStarMat);
-        scene.add(bigStars);
-        
-        // Galaxy spiral texture: create a custom sprite-like central galaxy disk (spiral shape)
-        // Using a ring of particles and a central glowing orb to mimic galaxy core
-        const galaxyCoreGeo = new THREE.SphereGeometry(0.65, 32, 32);
-        const coreMat = new THREE.MeshStandardMaterial({ color: 0xcc88ff, emissive: 0x441177, emissiveIntensity: 1.2, roughness: 0.3, metalness: 0.8 });
-        const coreGlow = new THREE.Mesh(galaxyCoreGeo, coreMat);
-        scene.add(coreGlow);
-        
-        // create spiral arms using points arranged logarithmically
-        const armPoints = [];
-        const arms = 3;
-        const particlesPerArm = 800;
-        const armColor = [0xffaa66, 0x88aaff, 0xdd88ff];
-        for (let a = 0; a < arms; a++) {
-            for (let i = 0; i < particlesPerArm; i++) {
-                const t = i / particlesPerArm; // 0 to 1
-                const radius = 1.2 + t * 3.5;
-                const angle = a * (Math.PI * 2 / arms) + t * 12;
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius;
-                const y = Math.sin(angle * 2) * 0.2;
-                armPoints.push({ x, y, z, color: armColor[a % armColor.length] });
-            }
-        }
-        const spiralGeo = new THREE.BufferGeometry();
-        const spiralPositions = [];
-        const spiralColors = [];
-        armPoints.forEach(p => {
-            spiralPositions.push(p.x, p.y, p.z);
-            const col = new THREE.Color(p.color);
-            spiralColors.push(col.r, col.g, col.b);
-        });
-        spiralGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(spiralPositions), 3));
-        spiralGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(spiralColors), 3));
-        const spiralMatPoints = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, blending: THREE.AdditiveBlending, transparent: true });
-        const spiralArm = new THREE.Points(spiralGeo, spiralMatPoints);
-        scene.add(spiralArm);
-        
-        // Add extra dust cloud (fog particle cloud)
-        const dustCount = 1200;
-        const dustGeo = new THREE.BufferGeometry();
-        const dustPos = [];
-        for (let i=0; i<dustCount; i++) {
-            const rad = 2 + Math.random() * 4;
-            const ang = Math.random() * Math.PI * 2;
-            const xOff = Math.cos(ang) * rad;
-            const zOff = Math.sin(ang) * rad;
-            dustPos.push(xOff + (Math.random() - 0.5)*1.2, (Math.random() - 0.5)*1.5, zOff + (Math.random() - 0.5)*1.2);
-        }
-        dustGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(dustPos), 3));
-        const dustMat = new THREE.PointsMaterial({ color: 0x8866cc, size: 0.03, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
-        const dustCloud = new THREE.Points(dustGeo, dustMat);
-        scene.add(dustCloud);
-        
-        // Electric blue plasma aura: dynamic rim light effect (additional particles that move)
-        const auraCount = 400;
-        const auraGeo = new THREE.BufferGeometry();
-        const auraPositions = new Float32Array(auraCount * 3);
-        for (let i=0; i<auraCount; i++) {
-            // random points in a sphere radius 1.8-2.3
-            const rad = 1.7 + Math.random() * 0.8;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const x = rad * Math.sin(phi) * Math.cos(theta);
-            const y = rad * Math.sin(phi) * Math.sin(theta);
-            const z = rad * Math.cos(phi);
-            auraPositions[i*3] = x;
-            auraPositions[i*3+1] = y;
-            auraPositions[i*3+2] = z;
-        }
-        auraGeo.setAttribute('position', new THREE.BufferAttribute(auraPositions, 3));
-        const auraMat = new THREE.PointsMaterial({ color: 0x00bbff, size: 0.045, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.7 });
-        const auraPoints = new THREE.Points(auraGeo, auraMat);
-        scene.add(auraPoints);
-        
-        // subtle rotating nebula effect (ring)
-        const ringGeo = new THREE.TorusGeometry(1.8, 0.05, 64, 500);
-        const ringMat = new THREE.MeshStandardMaterial({ color: 0x3a86ff, emissive: 0x0044aa, emissiveIntensity: 0.6, transparent: true, opacity: 0.5 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        scene.add(ring);
-        
-        // add a second outer ring
-        const outerRingGeo = new THREE.TorusGeometry(2.4, 0.04, 64, 500);
-        const outerRingMat = new THREE.MeshStandardMaterial({ color: 0xff66cc, emissive: 0x551133, emissiveIntensity: 0.4, transparent: true });
-        const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
-        scene.add(outerRing);
-        
-        // lights to enhance depth
-        const ambientLight = new THREE.AmbientLight(0x111122);
-        scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0x4466ff, 0.8, 20);
-        pointLight.position.set(2, 1, 3);
-        scene.add(pointLight);
-        const backLight = new THREE.PointLight(0xff66aa, 0.5);
-        backLight.position.set(-1, 1, -3);
-        scene.add(backLight);
-        
-        // mouse parallax: subtle movement
-        let mouseX = 0, mouseY = 0;
-        window.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-        });
-        
-        let time = 0;
-        
-        // animation loop: rotate galaxy, shift stars, plasma flicker
-        function animate() {
-            requestAnimationFrame(animate);
-            time += 0.008;
-            
-            // rotate galaxy elements
-            spiralArm.rotation.y = time * 0.2;
-            dustCloud.rotation.y = time * 0.1;
-            dustCloud.rotation.x = Math.sin(time * 0.2) * 0.1;
-            coreGlow.rotation.y = time * 0.05;
-            ring.rotation.x = Math.sin(time * 0.3) * 0.2;
-            ring.rotation.z = time * 0.1;
-            outerRing.rotation.x = time * 0.15;
-            outerRing.rotation.z = time * 0.08;
-            auraPoints.rotation.y = time * 0.2;
-            auraPoints.rotation.x = Math.sin(time * 0.5) * 0.1;
-            
-            // stars rotate slowly
-            stars.rotation.y += 0.0005;
-            bigStars.rotation.x += 0.0003;
-            
-            // camera parallax effect based on mouse
-            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.05;
-            camera.lookAt(0, 0, 0);
-            
-            renderer.render(scene, camera);
-        }
-        
-        animate();
-        
-        // Resize handler
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-        
-        // ---------- 2. Plasma Canvas effect: additional particle aura matching electric blue ----------
-        const plasmaCanvas = document.getElementById('plasma-canvas');
-        const ctx = plasmaCanvas.getContext('2d');
-        let width = window.innerWidth, height = window.innerHeight;
-        let particles = [];
-        const PARTICLE_COUNT = 110;
-        
-        function resizePlasma() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            plasmaCanvas.width = width;
-            plasmaCanvas.height = height;
-        }
-        window.addEventListener('resize', resizePlasma);
-        resizePlasma();
-        
-        class PlasmaParticle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.radius = Math.random() * 2.5 + 1;
-                this.alpha = Math.random() * 0.5 + 0.2;
-                this.vx = (Math.random() - 0.5) * 0.3;
-                this.vy = (Math.random() - 0.5) * 0.2;
-                this.glow = `rgba(0, 200, 255, ${this.alpha})`;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-                // flicker
-                this.alpha = 0.3 + Math.sin(Date.now() * 0.003 * this.radius) * 0.2;
-                this.glow = `rgba(0, 180, 255, ${this.alpha})`;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.glow;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = '#00e5ff';
-                ctx.fill();
-            }
-        }
-        
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            particles.push(new PlasmaParticle());
-        }
-        
-        function animatePlasma() {
-            if (!ctx) return;
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+        <!-- Features / Services Section (3-column grid) -->
+        <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="featuresSection">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold metallic-text uppercase tracking-wider">Dark <span class="text-red-700">Armaments</span></h2>
+                <div class="w-24 h-0.5 bg-red-800 mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
+                    <i class="fas fa-skull text-5xl text-red-700 mb-5"></i>
+                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Soul Harvest</h3>
+                    <p class="text-gray-400 leading-relaxed">Reap the essence of fallen warriors. Dark rituals empower your blade with each conquest.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
+                    <i class="fas fa-shield-alt text-5xl text-red-700 mb-5"></i>
+                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Cursed Aegis</h3>
+                    <p class="text-gray-400 leading-relaxed">Unbreakable shadow armor. Reflects malice, forged in the heart of a dying star.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
+                    <i class="fas fa-dragon text-5xl text-red-700 mb-5"></i>
+                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Nether Flames</h3>
+                    <p class="text-gray-400 leading-relaxed">Conjure infernal blaze that scorches realms. Master the ancient fire of the abyss.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer bg-[#050505] border-t border-gray-800 py-10 mt-16">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-xl font-bold metallic-text tracking-wider">SKULLKNIGHT © 2026</div>
+                <div class="flex space-x-6">
+                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="text-gray-500 text-sm">Darkness endures. Rise eternal.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ---- CUSTOM CURSOR (Red Dot) ----
+        const cursor = document.getElementById('customCursor');
+        if (cursor) {
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, {
+                    duration: 0.08,
+                    x: e.clientX,
+                    y: e.clientY,
+                    ease: "power2.out"
+                });
             });
-            requestAnimationFrame(animatePlasma);
-        }
-        animatePlasma();
-        
-        // ---------- Scroll trigger animation using Intersection Observer (fracture slide) ----------
-        const scrollElements = document.querySelectorAll('.scroll-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+            // Add hover class to enlarge on interactive elements (buttons, links, cards)
+            const interactiveElements = document.querySelectorAll('button, a, .feature-card, .social-icon, .hamburger, .cta-button');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover-active'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover-active'));
             });
-        }, { threshold: 0.2 });
-        scrollElements.forEach(el => observer.observe(el));
+        }
+
+        // ---- MAGNETIC BUTTONS (interactive effect on primary hero & CTA buttons) ----
+        const magneticBtns = document.querySelectorAll('.cta-button, #primaryHeroBtn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, {
+                    duration: 0.3,
+                    x: x * 0.25,
+                    y: y * 0.25,
+                    ease: "power2.out",
+                    overwrite: true
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { duration: 0.4, x: 0, y: 0, ease: "elastic.out(1, 0.5)" });
+            });
+        });
+
+        // ---- GSAP SCROLL REVEAL (Slide up + Fade) ----
+        gsap.registerPlugin(ScrollTrigger);
         
-        // trigger additional instant effect for button
-        const unleashBtn = document.getElementById('powerBtn');
-        unleashBtn.addEventListener('click', () => {
-            // Simulate cosmic surge: temporary increase in plasma particles brightness + three.js aura intensification
-            auraMat.color.setHex(0x44ccff);
-            setTimeout(() => {
-                auraMat.color.setHex(0x00bbff);
-            }, 400);
-            // also create a flash effect on canvas
-            const flashDiv = document.createElement('div');
-            flashDiv.style.position = 'fixed';
-            flashDiv.style.top = 0;
-            flashDiv.style.left = 0;
-            flashDiv.style.width = '100%';
-            flashDiv.style.height = '100%';
-            flashDiv.style.backgroundColor = 'rgba(0,200,255,0.2)';
-            flashDiv.style.pointerEvents = 'none';
-            flashDiv.style.zIndex = 1000;
-            document.body.appendChild(flashDiv);
-            setTimeout(() => flashDiv.remove(), 200);
+        // Reveal function: slide-up and fade for features cards, hero secondary, footer
+        const revealItems = [
+            { selector: '.feature-card', y: 50, duration: 0.7, stagger: 0.15 },
+            { selector: '#featuresSection h2', y: 40, duration: 0.6 },
+            { selector: '#featuresSection .w-24', y: 30, duration: 0.5 },
+            { selector: 'footer', y: 40, duration: 0.6 },
+            { selector: '.hero-sub', y: 30, duration: 0.8, start: "top 85%" } // already visible but re-trigger
+        ];
+        
+        revealItems.forEach(item => {
+            gsap.utils.toArray(item.selector).forEach(el => {
+                gsap.fromTo(el, 
+                    { opacity: 0, y: item.y },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: item.duration,
+                        stagger: item.stagger || 0,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: item.start || "top 85%",
+                            toggleActions: "play none none reverse",
+                            once: true
+                        }
+                    }
+                );
+            });
+        });
+
+        // Additional hero title metallic entrance already there but we add fade-in animation on load
+        gsap.from("#heroTitle", { opacity: 0, y: -40, duration: 1, ease: "back.out(0.6)" });
+        gsap.from("#heroSub", { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
+        gsap.from("#heroBtnContainer", { opacity: 0, scale: 0.9, duration: 0.7, delay: 0.5 });
+        
+        // ---- Hover tilt effect for feature cards (dynamic 3D tilt with mousemove) ----
+        const cards = document.querySelectorAll('.feature-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const xAxis = (e.clientX - rect.left - rect.width/2) / 25;
+                const yAxis = (e.clientY - rect.top - rect.height/2) / 25;
+                card.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${-yAxis}deg) translateY(-5px)`;
+                card.style.transition = "transform 0.1s";
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0px)";
+                card.style.transition = "transform 0.4s cubic-bezier(0.2,0.9,0.4,1)";
+            });
+        });
+
+        // ---- MOBILE HAMBURGER MENU + RESPONSIVENESS ----
+        const hamburger = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('menuOverlay');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        if (hamburger) hamburger.addEventListener('click', openMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
+        if (overlay) overlay.addEventListener('click', closeMenu);
+        
+        // close on link clicks (mobile)
+        const mobileLinks = document.querySelectorAll('.nav-link-mobile, .mobile-menu a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
         });
         
-        // add initial visible class to some elements already in view
-        setTimeout(() => {
-            scrollElements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) el.classList.add('visible');
+        // Add smooth magnetic for all mobile menu buttons? optional
+        
+        // CTA Buttons also magnetic: we already targeted .cta-button, works for both desktop CTA and mobile CTA inside menu
+        const mobileCtaBtn = document.querySelector('.mobile-menu .bg-red-900');
+        if (mobileCtaBtn) {
+            mobileCtaBtn.addEventListener('mousemove', (e) => {
+                const rect = mobileCtaBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(mobileCtaBtn, { duration: 0.3, x: x * 0.2, y: y * 0.2, ease: "power2.out" });
             });
-        }, 200);
+            mobileCtaBtn.addEventListener('mouseleave', () => {
+                gsap.to(mobileCtaBtn, { duration: 0.4, x: 0, y: 0 });
+            });
+        }
+        
+        // ---- ADDITIONAL PREMIUM: Glow effect on cards and buttons dynamic red shadow already via CSS + pulse ----
+        // extra metallic refinement on hero button text gradient?
+        const primaryHero = document.getElementById('primaryHeroBtn');
+        if(primaryHero) {
+            primaryHero.style.transition = "all 0.25s";
+        }
+        
+        // fix for glass navbar border sharpness + responsive font for Syncopate on headers
+        const style = document.createElement('style');
+        style.textContent = `
+            .font-syncopate { font-family: 'Syncopate', sans-serif; }
+            h1, h2, h3, .metallic-text { font-family: 'Syncopate', sans-serif; letter-spacing: 0.02em; }
+            body, p, button, a, .nav-link { font-family: 'Inter', sans-serif; }
+            @media (max-width: 640px) {
+                .feature-card { padding: 1.5rem; }
+                .hero-sub br { display: none; }
+            }
+            /* Sharp container for cards, make sure no radius */
+            .feature-card { border-radius: 0px; }
+            .glass-nav, .mobile-menu, footer { border-radius: 0px; }
+        `;
+        document.head.appendChild(style);
+        
+        // subtle scroll-trigger animation for any additional elements, also make sure the entire features grid gets staggered
+        // extra: nav links glow on hover for premium underline effect already applied
+        // Grain overlay ensures high-end look
+        
+        // reinitialize magnetic effect for any dynamic cta? all cta buttons class .cta-button already handled
+        // also apply custom cursor to mobile menu links
+        const mobileNavLinks = document.querySelectorAll('.mobile-menu a');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('hover-active'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('hover-active'));
+        });
+        
+        // fixes for any missing custom cursor on body: prevent default cursor flicker
+        document.body.style.cursor = 'none';
+        
+        // Smooth scroll reveal for all sections that were hidden (also add window load event for safety)
+        window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
+            // ensures everything reveals correctly
+            gsap.utils.toArray('.feature-card, footer, #featuresSection h2').forEach(el => {
+                if (el.getAttribute('data-scroll-inited')) return;
+                gsap.fromTo(el, { opacity: 0, y: 40 }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        once: true
+                    }
+                });
+            });
+        });
     </script>
 </body>
-</html>
+                            </html>
