@@ -1,521 +1,730 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Abyssal Knight | Dark Fantasy Realm</title>
-    <!-- Google Fonts: Aggressive headers + clean body -->
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS (CDN) + Basic overrides -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- GSAP Core + ScrollTrigger -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <!-- Font Awesome 6 (free icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* ---------- CUSTOM RESET & PREMIUM OVERRIDES ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* hide default to show custom cursor */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aerodyne | Precision in Motion</title>
+  <!-- Google Fonts: Premium Sans-Serif + Readable Body -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background-color: #050505;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            color: #C0C0C0;
-        }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #FFFFFF;
+      color: #1A2C3E;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 
-        /* Custom Scrollbar (sharp, dark) */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #8B0000;
-            border-radius: 0px;
-        }
+    h1, h2, h3, h4, .nav-links, .btn, .logo-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
 
-        /* CUSTOM CURSOR (red dot + outer ring effect) */
-        .custom-cursor {
-            width: 12px;
-            height: 12px;
-            background: #8B0000;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
-            box-shadow: 0 0 8px rgba(139,0,0,0.8);
-            will-change: transform;
-        }
+    /* color variables */
+    :root {
+      --navy: #001B48;
+      --azure: #007BFF;
+      --azure-light: #3395ff;
+      --white: #FFFFFF;
+      --soft-grey: #F8F9FA;
+      --gold-accent: #C9A03D;
+      --emerald-accent: #2C9A6E;
+      --shadow-sm: 0 12px 30px rgba(0,0,0,0.05);
+      --shadow-hover: 0 24px 40px rgba(0,0,0,0.1);
+      --transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    }
 
-        /* Hover effect for interactive elements (magnetic buttons enlarge cursor) */
-        .custom-cursor.hover-active {
-            width: 28px;
-            height: 28px;
-            background: rgba(139,0,0,0.5);
-            backdrop-filter: blur(2px);
-            box-shadow: 0 0 20px #8B0000;
-        }
+    /* smooth scroll reveal (fade-in-up) */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
 
-        /* Grain Texture Overlay (premium feel) */
-        .grain-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.12;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            mix-blend-mode: overlay;
-        }
+    .fade-up.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Sharp containers, no rounded corners */
-        .sharp-card, .navbar, .hero-btn, .footer {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-        }
+    /* glassmorph / sticky header */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+      transition: all 0.25s ease;
+    }
 
-        /* Glassmorphism Navbar */
-        .glass-nav {
-            background: rgba(5, 5, 5, 0.75);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #C0C0C0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
+    /* on scroll we add a bit more depth, but already frosted */
+    .navbar.scrolled {
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 8px 24px rgba(0,27,72,0.08);
+    }
 
-        /* metallic text gradient */
-        .metallic-text {
-            background: linear-gradient(135deg, #E0E0E0 0%, #C0C0C0 40%, #A0A0A0 70%, #FFFFFF 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        /* Glow pulse animation */
-        @keyframes redPulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(139, 0, 0, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(139, 0, 0, 0);
-            }
-        }
-        .glow-pulse {
-            animation: redPulse 2s infinite;
-        }
+    /* stylized wing/feather icon (SVG based on multi-layered wing motif) */
+    .wing-icon svg {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(0 2px 4px rgba(0,123,255,0.2));
+    }
 
-        /* Card hover tilt effect (will be applied with GSAP or CSS transform, but we use JS + tilt library? we do custom magnetic + slight transform in js) but adding base transition */
-        .feature-card {
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.3s ease;
-            background: rgba(10, 10, 10, 0.8);
-            border-left: 2px solid #8B0000;
-            border-bottom: 1px solid #2a2a2a;
-            backdrop-filter: blur(2px);
-        }
+    .logo-text {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--navy) 20%, var(--azure) 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+    }
 
-        /* mobile menu styles */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 75%;
-            max-width: 320px;
-            height: 100vh;
-            background: #050505cc;
-            backdrop-filter: blur(20px);
-            border-left: 1px solid #8B0000;
-            transition: right 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 1000;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
 
-        .mobile-menu.open {
-            right: 0;
-        }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: var(--navy);
+      transition: color 0.2s;
+      font-size: 1rem;
+    }
 
-        .menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-        }
+    .nav-links a:hover {
+      color: var(--azure);
+    }
 
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    .btn-getstarted {
+      background: var(--azure);
+      color: white !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,123,255,0.2);
+    }
 
-        /* sharp hamburger icon */
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            width: 30px;
-            cursor: pointer;
-            z-index: 1002;
-            position: relative;
-        }
-        .hamburger span {
-            height: 2px;
-            background: #C0C0C0;
-            transition: 0.3s;
-        }
+    .btn-getstarted:hover {
+      background: #0066d9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,123,255,0.25);
+      color: white;
+    }
 
-        /* Social icons hover */
-        .social-icon {
-            transition: all 0.2s ease;
-        }
-        .social-icon:hover {
-            color: #8B0000;
-            transform: translateY(-3px);
-            filter: drop-shadow(0 0 6px #8B0000);
-        }
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--navy);
+    }
 
-        /* Underline effect for nav links (desktop) */
-        .nav-link {
-            position: relative;
-            padding-bottom: 4px;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0%;
-            height: 1.5px;
-            background: #8B0000;
-            transition: width 0.25s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
+    /* mobile nav menu */
+    @media (max-width: 900px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 80%;
+        height: calc(100vh - 70px);
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 2rem;
+        gap: 1.8rem;
+        transition: left 0.3s ease;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.05);
+        z-index: 999;
+        border-right: 1px solid rgba(0,123,255,0.1);
+      }
+      .nav-links.active {
+        left: 0;
+      }
+      .hamburger {
+        display: block;
+      }
+      .navbar {
+        padding: 0.9rem 5%;
+      }
+    }
 
-        /* responsive typography */
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 2.5rem !important;
-            }
-            .hero-sub {
-                font-size: 0.9rem !important;
-            }
-        }
-    </style>
+    /* buttons */
+    .btn-primary {
+      display: inline-block;
+      background: var(--azure);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,123,255,0.2);
+    }
+
+    .btn-primary:hover {
+      background: #0066cc;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px rgba(0,123,255,0.28);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--azure);
+      color: var(--azure);
+      padding: 0.8rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-outline:hover {
+      background: var(--azure);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* hero split */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4rem 5% 6rem;
+      gap: 3rem;
+      background: var(--white);
+    }
+
+    .hero-left {
+      flex: 1.2;
+      min-width: 280px;
+    }
+
+    .hero-left h1 {
+      font-size: 3.4rem;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #001B48 0%, #007BFF 70%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-left p {
+      font-size: 1.2rem;
+      color: #2C3E4E;
+      margin-bottom: 2rem;
+      max-width: 90%;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-right {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .abstract-3d {
+      background: radial-gradient(circle at 30% 20%, rgba(0,123,255,0.08), rgba(0,27,72,0.02));
+      border-radius: 32px;
+      padding: 1rem;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .abstract-3d img {
+      width: 100%;
+      height: auto;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+    }
+
+    /* services section */
+    .services-section {
+      background: var(--soft-grey);
+      padding: 5rem 5%;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      color: #4a627a;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cards-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .floating-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      flex: 1 1 280px;
+      max-width: 340px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(0,123,255,0.1);
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(0,123,255,0.3);
+    }
+
+    .card-icon {
+      font-size: 2.8rem;
+      color: var(--azure);
+      margin-bottom: 1.5rem;
+    }
+
+    .floating-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .floating-card p {
+      color: #4b5f73;
+      line-height: 1.5;
+    }
+
+    /* trust + logo cloud */
+    .trust-section {
+      padding: 4rem 5%;
+      background: white;
+      text-align: center;
+    }
+
+    .logo-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      margin: 3rem 0 4rem;
+      filter: grayscale(100%);
+      opacity: 0.6;
+      transition: filter 0.2s;
+    }
+
+    .logo-cloud span {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #6c7e94;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* testimonial slider */
+    .testimonial-slider {
+      max-width: 800px;
+      margin: 2rem auto;
+      overflow: hidden;
+      position: relative;
+      background: var(--soft-grey);
+      border-radius: 32px;
+      padding: 2rem;
+    }
+
+    .testimonial-container {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .testimonial-card {
+      min-width: 100%;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .testimonial-card i {
+      font-size: 2.2rem;
+      color: var(--azure);
+      opacity: 0.5;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-card p {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      color: #1e2f3f;
+    }
+
+    .testimonial-card h4 {
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .slider-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .slider-controls button {
+      background: var(--azure);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* footer fat footer */
+    .footer {
+      background: var(--navy);
+      color: #eef4ff;
+      padding: 3.5rem 5% 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-col h4 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .footer-col p, .footer-col a {
+      color: #cbd5e6;
+      text-decoration: none;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+
+    .footer-col a:hover {
+      color: var(--azure);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      font-size: 0.8rem;
+    }
+
+    /* responsiveness */
+    @media (max-width: 768px) {
+      .hero-left h1 {
+        font-size: 2.4rem;
+      }
+      .hero-left p {
+        max-width: 100%;
+      }
+      .section-header h2 {
+        font-size: 2rem;
+      }
+      .floating-card {
+        max-width: 100%;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Grain Texture Overlay Premium -->
-    <div class="grain-overlay"></div>
+<!-- Sticky Glassmorphic Nav -->
+<nav class="navbar" id="navbar">
+  <div class="logo">
+    <div class="wing-icon">
+      <svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 8L8 24L24 40L40 24L24 8Z" fill="#007BFF" fill-opacity="0.9"/>
+        <path d="M24 14L14 24L24 34L34 24L24 14Z" fill="#001B48"/>
+        <path d="M24 20L20 24L24 28L28 24L24 20Z" fill="#FFFFFF" stroke="#007BFF" stroke-width="0.8"/>
+        <path d="M8 24L2 30L14 38L20 32L8 24Z" fill="#007BFF" fill-opacity="0.6"/>
+        <path d="M40 24L46 30L34 38L28 32L40 24Z" fill="#001B48" fill-opacity="0.8"/>
+      </svg>
+    </div>
+    <span class="logo-text">AERODYNE</span>
+  </div>
+  <div class="hamburger" id="hamburger">
+    <i class="fas fa-bars"></i>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#">Solutions</a>
+    <a href="#">Platform</a>
+    <a href="#">Resources</a>
+    <a href="#">Company</a>
+    <a href="#" class="btn-getstarted">Get Started <i class="fas fa-arrow-right"></i></a>
+  </div>
+</nav>
 
-    <!-- Custom Cursor Element -->
-    <div class="custom-cursor" id="customCursor"></div>
+<main>
+  <!-- Hero Section Split Layout -->
+  <section class="hero">
+    <div class="hero-left fade-up">
+      <h1>Accelerate enterprise <br>with <span style="color:#007BFF;">aerodynamic</span> intelligence</h1>
+      <p>Precision-driven solutions that lift your business velocity. AI-powered insights, seamless integrations, and unmatched reliability.</p>
+      <div class="hero-buttons">
+        <a href="#" class="btn-primary">Launch demo <i class="fas fa-rocket"></i></a>
+        <a href="#" class="btn-outline">Discover flightpath <i class="fas fa-chart-line"></i></a>
+      </div>
+    </div>
+    <div class="hero-right fade-up">
+      <div class="abstract-3d">
+        <!-- modern abstract / tech imagery (wing/fast motiff) -->
+        <img src="https://placehold.co/600x500/FFFFFF/007BFF?text=AERO+TECH+3D+RENDER&font=montserrat" alt="Abstract aerodynamic visualization" style="width:100%; background: linear-gradient(145deg, #F0F6FF, #FFFFFF); object-fit: cover;">
+      </div>
+    </div>
+  </section>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="flex justify-end">
-            <button id="closeMenuBtn" class="text-3xl text-gray-300 hover:text-red-700">&times;</button>
+  <!-- Services: 3-Column Floating Cards -->
+  <section class="services-section">
+    <div class="section-header fade-up">
+      <h2>Core flight systems</h2>
+      <p>Integrated solutions for modern aerospace enterprises and B2B acceleration.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="floating-card fade-up">
+        <div class="card-icon"><i class="fas fa-charging-station"></i></div>
+        <h3>Velocity Edge</h3>
+        <p>Real-time data pipelines with sub-millisecond latency, built for scale and precision analytics.</p>
+      </div>
+      <div class="floating-card fade-up">
+        <div class="card-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <h3>SkyNet Orchestrator</h3>
+        <p>Automated cloud-native deployment, from edge to core, reducing overhead by 38%.</p>
+      </div>
+      <div class="floating-card fade-up">
+        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Quantum Guard</h3>
+        <p>Zero-trust architecture with AI threat detection – certified for regulated industries.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Signals: Logo Cloud + Testimonial Slider -->
+  <section class="trust-section">
+    <div class="section-header fade-up">
+      <h2>Trusted by industry leaders</h2>
+      <p>Engineered for the world's most demanding enterprises</p>
+    </div>
+    <div class="logo-cloud fade-up">
+      <span>🔷 AEROSPACE CORP</span>
+      <span>⚡ NEURONIX</span>
+      <span>📡 SKYWAVE</span>
+      <span>🌍 GLOBAL DYNAMICS</span>
+      <span>🛸 FUTUREFLIGHT</span>
+    </div>
+    
+    <!-- sleek testimonial slider -->
+    <div class="testimonial-slider fade-up">
+      <div class="testimonial-container" id="testimonialContainer">
+        <div class="testimonial-card">
+          <i class="fas fa-quote-left"></i>
+          <p>"Aerodyne's aerodynamic tech stack increased our operational efficiency by 47%. The real-time wing analytics are game-changing."</p>
+          <h4>— Sophia Chen, CTO @ AeroCore</h4>
         </div>
-        <a href="#" class="text-2xl font-bold text-white border-b border-red-800 pb-2 w-fit">ABYSS</a>
-        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Armory</a>
-        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Legion</a>
-        <a href="#" class="text-gray-300 text-lg font-medium nav-link-mobile hover:text-red-500 transition">Artifacts</a>
-        <a href="#" class="mt-4 inline-block bg-red-900/60 border border-red-700 text-center py-2 px-4 text-white uppercase tracking-wider text-sm hover:bg-red-800 transition">Join the Legion</a>
+        <div class="testimonial-card">
+          <i class="fas fa-quote-left"></i>
+          <p>"Deploying SkyNet Orchestrator streamlined our multi-cloud environment. Premium support and unmatched velocity."</p>
+          <h4>— Marcus V., VP of Infrastructure</h4>
+        </div>
+        <div class="testimonial-card">
+          <i class="fas fa-quote-left"></i>
+          <p>"From data to insights, the Velocity Edge platform is a breakthrough. The feather-light UI and powerful backend."</p>
+          <h4>— Lena K., Head of Digital Innovation</h4>
+        </div>
+      </div>
+      <div class="slider-controls">
+        <button id="prevSlide"><i class="fas fa-chevron-left"></i> Prev</button>
+        <button id="nextSlide">Next <i class="fas fa-chevron-right"></i></button>
+      </div>
     </div>
+  </section>
+</main>
 
-    <!-- MAIN WEBSITE -->
-    <div class="relative z-10">
-        <!-- Navbar (Glassmorphism, sharp edges) -->
-        <nav class="glass-nav fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-12 flex justify-between items-center">
-            <div class="text-2xl md:text-3xl font-bold tracking-wider">
-                <span class="metallic-text">SKULL<span class="text-red-700">KNIGHT</span></span>
-            </div>
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Armory</a>
-                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Legion</a>
-                <a href="#" class="nav-link text-gray-300 hover:text-white transition duration-200">Artifacts</a>
-                <button id="desktopCta" class="cta-button ml-4 px-6 py-2 border border-red-700 bg-black/50 text-white uppercase tracking-wider text-sm font-bold transition-all duration-300 hover:bg-red-800 hover:border-red-400 hover:shadow-[0_0_18px_rgba(139,0,0,0.7)]">
-                    RISE, KNIGHT
-                </button>
-            </div>
-            <!-- Hamburger (Mobile) -->
-            <div class="md:hidden hamburger" id="hamburgerBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-
-        <!-- Hero Section -->
-        <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-28 pb-16">
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-wider metallic-text leading-tight" id="heroTitle">
-                ETERNAL <br> ABYSS
-            </h1>
-            <p class="hero-sub text-gray-400 max-w-2xl mx-auto mt-6 text-lg md:text-xl tracking-wide font-light" id="heroSub">
-                Forged in the flames of damnation, rise as the undying vanguard. <br class="hidden sm:block"> The void watches.
-            </p>
-            <div class="mt-12" id="heroBtnContainer">
-                <button class="glow-pulse cta-button px-10 py-4 bg-transparent border-2 border-red-700 text-white uppercase font-bold text-lg tracking-wider transition-all duration-300 hover:bg-red-800 hover:border-white hover:scale-105" id="primaryHeroBtn">
-                    AWAKEN THE BLADE
-                </button>
-            </div>
-        </section>
-
-        <!-- Features / Services Section (3-column grid) -->
-        <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="featuresSection">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold metallic-text uppercase tracking-wider">Dark <span class="text-red-700">Armaments</span></h2>
-                <div class="w-24 h-0.5 bg-red-800 mx-auto mt-4"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
-                    <i class="fas fa-skull text-5xl text-red-700 mb-5"></i>
-                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Soul Harvest</h3>
-                    <p class="text-gray-400 leading-relaxed">Reap the essence of fallen warriors. Dark rituals empower your blade with each conquest.</p>
-                </div>
-                <!-- Card 2 -->
-                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
-                    <i class="fas fa-shield-alt text-5xl text-red-700 mb-5"></i>
-                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Cursed Aegis</h3>
-                    <p class="text-gray-400 leading-relaxed">Unbreakable shadow armor. Reflects malice, forged in the heart of a dying star.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="feature-card p-8 transition-all duration-300 hover:shadow-[0_0_25px_rgba(139,0,0,0.3)]" data-tilt>
-                    <i class="fas fa-dragon text-5xl text-red-700 mb-5"></i>
-                    <h3 class="text-2xl font-bold text-white mb-3 font-syncopate">Nether Flames</h3>
-                    <p class="text-gray-400 leading-relaxed">Conjure infernal blaze that scorches realms. Master the ancient fire of the abyss.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer bg-[#050505] border-t border-gray-800 py-10 mt-16">
-            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="text-xl font-bold metallic-text tracking-wider">SKULLKNIGHT © 2026</div>
-                <div class="flex space-x-6">
-                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-github"></i></a>
-                    <a href="#" class="social-icon text-2xl text-gray-400 transition"><i class="fab fa-instagram"></i></a>
-                </div>
-                <p class="text-gray-500 text-sm">Darkness endures. Rise eternal.</p>
-            </div>
-        </footer>
+<!-- Footer: 4-column fat footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>AERODYNE</h4>
+      <p>Precision in motion. Accelerating the future of B2B tech.</p>
+      <div style="margin-top: 1rem;">
+        <i class="fab fa-linkedin" style="margin-right: 12px;"></i>
+        <i class="fab fa-twitter" style="margin-right: 12px;"></i>
+        <i class="fab fa-github"></i>
+      </div>
     </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <p>Velocity Edge</p>
+      <p>SkyNet Orchestrator</p>
+      <p>Quantum Guard</p>
+      <p>Flight Analytics</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <p>About Us</p>
+      <p>Careers</p>
+      <p>Press</p>
+      <p>Partners</p>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <p>Documentation</p>
+      <p>API Reference</p>
+      <p>Blog</p>
+      <p>Contact Support</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Aerodyne — All rights reserved. Aerodynamic intelligence for a new altitude.</p>
+  </div>
+</footer>
 
-    <script>
-        // ---- CUSTOM CURSOR (Red Dot) ----
-        const cursor = document.getElementById('customCursor');
-        if (cursor) {
-            document.addEventListener('mousemove', (e) => {
-                gsap.to(cursor, {
-                    duration: 0.08,
-                    x: e.clientX,
-                    y: e.clientY,
-                    ease: "power2.out"
-                });
-            });
-            // Add hover class to enlarge on interactive elements (buttons, links, cards)
-            const interactiveElements = document.querySelectorAll('button, a, .feature-card, .social-icon, .hamburger, .cta-button');
-            interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover-active'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover-active'));
-            });
-        }
+<script>
+  // Sticky navbar scroll effect (frosted glass enhancement)
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 20) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
 
-        // ---- MAGNETIC BUTTONS (interactive effect on primary hero & CTA buttons) ----
-        const magneticBtns = document.querySelectorAll('.cta-button, #primaryHeroBtn');
-        magneticBtns.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                gsap.to(btn, {
-                    duration: 0.3,
-                    x: x * 0.25,
-                    y: y * 0.25,
-                    ease: "power2.out",
-                    overwrite: true
-                });
-            });
-            btn.addEventListener('mouseleave', () => {
-                gsap.to(btn, { duration: 0.4, x: 0, y: 0, ease: "elastic.out(1, 0.5)" });
-            });
-        });
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    // change icon optionally
+    const icon = hamburger.querySelector('i');
+    if (navLinks.classList.contains('active')) {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    } else {
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    }
+  });
+  // close mobile menu when a link is clicked
+  const links = navLinks.querySelectorAll('a');
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      const icon = hamburger.querySelector('i');
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    });
+  });
 
-        // ---- GSAP SCROLL REVEAL (Slide up + Fade) ----
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Reveal function: slide-up and fade for features cards, hero secondary, footer
-        const revealItems = [
-            { selector: '.feature-card', y: 50, duration: 0.7, stagger: 0.15 },
-            { selector: '#featuresSection h2', y: 40, duration: 0.6 },
-            { selector: '#featuresSection .w-24', y: 30, duration: 0.5 },
-            { selector: 'footer', y: 40, duration: 0.6 },
-            { selector: '.hero-sub', y: 30, duration: 0.8, start: "top 85%" } // already visible but re-trigger
-        ];
-        
-        revealItems.forEach(item => {
-            gsap.utils.toArray(item.selector).forEach(el => {
-                gsap.fromTo(el, 
-                    { opacity: 0, y: item.y },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: item.duration,
-                        stagger: item.stagger || 0,
-                        scrollTrigger: {
-                            trigger: el,
-                            start: item.start || "top 85%",
-                            toggleActions: "play none none reverse",
-                            once: true
-                        }
-                    }
-                );
-            });
-        });
-
-        // Additional hero title metallic entrance already there but we add fade-in animation on load
-        gsap.from("#heroTitle", { opacity: 0, y: -40, duration: 1, ease: "back.out(0.6)" });
-        gsap.from("#heroSub", { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
-        gsap.from("#heroBtnContainer", { opacity: 0, scale: 0.9, duration: 0.7, delay: 0.5 });
-        
-        // ---- Hover tilt effect for feature cards (dynamic 3D tilt with mousemove) ----
-        const cards = document.querySelectorAll('.feature-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const xAxis = (e.clientX - rect.left - rect.width/2) / 25;
-                const yAxis = (e.clientY - rect.top - rect.height/2) / 25;
-                card.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${-yAxis}deg) translateY(-5px)`;
-                card.style.transition = "transform 0.1s";
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0px)";
-                card.style.transition = "transform 0.4s cubic-bezier(0.2,0.9,0.4,1)";
-            });
-        });
-
-        // ---- MOBILE HAMBURGER MENU + RESPONSIVENESS ----
-        const hamburger = document.getElementById('hamburgerBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const overlay = document.getElementById('menuOverlay');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
-        
-        function openMenu() {
-            mobileMenu.classList.add('open');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMenu() {
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        if (hamburger) hamburger.addEventListener('click', openMenu);
-        if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
-        if (overlay) overlay.addEventListener('click', closeMenu);
-        
-        // close on link clicks (mobile)
-        const mobileLinks = document.querySelectorAll('.nav-link-mobile, .mobile-menu a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-        
-        // Add smooth magnetic for all mobile menu buttons? optional
-        
-        // CTA Buttons also magnetic: we already targeted .cta-button, works for both desktop CTA and mobile CTA inside menu
-        const mobileCtaBtn = document.querySelector('.mobile-menu .bg-red-900');
-        if (mobileCtaBtn) {
-            mobileCtaBtn.addEventListener('mousemove', (e) => {
-                const rect = mobileCtaBtn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                gsap.to(mobileCtaBtn, { duration: 0.3, x: x * 0.2, y: y * 0.2, ease: "power2.out" });
-            });
-            mobileCtaBtn.addEventListener('mouseleave', () => {
-                gsap.to(mobileCtaBtn, { duration: 0.4, x: 0, y: 0 });
-            });
-        }
-        
-        // ---- ADDITIONAL PREMIUM: Glow effect on cards and buttons dynamic red shadow already via CSS + pulse ----
-        // extra metallic refinement on hero button text gradient?
-        const primaryHero = document.getElementById('primaryHeroBtn');
-        if(primaryHero) {
-            primaryHero.style.transition = "all 0.25s";
-        }
-        
-        // fix for glass navbar border sharpness + responsive font for Syncopate on headers
-        const style = document.createElement('style');
-        style.textContent = `
-            .font-syncopate { font-family: 'Syncopate', sans-serif; }
-            h1, h2, h3, .metallic-text { font-family: 'Syncopate', sans-serif; letter-spacing: 0.02em; }
-            body, p, button, a, .nav-link { font-family: 'Inter', sans-serif; }
-            @media (max-width: 640px) {
-                .feature-card { padding: 1.5rem; }
-                .hero-sub br { display: none; }
-            }
-            /* Sharp container for cards, make sure no radius */
-            .feature-card { border-radius: 0px; }
-            .glass-nav, .mobile-menu, footer { border-radius: 0px; }
-        `;
-        document.head.appendChild(style);
-        
-        // subtle scroll-trigger animation for any additional elements, also make sure the entire features grid gets staggered
-        // extra: nav links glow on hover for premium underline effect already applied
-        // Grain overlay ensures high-end look
-        
-        // reinitialize magnetic effect for any dynamic cta? all cta buttons class .cta-button already handled
-        // also apply custom cursor to mobile menu links
-        const mobileNavLinks = document.querySelectorAll('.mobile-menu a');
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => cursor.classList.add('hover-active'));
-            link.addEventListener('mouseleave', () => cursor.classList.remove('hover-active'));
-        });
-        
-        // fixes for any missing custom cursor on body: prevent default cursor flicker
-        document.body.style.cursor = 'none';
-        
-        // Smooth scroll reveal for all sections that were hidden (also add window load event for safety)
-        window.addEventListener('load', () => {
-            ScrollTrigger.refresh();
-            // ensures everything reveals correctly
-            gsap.utils.toArray('.feature-card, footer, #featuresSection h2').forEach(el => {
-                if (el.getAttribute('data-scroll-inited')) return;
-                gsap.fromTo(el, { opacity: 0, y: 40 }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 85%",
-                        once: true
-                    }
-                });
-            });
-        });
-    </script>
+  // Intersection Observer for fade-in-up animations (smooth scroll)
+  const fadeElements = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+  
+  fadeElements.forEach(el => observer.observe(el));
+  
+  // testimonial slider micro-interaction
+  const container = document.getElementById('testimonialContainer');
+  const prevBtn = document.getElementById('prevSlide');
+  const nextBtn = document.getElementById('nextSlide');
+  let currentIndex = 0;
+  const cards = document.querySelectorAll('.testimonial-card');
+  const totalCards = cards.length;
+  
+  function updateSlider() {
+    if (container) {
+      container.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+  }
+  
+  if (prevBtn && nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalCards;
+      updateSlider();
+    });
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+      updateSlider();
+    });
+  }
+  
+  // optional: Auto slide subtle but not intrusive
+  let autoSlide = setInterval(() => {
+    if (nextBtn && document.hasFocus()) {
+      currentIndex = (currentIndex + 1) % totalCards;
+      updateSlider();
+    }
+  }, 5000);
+  
+  // prevent memory leaks: clear on page hide? fine for demo
+  window.addEventListener('beforeunload', () => {
+    if (autoSlide) clearInterval(autoSlide);
+  });
+  
+  // make sure hero images etc are accessible; additional small tweak for transparent bg
+  // floating card hover effect is already in css
+  // perfect responsive behavior ensured
+</script>
 </body>
-                            </html>
+    </html>
