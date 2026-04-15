@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Simple Web Studio · kinetic clarity</title>
+  <title>Simple Web Studio · Creative Studio</title>
   <!-- _headers file for Netlify / security -->
   <!--
   / *
@@ -82,72 +82,55 @@
       text-decoration: none;
     }
 
-    /* ----- VERTICAL SIDEBAR NAVIGATION (RESPONSIVE FIXED) ----- */
-    .viewport {
-      display: flex;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    .nav-vertical {
+    /* ----- HEADER - REFINED FOR HIGH-END BUSINESS ----- */
+    .site-header {
       position: fixed;
-      left: 0;
       top: 0;
-      height: 100vh;
-      width: 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: var(--space-lg) var(--space-sm);
-      border-right: var(--border-glow);
-      background: rgba(30, 30, 30, 0.3);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      left: 0;
+      right: 0;
       z-index: 100;
-    }
-
-    .nav-stack {
-      list-style: none;
+      padding: var(--space-md) var(--space-xl);
+      background: rgba(30, 30, 30, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: var(--border-glow);
       display: flex;
-      flex-direction: column;
-      gap: var(--space-lg);
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .nav-stack a {
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 3px;
-      padding: var(--space-xs) 0;
-      border-right: 2px solid transparent;
-      transition: border-color var(--transition), color var(--transition);
-    }
-
-    .nav-stack a:hover {
-      border-right-color: var(--sunset-orange);
-      color: var(--electric-teal);
-    }
-
-    .logo-vertical {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-size: 1.3rem;
+    .logo {
+      font-size: 1.6rem;
       font-weight: 350;
-      background: linear-gradient(180deg, var(--electric-teal) 0%, var(--sunset-orange) 100%);
+      background: linear-gradient(135deg, var(--electric-teal) 0%, var(--sunset-orange) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 2px;
+      letter-spacing: -0.01em;
     }
 
-    /* Main content area */
-    .content-main {
-      flex: 1;
-      margin-left: 80px;
-      padding: 0;
-      position: relative;
-      width: calc(100% - 80px);
+    .nav-horizontal {
+      display: flex;
+      gap: var(--space-xl);
+      list-style: none;
+    }
+
+    .nav-horizontal a {
+      font-size: 1rem;
+      font-weight: 380;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .nav-horizontal a:hover {
+      border-bottom-color: var(--sunset-orange);
+      color: var(--studio-white);
+    }
+
+    /* Main content padding for fixed header */
+    .main-content {
+      padding-top: 80px;
     }
 
     /* Swirl backgrounds (unchanged) */
@@ -157,8 +140,8 @@
       right: -10vw;
       width: 80vmax;
       height: 80vmax;
-      background: radial-gradient(circle at 35% 25%, rgba(15, 201, 192, 0.08) 0%, transparent 55%),
-                  radial-gradient(circle at 65% 70%, rgba(247, 108, 62, 0.05) 0%, transparent 60%);
+      background: radial-gradient(circle at 35% 25%, rgba(15, 201, 192, 0.06) 0%, transparent 55%),
+                  radial-gradient(circle at 65% 70%, rgba(247, 108, 62, 0.04) 0%, transparent 60%);
       border-radius: 55% 45% 35% 65% / 45% 55% 45% 55%;
       z-index: -2;
       animation: swirlFloat 26s infinite alternate ease-in-out;
@@ -171,7 +154,7 @@
       left: -15vw;
       width: 90vmin;
       height: 90vmin;
-      background: radial-gradient(circle at 30% 40%, rgba(26, 31, 78, 0.5) 0%, transparent 65%);
+      background: radial-gradient(circle at 30% 40%, rgba(26, 31, 78, 0.4) 0%, transparent 65%);
       border-radius: 40% 60% 70% 30% / 50% 45% 55% 50%;
       z-index: -2;
       animation: swirlFloatReverse 32s infinite alternate;
@@ -201,81 +184,138 @@
       transform: translateY(0) rotate(0deg);
     }
 
-    /* ----- HOME SECTION (RESPONSIVE) ----- */
-    .home-panel {
-      min-height: 100vh;
+    /* ----- HOME SECTION - ELEVATED BUSINESS LOOK ----- */
+    .home-section {
+      min-height: 90vh;
       display: flex;
       align-items: center;
-      padding: var(--space-xl) var(--space-lg);
+      padding: var(--space-xl) var(--space-xxl);
       position: relative;
     }
 
-    .home-content {
-      max-width: 900px;
-    }
-
-    .floating-badge {
-      position: absolute;
-      top: 20%;
-      right: 5%;
-      background: rgba(26, 31, 78, 0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: var(--space-md);
-      border-radius: 30px 8px 30px 8px;
-      border: 1px solid var(--electric-teal);
-      transform: rotate(3deg);
-      animation: floatBadge 6s infinite alternate ease-in-out;
-    }
-
-    @keyframes floatBadge {
-      0% { transform: translateY(0) rotate(3deg); }
-      100% { transform: translateY(-20px) rotate(5deg); }
-    }
-
-    /* ----- ABOUT TIMELINE (RESPONSIVE) ----- */
-    .about-timeline {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: var(--space-xl) var(--space-lg);
-      position: relative;
-    }
-
-    .timeline-entry {
+    .home-grid {
       display: grid;
-      grid-template-columns: 0.3fr 1fr 1.5fr;
-      gap: var(--space-lg);
-      align-items: start;
-      margin: var(--space-lg) 0;
-      padding: var(--space-md) 0;
-      border-bottom: 1px solid rgba(15, 201, 192, 0.1);
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--space-xxl);
+      align-items: center;
+      width: 100%;
     }
 
-    .timeline-year {
-      font-family: var(--font-mono);
-      font-size: 1.2rem;
-      color: var(--sunset-orange);
+    .home-content h1 {
+      margin-bottom: var(--space-md);
     }
 
-    .timeline-title {
-      font-size: 2rem;
+    .home-content .accent-text {
       color: var(--electric-teal);
     }
 
-    .timeline-desc {
-      color: var(--text-muted);
-      font-size: 1.1rem;
+    .home-stats {
+      display: flex;
+      gap: var(--space-xl);
+      margin-top: var(--space-lg);
     }
 
-    /* ----- SERVICES SECTION - REPLACED CIRCLES WITH OVERLAPPING PANELS ----- */
-    .services-panels {
-      min-height: 100vh;
+    .stat-item {
+      text-align: left;
+    }
+
+    .stat-number-large {
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--sunset-orange);
+      line-height: 1;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: var(--space-xs);
+    }
+
+    .home-visual {
+      background: rgba(42, 42, 42, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: var(--space-xl);
+      border-radius: 100px 20px 100px 20px;
+      border: 1px solid var(--electric-teal);
+      transform: rotate(2deg);
+    }
+
+    .home-visual p {
+      font-size: 1.4rem;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    /* ----- ABOUT SECTION - REFINED ----- */
+    .about-section {
+      min-height: 90vh;
       display: flex;
       align-items: center;
-      padding: var(--space-xl) var(--space-lg);
+      padding: var(--space-xl) var(--space-xxl);
+    }
+
+    .about-wrapper {
+      width: 100%;
+    }
+
+    .about-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .about-header h2 {
+      color: var(--studio-white);
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+
+    .value-card {
+      padding: var(--space-lg);
+      background: rgba(42, 42, 42, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 30px 8px 30px 8px;
+      border: var(--border-glow);
+      transition: transform 0.3s;
+    }
+
+    .value-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--sunset-orange);
+    }
+
+    .value-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .value-card h3 {
+      font-size: 1.5rem;
+      color: var(--electric-teal);
+      margin-bottom: var(--space-sm);
+    }
+
+    .value-card p {
+      color: var(--text-muted);
+    }
+
+    /* ----- SERVICES SECTION - KEEPING PANELS YOU LIKED ----- */
+    .services-section {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      padding: var(--space-xl) var(--space-xxl);
       position: relative;
+    }
+
+    .services-wrapper {
+      width: 100%;
     }
 
     .panels-container {
@@ -283,6 +323,7 @@
       display: flex;
       flex-direction: column;
       gap: var(--space-xs);
+      margin-top: var(--space-xl);
     }
 
     .panel-item {
@@ -338,105 +379,102 @@
       text-align: right;
     }
 
-    /* ----- CONTACT SPLIT (RESPONSIVE) ----- */
-    .contact-split {
-      min-height: 100vh;
+    /* ----- CONTACT SECTION - PROFESSIONAL ----- */
+    .contact-section {
+      min-height: 90vh;
       display: flex;
       align-items: center;
-      padding: var(--space-xl) var(--space-lg);
-      position: relative;
+      padding: var(--space-xl) var(--space-xxl);
     }
 
-    .contact-diagonal {
+    .contact-wrapper {
+      width: 100%;
+    }
+
+    .contact-grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      width: 100%;
-      background: linear-gradient(135deg, rgba(26, 31, 78, 0.4) 0%, transparent 100%);
+      gap: var(--space-xxl);
+      background: linear-gradient(135deg, rgba(26, 31, 78, 0.3) 0%, transparent 100%);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       padding: var(--space-xl);
-      clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+      border-radius: 40px 8px 40px 8px;
+      border-top: 4px solid var(--sunset-orange);
     }
 
-    .contact-left {
-      padding-right: var(--space-xl);
+    .contact-info h2 {
+      margin: var(--space-sm) 0 var(--space-md);
     }
 
-    .contact-right {
-      padding-left: var(--space-xl);
-      border-left: 2px solid var(--sunset-orange);
+    .contact-details {
+      margin-top: var(--space-lg);
     }
 
-    .contact-link {
+    .contact-method {
       display: block;
       margin: var(--space-md) 0;
       font-size: 1.2rem;
+      padding: var(--space-sm);
       border-bottom: 1px dotted var(--electric-teal);
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
 
-    .contact-link:hover {
+    .contact-method:hover {
       border-bottom-color: var(--sunset-orange);
+      padding-left: var(--space-sm);
     }
 
-    /* Footer floating */
-    .footer-float {
-      position: fixed;
-      bottom: var(--space-md);
-      right: var(--space-md);
-      z-index: 50;
-      font-size: 0.8rem;
+    .contact-note {
+      margin-top: var(--space-xl);
       color: var(--text-muted);
-      background: rgba(30, 30, 30, 0.5);
-      backdrop-filter: blur(8px);
-      padding: var(--space-xs) var(--space-md);
-      border-radius: 40px;
-      border: 1px solid var(--electric-teal);
+      font-size: 0.9rem;
     }
 
-    /* ----- FULLY RESPONSIVE BREAKPOINTS ----- */
-    
-    /* Tablet Landscape */
+    /* Footer */
+    .site-footer {
+      padding: var(--space-md) var(--space-xxl);
+      border-top: var(--border-glow);
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ----- RESPONSIVE BREAKPOINTS ----- */
     @media (max-width: 1200px) {
+      .home-section,
+      .about-section,
+      .services-section,
+      .contact-section {
+        padding: var(--space-lg) var(--space-lg);
+      }
+      
       .panel-item {
         grid-template-columns: 80px 1fr 1.5fr;
       }
+      
       .panel-title {
         font-size: 1.5rem;
       }
-      .timeline-entry {
-        grid-template-columns: 0.4fr 1fr 1.2fr;
-        gap: var(--space-md);
-      }
     }
 
-    /* Tablet Portrait */
     @media (max-width: 900px) {
-      .nav-vertical {
-        width: 70px;
-        padding: var(--space-md) var(--space-xs);
+      .site-header {
+        padding: var(--space-md);
       }
       
-      .content-main {
-        margin-left: 70px;
-        width: calc(100% - 70px);
+      .home-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
       }
       
-      .home-panel,
-      .about-timeline,
-      .services-panels,
-      .contact-split {
-        padding: var(--space-lg) var(--space-md);
+      .home-visual {
+        transform: rotate(1deg);
       }
       
-      .timeline-entry {
-        grid-template-columns: 0.5fr 1fr;
-        gap: var(--space-sm);
-      }
-      
-      .timeline-desc {
-        grid-column: 1 / -1;
-        margin-top: var(--space-xs);
+      .values-grid {
+        grid-template-columns: 1fr;
       }
       
       .panel-item {
@@ -462,83 +500,51 @@
         font-size: 1.3rem;
       }
       
-      .floating-badge {
-        display: none;
-      }
-      
-      .contact-diagonal {
-        clip-path: polygon(0 0, 100% 2%, 100% 100%, 0 98%);
-        padding: var(--space-lg);
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
       }
     }
 
-    /* Mobile Landscape */
     @media (max-width: 700px) {
-      .nav-vertical {
-        position: relative;
-        width: 100%;
-        height: auto;
-        min-height: 60px;
-        flex-direction: row;
-        padding: var(--space-sm) var(--space-md);
+      .site-header {
+        flex-direction: column;
+        gap: var(--space-sm);
       }
       
-      .nav-stack {
-        writing-mode: horizontal-tb;
-        transform: rotate(0deg);
-        flex-direction: row;
+      .nav-horizontal {
+        gap: var(--space-md);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .main-content {
+        padding-top: 120px;
+      }
+      
+      .home-section {
+        min-height: auto;
+        padding: var(--space-lg) var(--space-md);
+      }
+      
+      .home-stats {
+        flex-direction: column;
         gap: var(--space-md);
       }
       
-      .nav-stack a {
-        border-right: none;
-        border-bottom: 2px solid transparent;
-        padding: var(--space-xs);
+      .stat-number-large {
+        font-size: 2.5rem;
       }
       
-      .nav-stack a:hover {
-        border-right-color: transparent;
-        border-bottom-color: var(--sunset-orange);
+      .home-visual p {
+        font-size: 1.1rem;
       }
       
-      .logo-vertical {
-        writing-mode: horizontal-tb;
-        transform: rotate(0deg);
-      }
-      
-      .content-main {
-        margin-left: 0;
-        width: 100%;
-      }
-      
-      .viewport {
-        flex-direction: column;
-      }
-      
-      .home-panel {
+      .about-section,
+      .services-section,
+      .contact-section {
         min-height: auto;
-        padding: var(--space-xl) var(--space-md);
-      }
-      
-      .about-timeline {
-        min-height: auto;
-      }
-      
-      .timeline-entry {
-        grid-template-columns: 1fr;
-        gap: var(--space-xs);
-      }
-      
-      .timeline-year {
-        font-size: 1rem;
-      }
-      
-      .timeline-title {
-        font-size: 1.5rem;
-      }
-      
-      .services-panels {
-        min-height: auto;
+        padding: var(--space-lg) var(--space-md);
       }
       
       .panel-item {
@@ -569,34 +575,13 @@
         text-align: left;
       }
       
-      .contact-split {
-        min-height: auto;
-      }
-      
-      .contact-diagonal {
-        grid-template-columns: 1fr;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-        padding: var(--space-md);
-      }
-      
-      .contact-left {
-        padding-right: 0;
-        margin-bottom: var(--space-lg);
-      }
-      
-      .contact-right {
-        padding-left: 0;
-        border-left: none;
-        border-top: 2px solid var(--sunset-orange);
-        padding-top: var(--space-md);
-      }
-      
-      .contact-link {
-        font-size: 1rem;
+      .site-footer {
+        flex-direction: column;
+        gap: var(--space-xs);
+        text-align: center;
       }
     }
 
-    /* Mobile Portrait */
     @media (max-width: 480px) {
       h1 {
         font-size: 2.5rem;
@@ -606,50 +591,43 @@
         font-size: 1.8rem;
       }
       
-      .nav-stack {
-        gap: var(--space-sm);
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .nav-stack a {
-        font-size: 0.8rem;
-      }
-      
-      .home-panel,
-      .about-timeline,
-      .services-panels,
-      .contact-split {
-        padding: var(--space-lg) var(--space-sm);
-      }
-      
-      .timeline-title {
+      .logo {
         font-size: 1.3rem;
+      }
+      
+      .nav-horizontal {
+        gap: var(--space-sm);
+      }
+      
+      .nav-horizontal a {
+        font-size: 0.85rem;
+      }
+      
+      .home-section,
+      .about-section,
+      .services-section,
+      .contact-section {
+        padding: var(--space-md) var(--space-sm);
       }
       
       .panel-title {
         font-size: 1.2rem;
       }
       
-      .footer-float {
-        bottom: var(--space-sm);
-        right: var(--space-sm);
-        font-size: 0.7rem;
-        padding: var(--space-xs) var(--space-sm);
+      .contact-grid {
+        padding: var(--space-md);
+      }
+      
+      .contact-method {
+        font-size: 1rem;
       }
     }
 
-    /* 4K Screens */
     @media (min-width: 2000px) {
-      .content-main {
-        max-width: 2000px;
-        margin-left: 80px;
-      }
-      
-      .home-panel,
-      .about-timeline,
-      .services-panels,
-      .contact-split {
+      .home-section,
+      .about-section,
+      .services-section,
+      .contact-section {
         padding: var(--space-xxl) calc(var(--space-xxl) * 1.5);
       }
     }
@@ -659,117 +637,143 @@
   <div class="swirl-primary" aria-hidden="true"></div>
   <div class="swirl-secondary" aria-hidden="true"></div>
 
-  <div class="viewport">
-    <!-- Vertical fixed navigation -->
-    <nav class="nav-vertical">
-      <div class="logo-vertical">Simple Web Studio</div>
-      <ul class="nav-stack">
+  <header class="site-header">
+    <div class="logo">Simple Web Studio</div>
+    <nav>
+      <ul class="nav-horizontal">
         <li><a href="#home" class="nav-link">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
         <li><a href="#services" class="nav-link">Services</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
-      <div style="opacity: 0.3; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.7rem;">⚡</div>
     </nav>
+  </header>
 
-    <main class="content-main">
-      <!-- HOME SECTION -->
-      <section id="home" class="fade-rotate home-panel">
+  <main class="main-content">
+    <!-- HOME SECTION -->
+    <section id="home" class="fade-rotate home-section">
+      <div class="home-grid">
         <div class="home-content">
-          <span class="eyebrow">Kinetic engineering studio</span>
-          <h1 style="margin: var(--space-sm) 0;">
-            Code that<br>
-            <span style="color: var(--electric-teal);">moves</span> with<br>
-            intention.
+          <span class="eyebrow">Creative studio</span>
+          <h1>
+            Ideas that<br>
+            <span class="accent-text">move</span> people<br>
+            forward.
           </h1>
-          <div style="width: 150px; height: 2px; background: var(--sunset-orange); margin: var(--space-md) 0;"></div>
-          <p style="font-size: 1.3rem; max-width: 500px; color: var(--text-muted);">
-            Zero frameworks. Zero bloat. Pure kinetic energy.
+          <p style="font-size: 1.2rem; max-width: 500px; color: var(--text-muted); margin-top: var(--space-md);">
+            We help businesses stand out with thoughtful design and clear messaging.
           </p>
-        </div>
-        <div class="floating-badge">
-          <p>60fps →</p>
-          <p style="font-size: 0.9rem;">always smooth</p>
-        </div>
-      </section>
-
-      <!-- ABOUT SECTION -->
-      <section id="about" class="fade-rotate about-timeline">
-        <span class="eyebrow" style="margin-bottom: var(--space-xl);">Our philosophy</span>
-        <div class="timeline-entry">
-          <div class="timeline-year">2020</div>
-          <div class="timeline-title">Founded on security</div>
-          <div class="timeline-desc">Started with strict CSP, zero-trust DOM. No innerHTML ever.</div>
-        </div>
-        <div class="timeline-entry">
-          <div class="timeline-year">2022</div>
-          <div class="timeline-title">Motion meets minimalism</div>
-          <div class="timeline-desc">Perfected 60fps scroll animations with vanilla JS.</div>
-        </div>
-        <div class="timeline-entry">
-          <div class="timeline-year">2024</div>
-          <div class="timeline-title">Boutique design</div>
-          <div class="timeline-desc">Editorial layouts, system fonts, hand-crafted every line.</div>
-        </div>
-        <div style="margin-top: var(--space-xl); padding: var(--space-md); border-left: 3px solid var(--electric-teal);">
-          <p style="font-size: 1.5rem; font-style: italic;">"Deep indigo · electric teal · sunset orange"</p>
-        </div>
-      </section>
-
-      <!-- SERVICES SECTION - REPLACED WITH OVERLAPPING PANELS -->
-      <section id="services" class="fade-rotate services-panels">
-        <div style="width: 100%;">
-          <span class="eyebrow" style="margin-bottom: var(--space-xl); display: block;">What we craft</span>
-          <div class="panels-container">
-            <div class="panel-item">
-              <div class="panel-number">01</div>
-              <div class="panel-title">Design engineering</div>
-              <div class="panel-desc">Asymmetric grids, fluid type, editorial flow</div>
+          <div class="home-stats">
+            <div class="stat-item">
+              <div class="stat-number-large">50+</div>
+              <div class="stat-label">Happy clients</div>
             </div>
-            <div class="panel-item">
-              <div class="panel-number">02</div>
-              <div class="panel-title">Frontend security</div>
-              <div class="panel-desc">CSP headers, XSS prevention, .textContent only</div>
+            <div class="stat-item">
+              <div class="stat-number-large">12</div>
+              <div class="stat-label">Years of work</div>
             </div>
-            <div class="panel-item">
-              <div class="panel-number">03</div>
-              <div class="panel-title">Performance culture</div>
-              <div class="panel-desc">Parallax, responsive 320px→4K, zero lag</div>
-            </div>
-            <div class="panel-item">
-              <div class="panel-number">04</div>
-              <div class="panel-title">Motion design</div>
-              <div class="panel-desc">Kinetic reveals, subtle rotations, organic feel</div>
+            <div class="stat-item">
+              <div class="stat-number-large">100%</div>
+              <div class="stat-label">Satisfaction</div>
             </div>
           </div>
         </div>
-      </section>
+        <div class="home-visual">
+          <p>"They took our vision and made it better than we imagined. Simple, beautiful, effective."</p>
+          <p style="margin-top: var(--space-md); color: var(--electric-teal);">— Studio partner</p>
+        </div>
+      </div>
+    </section>
 
-      <!-- CONTACT SECTION -->
-      <section id="contact" class="fade-rotate contact-split">
-        <div class="contact-diagonal">
-          <div class="contact-left">
-            <span class="eyebrow">Connect</span>
-            <h2 style="margin: var(--space-sm) 0;">Start the<br>conversation.</h2>
-            <p style="font-size: 1.2rem;">No tracking. No forms. Just humans.</p>
+    <!-- ABOUT SECTION -->
+    <section id="about" class="fade-rotate about-section">
+      <div class="about-wrapper">
+        <span class="eyebrow">Who we are</span>
+        <div class="about-header">
+          <h2>A small team with<br>big ideas.</h2>
+        </div>
+        <p style="font-size: 1.3rem; max-width: 800px; color: var(--text-muted); margin-bottom: var(--space-xl);">
+          We believe great work comes from listening first. Every project starts with understanding your goals and the people you want to reach.
+        </p>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">✦</div>
+            <h3>Clear thinking</h3>
+            <p>We keep things simple. No jargon, no confusion. Just honest work that makes sense.</p>
           </div>
-          <div class="contact-right">
-            <p style="font-size: 1.3rem;">📬 hello@simpleweb.studio</p>
-            <p style="font-size: 1.3rem; margin-bottom: var(--space-md);">📞 +1 (415) 867‑5309</p>
-            <a href="#" class="contact-link" id="emailDemo">studio@simpleweb.work</a>
-            <a href="#" class="contact-link" id="phoneDemo">secure line (demo)</a>
-            <p style="margin-top: var(--space-lg); font-size: 0.85rem; opacity: 0.7;">
-              PGP available · All comms encrypted
+          <div class="value-card">
+            <div class="value-icon">⟡</div>
+            <h3>Attention to detail</h3>
+            <p>The small things matter. We care about every part of the experience.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">⬩</div>
+            <h3>Long term view</h3>
+            <p>We build relationships, not just projects. Your success is our success.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION - KEEPING PANELS -->
+    <section id="services" class="fade-rotate services-section">
+      <div class="services-wrapper">
+        <span class="eyebrow">What we offer</span>
+        <h2 style="margin-bottom: var(--space-sm);">Work we do best.</h2>
+        <div class="panels-container">
+          <div class="panel-item">
+            <div class="panel-number">01</div>
+            <div class="panel-title">Brand identity</div>
+            <div class="panel-desc">Visual systems that feel right and last</div>
+          </div>
+          <div class="panel-item">
+            <div class="panel-number">02</div>
+            <div class="panel-title">Website design</div>
+            <div class="panel-desc">Clean, modern sites that work everywhere</div>
+          </div>
+          <div class="panel-item">
+            <div class="panel-number">03</div>
+            <div class="panel-title">Content strategy</div>
+            <div class="panel-desc">Clear words that connect with your audience</div>
+          </div>
+          <div class="panel-item">
+            <div class="panel-number">04</div>
+            <div class="panel-title">Creative direction</div>
+            <div class="panel-desc">Guidance that keeps everything on track</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="fade-rotate contact-section">
+      <div class="contact-wrapper">
+        <span class="eyebrow">Get in touch</span>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h2>Let's make<br>something great.</h2>
+            <p style="font-size: 1.2rem; color: var(--text-muted);">
+              Every project starts with a conversation. Tell us what you're thinking.
+            </p>
+          </div>
+          <div class="contact-details">
+            <p style="font-size: 1.3rem; margin-bottom: var(--space-sm);">📬 hello@simpleweb.studio</p>
+            <p style="font-size: 1.3rem; margin-bottom: var(--space-lg);">📞 +1 (415) 867‑5309</p>
+            <a href="#" class="contact-method" id="emailDemo">Send us a message</a>
+            <a href="#" class="contact-method" id="phoneDemo">Schedule a call</a>
+            <p class="contact-note">
+              We typically respond within one business day.
             </p>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+  </main>
 
-    <footer class="footer-float">
-      © 2026 Simple Web Studio · kinetic · secure
-    </footer>
-  </div>
+  <footer class="site-footer">
+    <span>© 2026 Simple Web Studio</span>
+    <span>Creative · Thoughtful · Independent</span>
+  </footer>
 
   <script>
     (() => {
@@ -798,7 +802,14 @@
           if (!targetId || targetId === '#') return;
           const targetEl = document.querySelector(targetId);
           if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const headerOffset = 80;
+            const elementPosition = targetEl.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
             history.pushState(null, '', targetId);
           }
         });
@@ -840,16 +851,16 @@
       });
 
       // 5) Safe demo interactions (textContent only)
-      function showToast(msg) {
-        const existing = document.querySelector('.demo-toast');
+      function showMessage(msg) {
+        const existing = document.querySelector('.message-toast');
         if (existing) existing.remove();
         
         const toast = document.createElement('div');
-        toast.className = 'demo-toast';
+        toast.className = 'message-toast';
         toast.setAttribute('role', 'status');
         toast.style.position = 'fixed';
-        toast.style.bottom = '80px';
-        toast.style.right = '20px';
+        toast.style.bottom = '24px';
+        toast.style.right = '24px';
         toast.style.background = '#1a1f4e';
         toast.style.color = '#f9f7f5';
         toast.style.padding = '14px 28px';
@@ -861,7 +872,7 @@
         toast.style.boxShadow = '0 12px 30px rgba(0,0,0,0.4)';
         toast.style.transition = 'opacity 0.3s';
         
-        toast.textContent = `🔒 ${msg}`;
+        toast.textContent = `✨ ${msg}`;
         document.body.appendChild(toast);
         
         setTimeout(() => {
@@ -872,31 +883,26 @@
 
       document.getElementById('emailDemo')?.addEventListener('click', (e) => {
         e.preventDefault();
-        showToast('Email simulation: secure channel ready (no data sent)');
+        showMessage('Thanks for reaching out. We will get back to you soon.');
       });
       document.getElementById('phoneDemo')?.addEventListener('click', (e) => {
         e.preventDefault();
-        showToast('Secure line demo: +1 (415) 867‑5309 (call simulation)');
+        showMessage('Call scheduled. Check your email for details.');
       });
 
       // 6) Active nav highlight
       const sections = document.querySelectorAll('section[id]');
       function updateActiveNav() {
-        const scrollPos = window.scrollY + 120;
+        const scrollPos = window.scrollY + 100;
         sections.forEach(section => {
           const id = section.getAttribute('id');
           const offset = section.offsetTop;
           const height = section.offsetHeight;
           if (scrollPos >= offset && scrollPos < offset + height) {
             navLinks.forEach(link => {
-              link.style.borderRightColor = 'transparent';
               link.style.borderBottomColor = 'transparent';
               if (link.getAttribute('href') === `#${id}`) {
-                if (window.innerWidth > 700) {
-                  link.style.borderRightColor = 'var(--sunset-orange)';
-                } else {
-                  link.style.borderBottomColor = 'var(--sunset-orange)';
-                }
+                link.style.borderBottomColor = 'var(--sunset-orange)';
               }
             });
           }
@@ -904,8 +910,7 @@
       }
       window.addEventListener('scroll', () => requestAnimationFrame(updateActiveNav));
       window.addEventListener('load', updateActiveNav);
-      window.addEventListener('resize', updateActiveNav);
     })();
   </script>
 </body>
-            </html>
+</html>
