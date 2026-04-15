@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Simple Web Studio · Creative & Secure</title>
-  <!-- _headers file content (as comment / separate block) — copy into _headers for Netlify) -->
+  <title>Simple Web Studio · kinetic clarity</title>
+  <!-- _headers file for Netlify / security (place in _headers) -->
   <!--
   / *
     Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
@@ -13,7 +13,7 @@
     Referrer-Policy: strict-origin-when-cross-origin
   -->
   <style>
-    /* ----- SYSTEM FONT STACK, RESET & VARIABLES ----- */
+    /* ----- RESET & VARIABLES (hand-crafted, zero external) ----- */
     * {
       margin: 0;
       padding: 0;
@@ -21,63 +21,63 @@
     }
 
     :root {
-      --deep-indigo: #1a1f4e;
-      --electric-teal: #0fc9c0;
-      --sunset-orange: #f76c3e;
-      --studio-white: #f9f7f5;
-      --cool-charcoal: #1e1e1e;
-      --charcoal-soft: #2a2a2a;
-      --text-light: #f0eee9;
-      --text-dark: #1c1b1a;
+      --deep-indigo: #1c1f3a;
+      --electric-teal: #0bb5a8;
+      --sunset-orange: #f25c3b;
+      --studio-white: #f6f4f1;
+      --light-gray: #eae7e2;
+      --text-dark: #1a1817;
+      --text-soft: #2c2a28;
       
       --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
       --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
       
-      --spacing-xs: 0.5rem;
-      --spacing-sm: 1rem;
-      --spacing-md: 2rem;
-      --spacing-lg: 4rem;
-      --spacing-xl: 6rem;
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 6rem;
+      --space-xxl: 8rem;
       
-      --border-thin: 1px solid rgba(15, 201, 192, 0.2);
-      --border-glow: 1px solid var(--electric-teal);
-      
-      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --border-light: 1px solid rgba(28, 31, 58, 0.08);
+      --transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     body {
-      background-color: var(--cool-charcoal);
-      color: var(--text-light);
+      background-color: var(--studio-white);
+      color: var(--text-dark);
       font-family: var(--font-sans);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
     }
 
-    /* ----- TYPOGRAPHY & LINKS (NO GOOGLE FONTS) ----- */
+    /* ----- TYPOGRAPHY (system stack, editorial) ----- */
     h1, h2, h3 {
-      font-weight: 500;
+      font-weight: 450;
       letter-spacing: -0.02em;
     }
 
     h1 {
-      font-size: clamp(3rem, 12vw, 6rem);
-      line-height: 1.1;
+      font-size: clamp(3.4rem, 12vw, 6.5rem);
+      line-height: 1.05;
+      color: var(--deep-indigo);
     }
 
     h2 {
-      font-size: clamp(2.2rem, 8vw, 4rem);
-      margin-bottom: var(--spacing-md);
+      font-size: clamp(2.6rem, 7vw, 4.2rem);
+      margin-bottom: var(--space-md);
+      color: var(--deep-indigo);
     }
 
-    .section-tag {
+    .accent-tag {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--electric-teal);
-      margin-bottom: var(--spacing-xs);
+      letter-spacing: 3.5px;
+      color: var(--sunset-orange);
+      display: inline-block;
+      margin-bottom: var(--space-xs);
     }
 
     a {
@@ -85,224 +85,225 @@
       text-decoration: none;
     }
 
-    /* ----- ASYMMETRIC GRID & LAYOUT (PREMIUM BOUTIQUE) ----- */
-    .container {
-      max-width: 1440px;
+    /* ----- STRUCTURE: ASYMMETRIC GRID, EDITORIAL, BROKEN LAYOUT ----- */
+    .wrapper {
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 0 var(--spacing-md);
+      padding: 0 var(--space-md);
     }
 
-    /* header / nav — minimal, elegant hover */
+    /* header — minimal with kinetic underline */
     .site-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--spacing-md) 0;
-      border-bottom: var(--border-thin);
-      margin-bottom: var(--spacing-lg);
+      padding: var(--space-md) 0;
+      border-bottom: var(--border-light);
+      margin-bottom: var(--space-lg);
+      position: relative;
+      z-index: 5;
     }
 
     .logo {
-      font-size: 1.8rem;
-      font-weight: 450;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, var(--electric-teal) 0%, var(--sunset-orange) 80%);
+      font-size: 1.9rem;
+      font-weight: 430;
+      background: linear-gradient(145deg, var(--deep-indigo) 0%, var(--electric-teal) 80%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      display: inline-block;
+      letter-spacing: -0.02em;
     }
 
     .nav-list {
       display: flex;
-      gap: var(--spacing-lg);
+      gap: var(--space-lg);
       list-style: none;
     }
 
     .nav-link {
-      font-size: 1.1rem;
-      font-weight: 380;
-      padding-bottom: 4px;
+      font-size: 1.2rem;
+      font-weight: 370;
+      padding-bottom: 6px;
       border-bottom: 2px solid transparent;
       transition: border-color var(--transition), color var(--transition);
     }
 
     .nav-link:hover {
       border-bottom: 2px solid var(--sunset-orange);
-      color: var(--studio-white);
+      color: var(--deep-indigo);
     }
 
-    /* SWIRL INSPIRED ASYMMETRY — animated circles / kinetic */
-    .swirl-accent {
+    /* ----- SWIRL BACKGROUND ELEMENTS (kinetic, subtle rotation) ----- */
+    .swirl-orbit {
       position: fixed;
-      top: 0;
-      right: 0;
-      width: 60vmax;
-      height: 60vmax;
-      background: radial-gradient(circle at 30% 20%, rgba(15, 201, 192, 0.08) 0%, transparent 60%),
-                  radial-gradient(circle at 70% 60%, rgba(247, 108, 62, 0.06) 0%, transparent 55%);
-      border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%;
-      z-index: -2;
-      animation: slowSwirl 28s infinite alternate ease-in-out;
+      top: -5vh;
+      right: -5vw;
+      width: 75vmax;
+      height: 75vmax;
+      background: radial-gradient(circle at 30% 20%, rgba(11, 181, 168, 0.05) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 60%, rgba(242, 92, 59, 0.04) 0%, transparent 55%);
+      border-radius: 62% 38% 42% 58% / 48% 41% 59% 52%;
+      z-index: 0;
+      animation: swirlMotion 30s infinite alternate ease-in-out;
       pointer-events: none;
     }
 
-    .swirl-accent-left {
+    .swirl-orbit-left {
       position: fixed;
-      bottom: 0;
-      left: -10vw;
-      width: 70vmin;
-      height: 70vmin;
-      background: radial-gradient(circle at 25% 35%, rgba(26, 31, 78, 0.6) 0%, transparent 70%);
-      border-radius: 30% 70% 70% 30% / 30% 40% 60% 70%;
-      z-index: -2;
-      animation: slowSwirlReverse 34s infinite alternate;
+      bottom: -10vh;
+      left: -8vw;
+      width: 80vmin;
+      height: 80vmin;
+      background: radial-gradient(circle at 25% 40%, rgba(28, 31, 58, 0.06) 0%, transparent 65%);
+      border-radius: 38% 62% 58% 42% / 55% 38% 62% 45%;
+      z-index: 0;
+      animation: swirlReverse 35s infinite alternate;
       pointer-events: none;
-      mix-blend-mode: overlay;
     }
 
-    @keyframes slowSwirl {
-      0% { transform: rotate(0deg) scale(1); border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%; }
-      100% { transform: rotate(8deg) scale(1.08); border-radius: 40% 60% 70% 30% / 40% 60% 40% 60%; }
+    @keyframes swirlMotion {
+      0% { transform: rotate(0deg) scale(1); border-radius: 62% 38% 42% 58% / 48% 41% 59% 52%; }
+      100% { transform: rotate(12deg) scale(1.04); border-radius: 45% 55% 65% 35% / 40% 60% 40% 60%; }
     }
-
-    @keyframes slowSwirlReverse {
+    @keyframes swirlReverse {
       0% { transform: rotate(0deg) scale(1); }
-      100% { transform: rotate(-12deg) scale(1.1); }
+      100% { transform: rotate(-14deg) scale(1.05); }
     }
 
-    /* ----- SECTIONS — FADE ON SCROLL (vanilla intersection observer) ----- */
-    section {
-      padding: var(--spacing-xl) 0;
-      border-bottom: var(--border-thin);
-    }
-
-    .fade-section {
+    /* ----- SECTIONS — scroll animations (fade + slight rotate) ----- */
+    .reveal-section {
       opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.75s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.75s ease;
+      transform: translateY(28px) rotate(-0.6deg);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.8s cubic-bezier(0.2, 0.9, 0.1, 1);
       will-change: opacity, transform;
     }
 
-    .fade-section.visible {
+    .reveal-section.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) rotate(0deg);
     }
 
-    /* ----- HOME — ASYMMETRIC HERO (NO GENERIC CENTERED) ----- */
-    .home-grid {
+    /* ----- ASYMMETRIC HOME LAYOUT (no centered hero) ----- */
+    .home-panel {
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr;
-      gap: var(--spacing-lg);
-      align-items: end;
-      min-height: 70vh;
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--space-xl);
+      align-items: start;
+      margin: var(--space-xl) 0 var(--space-xxl);
+      position: relative;
+      z-index: 2;
     }
 
     .home-left {
-      padding-bottom: var(--spacing-lg);
+      padding-top: var(--space-lg);
     }
 
-    .home-left h1 {
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .home-left .highlight {
-      color: var(--electric-teal);
-      border-left: 6px solid var(--sunset-orange);
-      padding-left: var(--spacing-sm);
+    .home-left .lead {
+      font-size: 1.5rem;
+      max-width: 26ch;
+      margin-top: var(--space-sm);
+      color: var(--text-soft);
     }
 
     .home-right {
       position: relative;
     }
 
-    .motion-quote {
-      font-size: 1.6rem;
-      font-weight: 320;
-      background: rgba(42, 42, 42, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: var(--spacing-md);
-      border-radius: 32px 8px 32px 8px;
-      border: 1px solid var(--electric-teal);
-      color: var(--studio-white);
-      transform: rotate(1deg);
-      box-shadow: 20px 20px 0 -5px rgba(15, 201, 192, 0.1);
+    .editorial-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: var(--space-lg);
+      border-radius: 60px 20px 60px 20px;
+      border: 1px solid rgba(11, 181, 168, 0.25);
+      box-shadow: 30px 30px 0 -10px rgba(28, 31, 58, 0.06);
+      transform: rotate(1.2deg);
+      transition: transform 0.25s;
     }
 
-    /* ----- ABOUT — ASYMMETRIC GRID WITH SUBTLE PARALLAX-LIKE ----- */
-    .about-wrap {
+    .editorial-card:hover {
+      transform: rotate(0.8deg) translateY(-5px);
+    }
+
+    .editorial-card p {
+      font-size: 1.7rem;
+      font-weight: 350;
+      line-height: 1.4;
+    }
+
+    /* ----- ABOUT + SERVICES INTERTWINED (break grid, overlap) ----- */
+    .intertwine-grid {
       display: grid;
-      grid-template-columns: 1fr 1.5fr;
-      gap: var(--spacing-xl);
+      grid-template-columns: 1.2fr 0.9fr 1.1fr;
+      gap: var(--space-md);
+      align-items: start;
+      margin: var(--space-xxl) 0;
+      position: relative;
+      z-index: 2;
     }
 
-    .about-highlight {
-      font-size: 2.2rem;
-      line-height: 1.3;
-      color: var(--sunset-orange);
+    .about-block {
+      grid-column: 1 / 2;
+      padding: var(--space-lg) var(--space-md);
+      background: var(--light-gray);
+      border-radius: 40px 8px 40px 8px;
+      transform: translateY(-2rem);
     }
 
-    .about-text p {
-      margin-bottom: var(--spacing-sm);
-      font-size: 1.15rem;
-      color: #dddcd8;
-    }
-
-    /* ----- SERVICES — INSPIRED BY SWIRL, LAYOUT BREAKS GRID SYMMETRY ----- */
-    .services-grid {
+    .service-overlap {
+      grid-column: 2 / 4;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--spacing-md);
-      margin-top: var(--spacing-lg);
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: 3rem;
     }
 
     .service-item {
-      padding: var(--spacing-md);
-      background: rgba(30, 30, 30, 0.4);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border: 1px solid rgba(247, 108, 62, 0.15);
-      border-radius: 24px 8px 24px 8px;
-      transition: transform 0.25s, border-color 0.2s;
+      background: var(--studio-white);
+      padding: var(--space-md);
+      border-radius: 24px 4px 24px 4px;
+      border: 1px solid rgba(11, 181, 168, 0.2);
+      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.08);
+      transition: all 0.25s;
     }
 
     .service-item:hover {
-      border-color: var(--electric-teal);
-      transform: translateY(-6px);
+      border-color: var(--sunset-orange);
+      transform: scale(0.98) rotate(-0.4deg);
     }
 
     .service-item h3 {
+      font-size: 2rem;
       color: var(--electric-teal);
-      margin-bottom: 0.75rem;
-      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
     }
 
-    /* ----- CONTACT — MINIMALIST ----- */
-    .contact-flex {
+    /* contact panel — asymmetric */
+    .contact-panel {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-xl);
+      gap: var(--space-xl);
+      margin: var(--space-xl) 0 var(--space-lg);
+      background: rgba(234, 231, 226, 0.3);
+      backdrop-filter: blur(4px);
+      padding: var(--space-lg);
+      border-radius: 30px 60px 30px 60px;
+      border-left: 6px solid var(--sunset-orange);
     }
 
-    .contact-details {
+    .contact-left {
       flex: 2;
     }
 
-    .contact-meta {
-      flex: 1;
-      background: rgba(26, 31, 78, 0.4);
-      padding: var(--spacing-md);
-      border-radius: 32px 8px 32px 8px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    .contact-right {
+      flex: 1.2;
     }
 
     .contact-link {
-      display: block;
-      margin: var(--spacing-sm) 0;
-      font-size: 1.25rem;
-      border-bottom: 1px dotted var(--electric-teal);
+      display: inline-block;
+      margin-top: var(--space-sm);
+      border-bottom: 1.5px dotted var(--electric-teal);
+      font-size: 1.3rem;
       transition: color 0.2s;
     }
 
@@ -310,68 +311,74 @@
       color: var(--sunset-orange);
     }
 
-    /* ----- FOOTER ----- */
+    /* footer */
     .site-footer {
-      padding: var(--spacing-md) 0;
-      text-align: left;
+      margin-top: var(--space-xl);
+      padding: var(--space-md) 0;
+      border-top: var(--border-light);
       font-size: 0.9rem;
-      color: #aaa;
+      color: #4a4846;
     }
 
-    /* ----- RESPONSIVENESS (320px → 4K) ----- */
-    @media (max-width: 900px) {
-      .home-grid, .about-wrap {
+    /* ----- RESPONSIVENESS (fluid 320px → 4K) ----- */
+    @media (max-width: 1000px) {
+      .home-panel {
         grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+        gap: var(--space-md);
       }
-      .services-grid {
-        grid-template-columns: 1fr 1fr;
+      .intertwine-grid {
+        grid-template-columns: 1fr;
       }
-      .nav-list {
-        gap: var(--spacing-sm);
+      .about-block {
+        transform: translateY(0);
+        grid-column: auto;
+      }
+      .service-overlap {
+        grid-column: auto;
+        margin-top: var(--space-md);
       }
     }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 0 var(--spacing-sm);
-      }
-      .services-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 650px) {
+      .wrapper {
+        padding: 0 var(--space-sm);
       }
       .site-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--spacing-xs);
+        gap: var(--space-xs);
       }
       .nav-list {
         flex-wrap: wrap;
+        gap: var(--space-md);
       }
-      .motion-quote {
-        font-size: 1.3rem;
+      .service-overlap {
+        grid-template-columns: 1fr;
+      }
+      .editorial-card p {
+        font-size: 1.4rem;
+      }
+      .editorial-card {
         transform: rotate(0deg);
       }
     }
 
-    /* ----- HAND-CRAFTED UTILITIES ----- */
-    .text-balance {
-      text-wrap: balance;
+    /* utilities */
+    .text-large {
+      font-size: 1.3rem;
     }
-
-    .mt-4 {
-      margin-top: var(--spacing-md);
+    .text-indigo {
+      color: var(--deep-indigo);
     }
-
-    /* 60fps optimisation: use transform and opacity */
   </style>
 </head>
 <body>
-  <div class="swirl-accent" aria-hidden="true"></div>
-  <div class="swirl-accent-left" aria-hidden="true"></div>
+  <div class="swirl-orbit" aria-hidden="true"></div>
+  <div class="swirl-orbit-left" aria-hidden="true"></div>
 
-  <div class="container">
+  <div class="wrapper">
     <header class="site-header">
-      <div class="logo" id="studioLogo">Simple Web Studio</div>
+      <div class="logo">Simple Web Studio</div>
       <nav>
         <ul class="nav-list">
           <li><a href="#home" class="nav-link">Home</a></li>
@@ -383,78 +390,77 @@
     </header>
 
     <main>
-      <!-- HOME -->
-      <section id="home" class="fade-section">
-        <div class="home-grid">
+      <!-- HOME SECTION (asymmetric, no generic hero) -->
+      <section id="home" class="reveal-section">
+        <div class="home-panel">
           <div class="home-left">
-            <span class="section-tag">Creative direction</span>
+            <span class="accent-tag">kinetic design & security</span>
             <h1>
-              <span class="highlight">Build</span> with<br>kinetic clarity
+              Clarity in<br>motion.
             </h1>
-            <p style="font-size: 1.25rem; max-width: 32ch; margin-top: 1.5rem;">
-              We craft digital experiences where modern security meets fluid motion.
+            <p class="lead">
+              We build digital spaces where every scroll feels intentional — fast, secure, and human.
             </p>
           </div>
           <div class="home-right">
-            <div class="motion-quote">
-              “Design is not just what it looks like. Design is how it <span style="color: var(--electric-teal);">works</span> — and stays secure.”
+            <div class="editorial-card">
+              <p>“The swirl is a reminder: good design moves, but never distracts.”</p>
+              <div style="margin-top: 1.5rem; font-size: 1rem; color: var(--electric-teal);">— studio principle</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ABOUT -->
-      <section id="about" class="fade-section">
-        <span class="section-tag">Studio ethos</span>
-        <div class="about-wrap">
-          <div class="about-highlight">
-            No templates.<br>Just intention.
+      <!-- INTERTWINED ABOUT + SERVICES (editorial overlap) -->
+      <div class="intertwine-grid">
+        <!-- About block, shifted up -->
+        <section id="about" class="about-block reveal-section">
+          <span class="accent-tag">Studio ethos</span>
+          <h2 style="font-size: 2.8rem; margin-bottom: 1rem;">Less noise, more signal.</h2>
+          <p style="font-size: 1.25rem; margin-bottom: 1rem;">We’re a small team of frontend engineers who believe in hand‑crafted code. No page builders. No bloated libraries.</p>
+          <p style="margin-bottom: 1rem;">Every site we deliver runs on system fonts, strict security headers, and zero third‑party requests. That’s the boutique difference.</p>
+          <p style="color: var(--sunset-orange); font-weight: 450;">Deep indigo · electric teal · sunset orange</p>
+        </section>
+
+        <!-- Services overlap into next columns -->
+        <div id="services" class="service-overlap">
+          <div class="service-item reveal-section">
+            <span class="accent-tag" style="font-size:0.7rem;">01</span>
+            <h3>Design<br>engineering</h3>
+            <p>Asymmetrical layouts, kinetic grids, and typography that breathes — all with vanilla CSS.</p>
           </div>
-          <div class="about-text">
-            <p>Simple Web Studio is a boutique practice focused on high‑performance, hand‑crafted frontend architecture. We believe in zero bloat, system fonts, and layouts that breathe.</p>
-            <p>Our approach merges deep security awareness with an obsession for smooth 60fps animations. Every line is written with purpose — no lorem ipsum, no fake promises.</p>
-            <p style="color: var(--electric-teal);">Deep indigo · electric teal · sunset orange</p>
+          <div class="service-item reveal-section">
+            <span class="accent-tag" style="font-size:0.7rem;">02</span>
+            <h3>Frontend<br>security</h3>
+            <p>Strict CSP, no innerHTML, .textContent only. We bake security into every interaction.</p>
+          </div>
+          <div class="service-item reveal-section">
+            <span class="accent-tag" style="font-size:0.7rem;">03</span>
+            <h3>Performance<br>culture</h3>
+            <p>60fps scroll animations, fluid responsiveness from 320px to 4K — without frameworks.</p>
+          </div>
+          <div class="service-item reveal-section">
+            <span class="accent-tag" style="font-size:0.7rem;">04</span>
+            <h3>Editorial<br>flow</h3>
+            <p>We break the grid intentionally. Your content, not a template, leads the experience.</p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- SERVICES -->
-      <section id="services" class="fade-section">
-        <span class="section-tag">What we do</span>
-        <h2>Precision & motion</h2>
-        <div class="services-grid">
-          <div class="service-item">
-            <h3>01</h3>
-            <h3>Design engineering</h3>
-            <p>Asymmetric layouts, fluid typography, and unique interactive identities — all with vanilla CSS.</p>
+      <!-- CONTACT SECTION -->
+      <section id="contact" class="reveal-section">
+        <div class="contact-panel">
+          <div class="contact-left">
+            <span class="accent-tag">Connect directly</span>
+            <h2 style="margin-bottom: 0.5rem;">Let’s make something that moves.</h2>
+            <p style="font-size: 1.3rem;">No forms, no tracking. Just email or call.</p>
           </div>
-          <div class="service-item">
-            <h3>02</h3>
-            <h3>Secure frontend</h3>
-            <p>Strict CSP, zero‑trust DOM handling. We build with .textContent and system‑native security.</p>
-          </div>
-          <div class="service-item">
-            <h3>03</h3>
-            <h3>Performance culture</h3>
-            <p>60fps scroll animations, parallax‑aware transitions, and no external requests.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact" class="fade-section">
-        <span class="section-tag">Let’s connect</span>
-        <div class="contact-flex">
-          <div class="contact-details">
-            <h2 style="margin-bottom: 0.5rem;">Talk to a human.</h2>
-            <p style="font-size: 1.3rem;">We answer every inquiry within a day.</p>
-          </div>
-          <div class="contact-meta">
-            <p style="margin-bottom: 1rem;">📬 studio@simpleweb.work</p>
-            <p style="margin-bottom: 1rem;">📍 remote · worldwide</p>
-            <a href="#" class="contact-link" id="dummyEmailLink">hello@simpleweb.studio</a>
-            <a href="#" class="contact-link" id="dummyPhoneLink">+1 (415) 867‑5309</a>
-            <p style="margin-top: 1.5rem; font-size: 0.9rem;">(all communication encrypted via secure channels)</p>
+          <div class="contact-right">
+            <p style="font-size: 1.2rem;">📬 hello@simpleweb.studio</p>
+            <p style="font-size: 1.2rem;">📞 +1 (415) 867‑5309</p>
+            <a href="#" class="contact-link" id="secureEmailTrigger">studio@simpleweb.work</a>
+            <a href="#" class="contact-link" id="securePhoneTrigger">secure line (demo)</a>
+            <p style="margin-top: 1.8rem; font-size: 0.9rem;">All communication encrypted · PGP available</p>
           </div>
         </div>
       </section>
@@ -466,143 +472,128 @@
   </div>
 
   <script>
-    (function() {
+    (() => {
       "use strict";
 
-      // ---------- SECURITY FIRST: Only .textContent / .innerText ----------
-      // Ensure that dynamic text updates are safe (no .innerHTML used anywhere)
-
-      // 1) FADE ON SCROLL (Intersection Observer, 60fps friendly)
-      const fadeElements = document.querySelectorAll('.fade-section');
+      // ---------- SECURITY: ZERO innerHTML, only .textContent ----------
+      
+      // 1) Scroll reveal (fade + subtle rotation)
+      const revealElements = document.querySelectorAll('.reveal-section');
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            // optional: keep visible after first appearance
           }
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -10px 0px' });
+      }, { threshold: 0.12, rootMargin: '0px 0px -5px 0px' });
       
-      fadeElements.forEach(el => observer.observe(el));
+      revealElements.forEach(el => observer.observe(el));
 
-      // 2) SMOOTH SCROLL FOR NAVIGATION (prevent default, use vanilla)
+      // 2) Smooth scroll navigation (prevent default, use vanilla)
       const navLinks = document.querySelectorAll('.nav-link');
-      
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          const targetId = link.getAttribute('href'); // e.g. #home
+          const targetId = link.getAttribute('href');
           if (!targetId || targetId === '#') return;
-          
           const targetElement = document.querySelector(targetId);
           if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, '', targetId);
           }
-          // Update URL without page reload (pushState)
-          history.pushState(null, '', targetId);
         });
       });
 
-      // 3) SUBTLE PARALLAX EFFECT (kinetic, performance: requestAnimationFrame)
-      const swirlRight = document.querySelector('.swirl-accent');
-      const swirlLeft = document.querySelector('.swirl-accent-left');
+      // 3) Kinetic parallax effect on swirl backgrounds (requestAnimationFrame)
+      const swirlRight = document.querySelector('.swirl-orbit');
+      const swirlLeft = document.querySelector('.swirl-orbit-left');
       
-      function parallaxSwirl() {
+      function updateSwirlParallax() {
         if (!swirlRight || !swirlLeft) return;
         const scrolled = window.scrollY;
-        // limit transformations to keep performance, use translate3d for gpu
-        const moveY = scrolled * 0.02;
-        const moveX = scrolled * 0.005;
-        swirlRight.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotate(${scrolled * 0.01}deg)`;
-        swirlLeft.style.transform = `translate3d(${-moveX * 0.8}px, ${-moveY * 0.3}px, 0) rotate(${scrolled * -0.008}deg)`;
+        // subtle movement with translate3d for performance
+        const shiftY = scrolled * 0.015;
+        const shiftX = scrolled * 0.006;
+        swirlRight.style.transform = `translate3d(${shiftX}px, ${shiftY}px, 0) rotate(${scrolled * 0.008}deg)`;
+        swirlLeft.style.transform = `translate3d(${-shiftX * 0.7}px, ${-shiftY * 0.4}px, 0) rotate(${scrolled * -0.01}deg)`;
       }
 
-      // throttled with rAF
       let ticking = false;
       window.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            parallaxSwirl();
+            updateSwirlParallax();
             ticking = false;
           });
           ticking = true;
         }
       });
 
-      // 4) FIX FOR INITIAL VISIBLE SECTIONS (if they are already visible)
-      // Also ensure all sections have base class
+      // 4) Pre-check visibility on load
       window.addEventListener('load', () => {
-        fadeElements.forEach(el => {
+        revealElements.forEach(el => {
           const rect = el.getBoundingClientRect();
           if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
             el.classList.add('visible');
           }
         });
-        // run parallax once
-        parallaxSwirl();
+        updateSwirlParallax();
       });
 
-      // 5) SECURITY: contact dummy interaction (no actual email sent, just demo)
-      // Using .textContent to display message (no XSS)
-      const emailLink = document.getElementById('dummyEmailLink');
-      const phoneLink = document.getElementById('dummyPhoneLink');
-      
-      function showSecureNotice(text) {
-        // create temporary notification using textContent
-        const existing = document.querySelector('.secure-toast');
-        if (existing) existing.remove();
+      // 5) Safe contact interaction (demo, no actual data transmission)
+      function showSecureMessage(messageText) {
+        // remove existing toast if any
+        const oldToast = document.querySelector('.secure-toast');
+        if (oldToast) oldToast.remove();
         
         const toast = document.createElement('div');
         toast.className = 'secure-toast';
         toast.setAttribute('role', 'status');
-        // styling inline (vanilla)
         toast.style.position = 'fixed';
         toast.style.bottom = '24px';
-        toast.style.right = '24px';
-        toast.style.background = '#1a1f4e';
-        toast.style.color = '#f9f7f5';
-        toast.style.padding = '12px 24px';
+        toast.style.left = '24px';
+        toast.style.background = '#1c1f3a';
+        toast.style.color = '#f6f4f1';
+        toast.style.padding = '14px 28px';
         toast.style.borderRadius = '40px 8px 40px 8px';
-        toast.style.border = '1px solid #0fc9c0';
+        toast.style.border = '1px solid #0bb5a8';
         toast.style.backdropFilter = 'blur(12px)';
-        toast.style.zIndex = '999';
-        toast.style.fontSize = '0.95rem';
-        toast.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.5)';
-        toast.style.transition = 'opacity 0.3s';
+        toast.style.zIndex = '9999';
+        toast.style.fontSize = '1rem';
+        toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
+        toast.style.transition = 'opacity 0.4s';
         
-        // USE textContent (safe)
-        toast.textContent = `🔒 ${text} (demo — no actual data sent)`;
+        // ONLY textContent (secure)
+        toast.textContent = `🔐 ${messageText} (demo simulation)`;
         document.body.appendChild(toast);
         
         setTimeout(() => {
           toast.style.opacity = '0';
           setTimeout(() => toast.remove(), 400);
-        }, 2600);
+        }, 2800);
       }
+
+      const emailTrigger = document.getElementById('secureEmailTrigger');
+      const phoneTrigger = document.getElementById('securePhoneTrigger');
       
-      if (emailLink) {
-        emailLink.addEventListener('click', (e) => {
+      if (emailTrigger) {
+        emailTrigger.addEventListener('click', (e) => {
           e.preventDefault();
-          showSecureNotice('Contact request via email: secure form simulation');
+          showSecureMessage('Contact request: studio@simpleweb.work — secure channel ready.');
         });
       }
-      if (phoneLink) {
-        phoneLink.addEventListener('click', (e) => {
+      if (phoneTrigger) {
+        phoneTrigger.addEventListener('click', (e) => {
           e.preventDefault();
-          showSecureNotice('Call simulation: secure line demo');
+          showSecureMessage('Secure line demo: +1 (415) 867‑5309 (no actual call placed).');
         });
       }
 
-      // 6) Additional small touch: active nav highlight (optional)
-      // Not required but adds sophistication.
+      // 6) Active nav state (minimal, hand-crafted)
       const sections = document.querySelectorAll('section[id]');
-      
-      function updateActiveNav() {
-        const scrollPos = window.scrollY + 120;
+      function highlightNav() {
+        const scrollPos = window.scrollY + 150;
         sections.forEach(section => {
           const id = section.getAttribute('id');
           const offset = section.offsetTop;
@@ -617,18 +608,12 @@
           }
         });
       }
+      window.addEventListener('scroll', () => requestAnimationFrame(highlightNav));
+      window.addEventListener('load', highlightNav);
       
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateActiveNav);
-      });
-      window.addEventListener('load', updateActiveNav);
-
-      // 7) Ensure all dynamic text content is safe. 
-      // The logo is static; contact fields use .textContent.
-      // No innerHTML in this script. Zero external.
-      
+      // Ensure no innerHTML used anywhere: all text updates safe.
+      // The contact panel static, logo static. Zero external resources.
     })();
   </script>
-  <!-- no external fonts, no CDN. 100% self-contained -->
 </body>
-  </html>
+          </html>
