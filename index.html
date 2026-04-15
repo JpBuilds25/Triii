@@ -31,6 +31,7 @@
       --text-muted: #b8b6b2;
       
       --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
       --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
       
       --space-xs: 0.5rem;
@@ -40,6 +41,7 @@
       --space-xl: 6rem;
       --space-xxl: 8rem;
       
+      --border-light: 1px solid rgba(15, 201, 192, 0.1);
       --border-glow: 1px solid rgba(15, 201, 192, 0.15);
       --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
@@ -48,7 +50,7 @@
       background-color: var(--cool-charcoal);
       color: var(--text-light);
       font-family: var(--font-sans);
-      line-height: 1.5;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -60,13 +62,18 @@
     }
 
     h1 {
-      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
       line-height: 1.1;
     }
 
     h2 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
       line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 380;
     }
 
     .eyebrow {
@@ -82,7 +89,7 @@
       text-decoration: none;
     }
 
-    /* ----- HEADER - REFINED FOR HIGH-END BUSINESS ----- */
+    /* ----- HEADER - CLEAN BUSINESS ----- */
     .site-header {
       position: fixed;
       top: 0;
@@ -90,18 +97,18 @@
       right: 0;
       z-index: 100;
       padding: var(--space-md) var(--space-xl);
-      background: rgba(30, 30, 30, 0.4);
+      background: rgba(30, 30, 30, 0.6);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: var(--border-glow);
+      border-bottom: var(--border-light);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-size: 1.6rem;
-      font-weight: 350;
+      font-size: 1.5rem;
+      font-weight: 380;
       background: linear-gradient(135deg, var(--electric-teal) 0%, var(--sunset-orange) 100%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -116,8 +123,8 @@
     }
 
     .nav-horizontal a {
-      font-size: 1rem;
-      font-weight: 380;
+      font-size: 0.95rem;
+      font-weight: 400;
       padding-bottom: 4px;
       border-bottom: 1.5px solid transparent;
       transition: border-color var(--transition), color var(--transition);
@@ -128,7 +135,7 @@
       color: var(--studio-white);
     }
 
-    /* Main content padding for fixed header */
+    /* Main content */
     .main-content {
       padding-top: 80px;
     }
@@ -140,8 +147,8 @@
       right: -10vw;
       width: 80vmax;
       height: 80vmax;
-      background: radial-gradient(circle at 35% 25%, rgba(15, 201, 192, 0.06) 0%, transparent 55%),
-                  radial-gradient(circle at 65% 70%, rgba(247, 108, 62, 0.04) 0%, transparent 60%);
+      background: radial-gradient(circle at 35% 25%, rgba(15, 201, 192, 0.05) 0%, transparent 55%),
+                  radial-gradient(circle at 65% 70%, rgba(247, 108, 62, 0.03) 0%, transparent 60%);
       border-radius: 55% 45% 35% 65% / 45% 55% 45% 55%;
       z-index: -2;
       animation: swirlFloat 26s infinite alternate ease-in-out;
@@ -154,7 +161,7 @@
       left: -15vw;
       width: 90vmin;
       height: 90vmin;
-      background: radial-gradient(circle at 30% 40%, rgba(26, 31, 78, 0.4) 0%, transparent 65%);
+      background: radial-gradient(circle at 30% 40%, rgba(26, 31, 78, 0.3) 0%, transparent 65%);
       border-radius: 40% 60% 70% 30% / 50% 45% 55% 50%;
       z-index: -2;
       animation: swirlFloatReverse 32s infinite alternate;
@@ -174,7 +181,7 @@
     /* Scroll reveal animation (unchanged) */
     .fade-rotate {
       opacity: 0;
-      transform: translateY(30px) rotate(-0.5deg);
+      transform: translateY(30px) rotate(-0.3deg);
       transition: opacity 0.75s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.75s cubic-bezier(0.2, 0.9, 0.1, 1);
       will-change: opacity, transform;
     }
@@ -184,193 +191,160 @@
       transform: translateY(0) rotate(0deg);
     }
 
-    /* ----- HOME SECTION - ELEVATED BUSINESS LOOK ----- */
+    /* ----- HOME SECTION - CLEAN, NO BIG CONTAINERS ----- */
     .home-section {
-      min-height: 90vh;
+      min-height: 85vh;
       display: flex;
       align-items: center;
       padding: var(--space-xl) var(--space-xxl);
-      position: relative;
     }
 
-    .home-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: var(--space-xxl);
-      align-items: center;
-      width: 100%;
+    .home-content {
+      max-width: 900px;
     }
 
     .home-content h1 {
-      margin-bottom: var(--space-md);
+      margin: var(--space-sm) 0 var(--space-md);
     }
 
-    .home-content .accent-text {
+    .home-content .highlight {
       color: var(--electric-teal);
     }
 
-    .home-stats {
+    .home-description {
+      font-size: 1.3rem;
+      max-width: 600px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+    }
+
+    .home-meta {
       display: flex;
       gap: var(--space-xl);
       margin-top: var(--space-lg);
     }
 
-    .stat-item {
-      text-align: left;
+    .meta-item {
+      display: flex;
+      flex-direction: column;
     }
 
-    .stat-number-large {
-      font-size: 3rem;
+    .meta-number {
+      font-size: 2.5rem;
       font-weight: 300;
       color: var(--sunset-orange);
-      line-height: 1;
+      line-height: 1.2;
     }
 
-    .stat-label {
+    .meta-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: var(--space-xs);
     }
 
-    .home-visual {
-      background: rgba(42, 42, 42, 0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: var(--space-xl);
-      border-radius: 100px 20px 100px 20px;
-      border: 1px solid var(--electric-teal);
-      transform: rotate(2deg);
-    }
-
-    .home-visual p {
-      font-size: 1.4rem;
-      line-height: 1.4;
-      font-style: italic;
-    }
-
-    /* ----- ABOUT SECTION - REFINED ----- */
+    /* ----- ABOUT SECTION - MINIMAL ----- */
     .about-section {
-      min-height: 90vh;
+      min-height: 70vh;
       display: flex;
       align-items: center;
       padding: var(--space-xl) var(--space-xxl);
+      border-top: var(--border-light);
+      border-bottom: var(--border-light);
     }
 
     .about-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: var(--space-xxl);
       width: 100%;
     }
 
-    .about-header {
-      margin-bottom: var(--space-xl);
-    }
-
-    .about-header h2 {
+    .about-left h2 {
       color: var(--studio-white);
     }
 
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .about-right {
+      display: flex;
+      flex-direction: column;
       gap: var(--space-lg);
-      margin-top: var(--space-xl);
     }
 
-    .value-card {
-      padding: var(--space-lg);
-      background: rgba(42, 42, 42, 0.2);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 30px 8px 30px 8px;
-      border: var(--border-glow);
-      transition: transform 0.3s;
-    }
-
-    .value-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--sunset-orange);
-    }
-
-    .value-icon {
-      font-size: 2.5rem;
-      margin-bottom: var(--space-md);
-    }
-
-    .value-card h3 {
-      font-size: 1.5rem;
-      color: var(--electric-teal);
-      margin-bottom: var(--space-sm);
-    }
-
-    .value-card p {
+    .about-text {
+      font-size: 1.2rem;
       color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .about-list li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    .about-list li::before {
+      content: "—";
+      color: var(--electric-teal);
     }
 
     /* ----- SERVICES SECTION - KEEPING PANELS YOU LIKED ----- */
     .services-section {
-      min-height: 90vh;
+      min-height: 80vh;
       display: flex;
       align-items: center;
       padding: var(--space-xl) var(--space-xxl);
-      position: relative;
     }
 
     .services-wrapper {
       width: 100%;
     }
 
+    .services-header {
+      margin-bottom: var(--space-xl);
+    }
+
     .panels-container {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: var(--space-xs);
-      margin-top: var(--space-xl);
+      gap: 1px;
     }
 
     .panel-item {
       display: grid;
-      grid-template-columns: 100px 1fr 2fr;
+      grid-template-columns: 80px 1.5fr 2fr;
       align-items: center;
       padding: var(--space-md) var(--space-lg);
-      background: rgba(42, 42, 42, 0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-left: 4px solid var(--electric-teal);
-      margin-bottom: 2px;
+      background: transparent;
+      border-bottom: var(--border-light);
       transition: all 0.3s;
-      transform: skewX(-5deg);
-    }
-
-    .panel-item:nth-child(even) {
-      transform: skewX(3deg);
-      border-left-color: var(--sunset-orange);
-      margin-left: var(--space-lg);
-    }
-
-    .panel-item:nth-child(3) {
-      margin-left: calc(var(--space-lg) * 1.5);
     }
 
     .panel-item:hover {
-      transform: skewX(-5deg) translateX(10px);
-      background: rgba(26, 31, 78, 0.4);
-      border-left-width: 8px;
-    }
-
-    .panel-item:nth-child(even):hover {
-      transform: skewX(3deg) translateX(-10px);
+      background: rgba(42, 42, 42, 0.3);
+      padding-left: calc(var(--space-lg) + 10px);
     }
 
     .panel-number {
       font-family: var(--font-mono);
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: var(--sunset-orange);
       font-weight: 300;
     }
 
     .panel-title {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--electric-teal);
-      font-weight: 350;
+      font-weight: 360;
     }
 
     .panel-desc {
@@ -379,12 +353,13 @@
       text-align: right;
     }
 
-    /* ----- CONTACT SECTION - PROFESSIONAL ----- */
+    /* ----- CONTACT SECTION - CLEAN ----- */
     .contact-section {
-      min-height: 90vh;
+      min-height: 70vh;
       display: flex;
       align-items: center;
       padding: var(--space-xl) var(--space-xxl);
+      border-top: var(--border-light);
     }
 
     .contact-wrapper {
@@ -393,52 +368,72 @@
 
     .contact-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: var(--space-xxl);
-      background: linear-gradient(135deg, rgba(26, 31, 78, 0.3) 0%, transparent 100%);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: var(--space-xl);
-      border-radius: 40px 8px 40px 8px;
-      border-top: 4px solid var(--sunset-orange);
     }
 
     .contact-info h2 {
       margin: var(--space-sm) 0 var(--space-md);
     }
 
-    .contact-details {
-      margin-top: var(--space-lg);
-    }
-
-    .contact-method {
-      display: block;
-      margin: var(--space-md) 0;
+    .contact-info p {
       font-size: 1.2rem;
-      padding: var(--space-sm);
-      border-bottom: 1px dotted var(--electric-teal);
-      transition: all 0.2s;
+      color: var(--text-muted);
     }
 
-    .contact-method:hover {
-      border-bottom-color: var(--sunset-orange);
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .contact-item {
+      padding: var(--space-sm) 0;
+      border-bottom: var(--border-light);
+    }
+
+    .contact-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--electric-teal);
+      margin-bottom: var(--space-xs);
+    }
+
+    .contact-value {
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+
+    .contact-link {
+      display: inline-block;
+      margin-top: var(--space-lg);
+      padding: var(--space-sm) 0;
+      border-bottom: 2px solid var(--sunset-orange);
+      font-size: 1rem;
+      transition: padding 0.2s;
+    }
+
+    .contact-link:hover {
       padding-left: var(--space-sm);
     }
 
     .contact-note {
-      margin-top: var(--space-xl);
+      margin-top: var(--space-lg);
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     /* Footer */
     .site-footer {
       padding: var(--space-md) var(--space-xxl);
-      border-top: var(--border-glow);
+      border-top: var(--border-light);
       display: flex;
       justify-content: space-between;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
     /* ----- RESPONSIVE BREAKPOINTS ----- */
@@ -447,15 +442,19 @@
       .about-section,
       .services-section,
       .contact-section {
-        padding: var(--space-lg) var(--space-lg);
+        padding: var(--space-lg);
+      }
+      
+      .site-footer {
+        padding: var(--space-md) var(--space-lg);
       }
       
       .panel-item {
-        grid-template-columns: 80px 1fr 1.5fr;
+        grid-template-columns: 70px 1.3fr 1.8fr;
       }
       
       .panel-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
     }
 
@@ -464,45 +463,27 @@
         padding: var(--space-md);
       }
       
-      .home-grid {
+      .about-wrapper {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
-      }
-      
-      .home-visual {
-        transform: rotate(1deg);
-      }
-      
-      .values-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .panel-item {
-        grid-template-columns: 70px 1fr 1.2fr;
-        padding: var(--space-sm) var(--space-md);
-        transform: skewX(-3deg);
-      }
-      
-      .panel-item:nth-child(even) {
-        transform: skewX(2deg);
-        margin-left: var(--space-md);
-      }
-      
-      .panel-item:nth-child(3) {
-        margin-left: var(--space-lg);
-      }
-      
-      .panel-number {
-        font-size: 1.5rem;
-      }
-      
-      .panel-title {
-        font-size: 1.3rem;
       }
       
       .contact-grid {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
+      }
+      
+      .panel-item {
+        grid-template-columns: 60px 1.2fr 1.5fr;
+        padding: var(--space-sm) var(--space-md);
+      }
+      
+      .panel-number {
+        font-size: 1.3rem;
+      }
+      
+      .panel-title {
+        font-size: 1.3rem;
       }
     }
 
@@ -522,24 +503,7 @@
         padding-top: 120px;
       }
       
-      .home-section {
-        min-height: auto;
-        padding: var(--space-lg) var(--space-md);
-      }
-      
-      .home-stats {
-        flex-direction: column;
-        gap: var(--space-md);
-      }
-      
-      .stat-number-large {
-        font-size: 2.5rem;
-      }
-      
-      .home-visual p {
-        font-size: 1.1rem;
-      }
-      
+      .home-section,
       .about-section,
       .services-section,
       .contact-section {
@@ -547,32 +511,51 @@
         padding: var(--space-lg) var(--space-md);
       }
       
+      h1 {
+        font-size: 2.8rem;
+      }
+      
+      .home-description {
+        font-size: 1.1rem;
+      }
+      
+      .home-meta {
+        flex-wrap: wrap;
+        gap: var(--space-md);
+      }
+      
+      .meta-number {
+        font-size: 2rem;
+      }
+      
+      .about-text {
+        font-size: 1.1rem;
+      }
+      
       .panel-item {
         grid-template-columns: 1fr;
         gap: var(--space-xs);
-        transform: skewX(0deg) !important;
-        margin-left: 0 !important;
         padding: var(--space-md);
       }
       
-      .panel-item:nth-child(even) {
-        transform: skewX(0deg) !important;
-      }
-      
       .panel-item:hover {
-        transform: translateX(5px) !important;
+        padding-left: var(--space-md);
       }
       
       .panel-number {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
       
       .panel-title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
       
       .panel-desc {
         text-align: left;
+      }
+      
+      .contact-value {
+        font-size: 1.1rem;
       }
       
       .site-footer {
@@ -584,7 +567,7 @@
 
     @media (max-width: 480px) {
       h1 {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
       }
       
       h2 {
@@ -593,10 +576,6 @@
       
       .logo {
         font-size: 1.3rem;
-      }
-      
-      .nav-horizontal {
-        gap: var(--space-sm);
       }
       
       .nav-horizontal a {
@@ -613,14 +592,6 @@
       .panel-title {
         font-size: 1.2rem;
       }
-      
-      .contact-grid {
-        padding: var(--space-md);
-      }
-      
-      .contact-method {
-        font-size: 1rem;
-      }
     }
 
     @media (min-width: 2000px) {
@@ -628,7 +599,11 @@
       .about-section,
       .services-section,
       .contact-section {
-        padding: var(--space-xxl) calc(var(--space-xxl) * 1.5);
+        padding: var(--space-xxl) calc(var(--space-xxl) * 1.2);
+      }
+      
+      .site-footer {
+        padding: var(--space-md) calc(var(--space-xxl) * 1.2);
       }
     }
   </style>
@@ -650,67 +625,52 @@
   </header>
 
   <main class="main-content">
-    <!-- HOME SECTION -->
+    <!-- HOME SECTION - CLEAN -->
     <section id="home" class="fade-rotate home-section">
-      <div class="home-grid">
-        <div class="home-content">
-          <span class="eyebrow">Creative studio</span>
-          <h1>
-            Ideas that<br>
-            <span class="accent-text">move</span> people<br>
-            forward.
-          </h1>
-          <p style="font-size: 1.2rem; max-width: 500px; color: var(--text-muted); margin-top: var(--space-md);">
-            We help businesses stand out with thoughtful design and clear messaging.
-          </p>
-          <div class="home-stats">
-            <div class="stat-item">
-              <div class="stat-number-large">50+</div>
-              <div class="stat-label">Happy clients</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number-large">12</div>
-              <div class="stat-label">Years of work</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number-large">100%</div>
-              <div class="stat-label">Satisfaction</div>
-            </div>
+      <div class="home-content">
+        <span class="eyebrow">Creative studio</span>
+        <h1>
+          Ideas that<br>
+          <span class="highlight">move</span> people<br>
+          forward.
+        </h1>
+        <p class="home-description">
+          We help businesses stand out with thoughtful design and clear messaging.
+        </p>
+        <div class="home-meta">
+          <div class="meta-item">
+            <span class="meta-number">50+</span>
+            <span class="meta-label">Clients</span>
           </div>
-        </div>
-        <div class="home-visual">
-          <p>"They took our vision and made it better than we imagined. Simple, beautiful, effective."</p>
-          <p style="margin-top: var(--space-md); color: var(--electric-teal);">— Studio partner</p>
+          <div class="meta-item">
+            <span class="meta-number">12</span>
+            <span class="meta-label">Years</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-number">100%</span>
+            <span class="meta-label">Satisfaction</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT SECTION -->
+    <!-- ABOUT SECTION - MINIMAL -->
     <section id="about" class="fade-rotate about-section">
       <div class="about-wrapper">
-        <span class="eyebrow">Who we are</span>
-        <div class="about-header">
-          <h2>A small team with<br>big ideas.</h2>
+        <div class="about-left">
+          <span class="eyebrow">Who we are</span>
+          <h2>A small team<br>with big ideas.</h2>
         </div>
-        <p style="font-size: 1.3rem; max-width: 800px; color: var(--text-muted); margin-bottom: var(--space-xl);">
-          We believe great work comes from listening first. Every project starts with understanding your goals and the people you want to reach.
-        </p>
-        <div class="values-grid">
-          <div class="value-card">
-            <div class="value-icon">✦</div>
-            <h3>Clear thinking</h3>
-            <p>We keep things simple. No jargon, no confusion. Just honest work that makes sense.</p>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">⟡</div>
-            <h3>Attention to detail</h3>
-            <p>The small things matter. We care about every part of the experience.</p>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">⬩</div>
-            <h3>Long term view</h3>
-            <p>We build relationships, not just projects. Your success is our success.</p>
-          </div>
+        <div class="about-right">
+          <p class="about-text">
+            We believe great work comes from listening first. Every project starts with understanding your goals and the people you want to reach.
+          </p>
+          <ul class="about-list">
+            <li>Clear thinking, no jargon</li>
+            <li>Attention to every detail</li>
+            <li>Long term relationships</li>
+            <li>Work that lasts</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -718,49 +678,55 @@
     <!-- SERVICES SECTION - KEEPING PANELS -->
     <section id="services" class="fade-rotate services-section">
       <div class="services-wrapper">
-        <span class="eyebrow">What we offer</span>
-        <h2 style="margin-bottom: var(--space-sm);">Work we do best.</h2>
+        <div class="services-header">
+          <span class="eyebrow">What we offer</span>
+          <h2>Work we do best.</h2>
+        </div>
         <div class="panels-container">
           <div class="panel-item">
             <div class="panel-number">01</div>
             <div class="panel-title">Brand identity</div>
-            <div class="panel-desc">Visual systems that feel right and last</div>
+            <div class="panel-desc">Visual systems that feel right</div>
           </div>
           <div class="panel-item">
             <div class="panel-number">02</div>
             <div class="panel-title">Website design</div>
-            <div class="panel-desc">Clean, modern sites that work everywhere</div>
+            <div class="panel-desc">Clean sites that work everywhere</div>
           </div>
           <div class="panel-item">
             <div class="panel-number">03</div>
             <div class="panel-title">Content strategy</div>
-            <div class="panel-desc">Clear words that connect with your audience</div>
+            <div class="panel-desc">Words that connect with people</div>
           </div>
           <div class="panel-item">
             <div class="panel-number">04</div>
             <div class="panel-title">Creative direction</div>
-            <div class="panel-desc">Guidance that keeps everything on track</div>
+            <div class="panel-desc">Guidance that keeps things clear</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT SECTION -->
+    <!-- CONTACT SECTION - CLEAN -->
     <section id="contact" class="fade-rotate contact-section">
       <div class="contact-wrapper">
         <span class="eyebrow">Get in touch</span>
         <div class="contact-grid">
           <div class="contact-info">
             <h2>Let's make<br>something great.</h2>
-            <p style="font-size: 1.2rem; color: var(--text-muted);">
-              Every project starts with a conversation. Tell us what you're thinking.
-            </p>
+            <p>Every project starts with a conversation. Tell us what you're thinking.</p>
           </div>
           <div class="contact-details">
-            <p style="font-size: 1.3rem; margin-bottom: var(--space-sm);">📬 hello@simpleweb.studio</p>
-            <p style="font-size: 1.3rem; margin-bottom: var(--space-lg);">📞 +1 (415) 867‑5309</p>
-            <a href="#" class="contact-method" id="emailDemo">Send us a message</a>
-            <a href="#" class="contact-method" id="phoneDemo">Schedule a call</a>
+            <div class="contact-item">
+              <div class="contact-label">Email</div>
+              <div class="contact-value">hello@simpleweb.studio</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">+1 (415) 867‑5309</div>
+            </div>
+            <a href="#" class="contact-link" id="emailDemo">Send a message →</a>
+            <a href="#" class="contact-link" id="phoneDemo" style="margin-top: 0; border-bottom-color: var(--electric-teal);">Schedule a call →</a>
             <p class="contact-note">
               We typically respond within one business day.
             </p>
@@ -815,7 +781,7 @@
         });
       });
 
-      // 3) Parallax swirl (kinetic motion)
+      // 3) Parallax swirl
       const swirl1 = document.querySelector('.swirl-primary');
       const swirl2 = document.querySelector('.swirl-secondary');
       
@@ -850,7 +816,7 @@
         updateParallax();
       });
 
-      // 5) Safe demo interactions (textContent only)
+      // 5) Safe demo interactions
       function showMessage(msg) {
         const existing = document.querySelector('.message-toast');
         if (existing) existing.remove();
@@ -864,12 +830,12 @@
         toast.style.background = '#1a1f4e';
         toast.style.color = '#f9f7f5';
         toast.style.padding = '14px 28px';
-        toast.style.borderRadius = '50px 8px 50px 8px';
+        toast.style.borderRadius = '4px';
         toast.style.border = '1px solid #0fc9c0';
         toast.style.backdropFilter = 'blur(16px)';
         toast.style.zIndex = '9999';
         toast.style.fontSize = '0.95rem';
-        toast.style.boxShadow = '0 12px 30px rgba(0,0,0,0.4)';
+        toast.style.boxShadow = '0 12px 30px rgba(0,0,0,0.3)';
         toast.style.transition = 'opacity 0.3s';
         
         toast.textContent = `✨ ${msg}`;
@@ -913,4 +879,4 @@
     })();
   </script>
 </body>
-</html>
+  </html>
