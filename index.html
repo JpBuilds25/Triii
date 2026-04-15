@@ -2,1047 +2,633 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ÆON BARBER — Premium cuts</title>
-  <!-- Zero external dependencies except Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Simple Web Studio · Creative & Secure</title>
+  <!-- _headers file content (as comment / separate block) — copy into _headers for Netlify) -->
+  <!--
+  / *
+    Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+    X-Frame-Options: DENY
+    X-Content-Type-Options: nosniff
+    Referrer-Policy: strict-origin-when-cross-origin
+  -->
   <style>
-    /* ==================== style.css ==================== */
-    /* ==== CSS VARIABLES (CUSTOM PROPERTIES) ==== */
-    :root {
-      --deep-black: #0a0a0a;
-      --rich-black: #121212;
-      --cool-white: #f4f4f4;
-      --off-white: #e0e0e0;
-      --accent-glow: rgba(244, 244, 244, 0.08);
-      --glass-border: rgba(255, 255, 255, 0.06);
-      --glass-bg: rgba(18, 18, 18, 0.65);
-      --font-heading: 'Montserrat', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      
-      --space-xs: clamp(0.5rem, 2vw, 0.8rem);
-      --space-sm: clamp(1rem, 3vw, 1.5rem);
-      --space-md: clamp(1.5rem, 5vw, 3rem);
-      --space-lg: clamp(2.5rem, 8vw, 6rem);
-      --space-xl: clamp(4rem, 12vw, 9rem);
-      
-      --border-radius-card: clamp(16px, 4vw, 28px);
-      --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-      
-      --container-max: 1600px;
-      --container-padding: clamp(1rem, 5vw, 3rem);
-    }
-
-    /* reset & base */
+    /* ----- SYSTEM FONT STACK, RESET & VARIABLES ----- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-      background: var(--deep-black);
-      overflow-x: hidden;
-      width: 100%;
+    :root {
+      --deep-indigo: #1a1f4e;
+      --electric-teal: #0fc9c0;
+      --sunset-orange: #f76c3e;
+      --studio-white: #f9f7f5;
+      --cool-charcoal: #1e1e1e;
+      --charcoal-soft: #2a2a2a;
+      --text-light: #f0eee9;
+      --text-dark: #1c1b1a;
+      
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+      --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+      
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 4rem;
+      --spacing-xl: 6rem;
+      
+      --border-thin: 1px solid rgba(15, 201, 192, 0.2);
+      --border-glow: 1px solid var(--electric-teal);
+      
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     body {
-      font-family: var(--font-body);
-      background-color: var(--deep-black);
-      color: var(--cool-white);
+      background-color: var(--cool-charcoal);
+      color: var(--text-light);
+      font-family: var(--font-sans);
       line-height: 1.5;
-      font-weight: 300;
-      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
-      width: 100%;
-      position: relative;
     }
 
-    /* Hide custom cursor on touch devices */
-    @media (hover: none) and (pointer: coarse) {
-      body {
-        cursor: auto !important;
-      }
-      .custom-cursor {
-        display: none !important;
-      }
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      body {
-        cursor: none;
-      }
-    }
-
-    /* custom cursor (subtle) */
-    .custom-cursor {
-      position: fixed;
-      width: 32px;
-      height: 32px;
-      border: 1px solid rgba(244, 244, 244, 0.3);
-      border-radius: 50%;
-      pointer-events: none;
-      backdrop-filter: blur(1px);
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
-      z-index: 9999;
-      mix-blend-mode: difference;
-    }
-
-    /* skip link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--cool-white);
-      color: #000;
-      padding: 8px 16px;
-      z-index: 10000;
+    /* ----- TYPOGRAPHY & LINKS (NO GOOGLE FONTS) ----- */
+    h1, h2, h3 {
       font-weight: 500;
-      text-decoration: none;
-    }
-    .skip-link:focus { 
-      top: 10px; 
-    }
-
-    /* fluid typography */
-    h1, h2, h3, .hero__supertitle {
-      font-family: var(--font-heading);
-      font-weight: 600;
       letter-spacing: -0.02em;
     }
 
-    /* header / navigation — crazy hover effects */
-    .header {
+    h1 {
+      font-size: clamp(3rem, 12vw, 6rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--electric-teal);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ----- ASYMMETRIC GRID & LAYOUT (PREMIUM BOUTIQUE) ----- */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* header / nav — minimal, elegant hover */
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 0;
+      border-bottom: var(--border-thin);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 450;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--electric-teal) 0%, var(--sunset-orange) 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    .nav-list {
+      display: flex;
+      gap: var(--spacing-lg);
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 1.1rem;
+      font-weight: 380;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .nav-link:hover {
+      border-bottom: 2px solid var(--sunset-orange);
+      color: var(--studio-white);
+    }
+
+    /* SWIRL INSPIRED ASYMMETRY — animated circles / kinetic */
+    .swirl-accent {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
-      padding: var(--space-sm) var(--container-padding);
-      z-index: 100;
-      background: rgba(10,10,10,0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.02);
-    }
-    
-    .header__container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: var(--container-max);
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    .logo-link {
-      text-decoration: none;
-      color: var(--cool-white);
-      display: flex;
-      align-items: baseline;
-      gap: clamp(4px, 2vw, 6px);
-    }
-    
-    .logo-symbol { 
-      font-size: clamp(1.2rem, 5vw, 1.8rem); 
-      line-height: 1; 
-    }
-    
-    .logo-text { 
-      font-weight: 700; 
-      font-size: clamp(1.2rem, 5vw, 1.6rem); 
-      letter-spacing: 0.1em; 
-    }
-
-    .nav__list {
-      display: flex;
-      gap: clamp(1rem, 4vw, 4rem);
-      list-style: none;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    
-    .nav__link {
-      text-decoration: none;
-      color: var(--cool-white);
-      font-weight: 400;
-      font-size: clamp(0.8rem, 3vw, 1rem);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      padding: 0.5rem 0;
-      position: relative;
-      transition: color 0.3s;
-      font-family: var(--font-heading);
-      white-space: nowrap;
-    }
-    
-    /* crazy hover effect - only on desktop */
-    @media (hover: hover) and (pointer: fine) {
-      .nav__link::before {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        color: transparent;
-        overflow: hidden;
-        white-space: nowrap;
-        transition: width 0.4s var(--ease-out-expo);
-        border-bottom: 2px solid var(--cool-white);
-      }
-      .nav__link:hover::before { 
-        width: 100%; 
-      }
-      .nav__link:hover { 
-        color: transparent; 
-      }
-    }
-
-    /* sections */
-    .section {
-      padding: var(--space-xl) var(--container-padding);
-      position: relative;
-      width: 100%;
-    }
-
-    /* HOME — asymmetrical grid, hero + masonry */
-    .home-section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding-top: calc(5rem + 80px);
-      padding-bottom: var(--space-xl);
-    }
-    
-    .home-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 2fr;
-      gap: var(--space-md);
-      max-width: var(--container-max);
-      margin: 0 auto;
-      width: 100%;
-      align-items: start;
-    }
-    
-    .hero-block {
-      padding-right: var(--space-sm);
-    }
-    
-    .hero__supertitle {
-      font-size: clamp(0.7rem, 2.5vw, 1rem);
-      letter-spacing: 0.5em;
-      margin-bottom: 1rem;
-      opacity: 0.7;
-    }
-    
-    .hero__title {
-      font-size: clamp(2.5rem, 10vw, 7rem);
-      line-height: 0.9;
-      margin-bottom: var(--space-sm);
-    }
-    
-    .title-line { 
-      display: block; 
-    }
-    
-    .title-line--bold { 
-      font-weight: 800; 
-    }
-    
-    .hero__desc {
-      font-size: clamp(1rem, 3.5vw, 1.5rem);
-      max-width: 350px;
-      margin: clamp(1rem, 4vw, 2rem) 0;
-      opacity: 0.8;
-    }
-    
-    .hero-br {
-      display: none;
-    }
-    
-    @media (min-width: 768px) {
-      .hero-br {
-        display: inline;
-      }
-    }
-    
-    .hero__meta {
-      display: flex;
-      gap: clamp(1rem, 4vw, 2rem);
-      font-family: var(--font-heading);
-      font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-      letter-spacing: 0.2em;
-      flex-wrap: wrap;
-    }
-
-    /* MASONRY / BENTO GALLERY — fully responsive */
-    .masonry-gallery {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: minmax(120px, 150px);
-      gap: clamp(8px, 2vw, 12px);
-      width: 100%;
-    }
-    
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      background: #1a1a1a;
-      border-radius: 4px;
-      transition: transform 0.3s;
-    }
-    
-    /* CSS NOTE: ADJUST OBJECT-FIT FOR CROPPING HERE */
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s var(--ease-out-expo);
-    }
-    
-    @media (hover: hover) and (pointer: fine) {
-      .gallery-item:hover img { 
-        transform: scale(1.05); 
-      }
-    }
-
-    /* varying spans for masonry - responsive */
-    .item-1 { grid-column: span 2; grid-row: span 2; }
-    .item-2 { grid-column: span 1; grid-row: span 2; }
-    .item-3 { grid-column: span 1; grid-row: span 2; }
-    .item-4 { grid-column: span 2; grid-row: span 1; }
-    .item-5 { grid-column: span 1; grid-row: span 1; }
-    .item-6 { grid-column: span 1; grid-row: span 1; }
-    .item-7 { grid-column: span 1; grid-row: span 1; }
-    .item-8 { grid-column: span 2; grid-row: span 1; }
-
-    /* Parallax subtle background */
-    .parallax-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 30% 40%, rgba(30,30,30,0.2) 0%, var(--deep-black) 90%);
-      z-index: -1;
+      right: 0;
+      width: 60vmax;
+      height: 60vmax;
+      background: radial-gradient(circle at 30% 20%, rgba(15, 201, 192, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 60%, rgba(247, 108, 62, 0.06) 0%, transparent 55%);
+      border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%;
+      z-index: -2;
+      animation: slowSwirl 28s infinite alternate ease-in-out;
       pointer-events: none;
     }
 
-    /* ABOUT — high contrast negative space */
-    .about-section {
-      background: var(--deep-black);
-      border-top: 1px solid rgba(255,255,255,0.03);
-    }
-    
-    .about-container {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: var(--space-lg);
-      max-width: var(--container-max);
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    .about-visual {
-      display: flex;
-      align-items: flex-end;
-    }
-    
-    .accent-line {
-      display: block;
-      width: clamp(80px, 15vw, 120px);
-      height: 2px;
-      background: var(--cool-white);
-      margin-bottom: 2rem;
-    }
-    
-    .about-content .section-title {
-      font-size: clamp(2.5rem, 8vw, 5.5rem);
-      line-height: 1;
-      margin-bottom: var(--space-md);
-    }
-    
-    .title-decor { 
-      font-weight: 300; 
-      opacity: 0.5; 
-      margin-right: 0.5rem; 
-    }
-    
-    .lead { 
-      font-size: clamp(1.1rem, 3.5vw, 2rem); 
-      font-weight: 400; 
-      margin-bottom: 1.5rem; 
-    }
-    
-    .about-text p {
-      font-size: clamp(0.9rem, 2.5vw, 1rem);
-      margin-bottom: 1rem;
-    }
-    
-    .about-signature { 
-      margin-top: clamp(1.5rem, 5vw, 3rem); 
-      font-family: var(--font-heading); 
-      letter-spacing: 0.2em;
-      font-size: clamp(0.8rem, 2.5vw, 1rem);
+    .swirl-accent-left {
+      position: fixed;
+      bottom: 0;
+      left: -10vw;
+      width: 70vmin;
+      height: 70vmin;
+      background: radial-gradient(circle at 25% 35%, rgba(26, 31, 78, 0.6) 0%, transparent 70%);
+      border-radius: 30% 70% 70% 30% / 30% 40% 60% 70%;
+      z-index: -2;
+      animation: slowSwirlReverse 34s infinite alternate;
+      pointer-events: none;
+      mix-blend-mode: overlay;
     }
 
-    /* SERVICES — glassmorphism + crazy hover */
-    .services-section { 
-      background: #0c0c0c; 
-    }
-    
-    .services__header { 
-      margin-bottom: var(--space-lg); 
-    }
-    
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-      gap: var(--space-md);
-      max-width: var(--container-max);
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-card);
-      padding: var(--space-md);
-      transition: all 0.4s var(--ease-out-expo);
-    }
-    
-    .service-card {
-      transition: transform 0.25s, box-shadow 0.4s, border-color 0.2s;
-      cursor: default;
-    }
-    
-    /* crazy hover effect - only on desktop */
-    @media (hover: hover) and (pointer: fine) {
-      .service-card:hover {
-        transform: translateY(-12px) scale(1.02) rotate(0.5deg);
-        box-shadow: 0 30px 40px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
-        border-color: rgba(255,255,255,0.2);
-        background: rgba(30,30,30,0.7);
-      }
-    }
-    
-    .service-name {
-      font-size: clamp(1.4rem, 5vw, 1.8rem);
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
-    
-    .service-desc { 
-      margin-bottom: 1.8rem; 
-      opacity: 0.75;
-      font-size: clamp(0.9rem, 3vw, 1rem);
-    }
-    
-    .service-price {
-      font-size: clamp(1.5rem, 5vw, 2rem);
-      font-weight: 500;
-      font-family: var(--font-heading);
+    @keyframes slowSwirl {
+      0% { transform: rotate(0deg) scale(1); border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%; }
+      100% { transform: rotate(8deg) scale(1.08); border-radius: 40% 60% 70% 30% / 40% 60% 40% 60%; }
     }
 
-    /* CONTACT — direct actions */
-    .contact-container {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: var(--space-lg);
-      max-width: var(--container-max);
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: clamp(8px, 3vw, 12px);
-      font-size: clamp(1.2rem, 5vw, 1.8rem);
-      font-weight: 400;
-      text-decoration: none;
-      color: var(--cool-white);
-      border-bottom: 1px solid transparent;
-      transition: 0.2s;
-      margin-bottom: 1.5rem;
-      width: fit-content;
-      word-break: break-all;
-    }
-    
-    .contact-link:hover { 
-      border-bottom-color: var(--cool-white); 
-    }
-    
-    .link-icon { 
-      font-size: clamp(1.5rem, 5vw, 2rem); 
-    }
-    
-    .social-links { 
-      display: flex; 
-      gap: clamp(1rem, 4vw, 2rem); 
-      margin-top: 2.5rem;
-      flex-wrap: wrap;
-    }
-    
-    .social-link {
-      font-size: clamp(1.2rem, 4vw, 1.5rem);
-      text-decoration: none;
-      color: var(--off-white);
-      padding: 0.5rem;
-      transition: transform 0.2s;
-    }
-    
-    @media (hover: hover) and (pointer: fine) {
-      .social-link:hover { 
-        transform: translateY(-5px); 
-      }
+    @keyframes slowSwirlReverse {
+      0% { transform: rotate(0deg) scale(1); }
+      100% { transform: rotate(-12deg) scale(1.1); }
     }
 
-    .contact-legal { 
-      text-align: right; 
-      opacity: 0.7;
-      font-size: clamp(0.8rem, 2.5vw, 1rem);
-    }
-    
-    .contact-legal p {
-      margin-bottom: 0.5rem;
-    }
-    
-    .footer {
-      padding: var(--space-sm) var(--container-padding);
-      border-top: 1px solid #222;
-      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
-    }
-    
-    .footer__note { 
-      display: flex; 
-      justify-content: space-between;
-      max-width: var(--container-max);
-      margin: 0 auto;
-      flex-wrap: wrap;
-      gap: 1rem;
+    /* ----- SECTIONS — FADE ON SCROLL (vanilla intersection observer) ----- */
+    section {
+      padding: var(--spacing-xl) 0;
+      border-bottom: var(--border-thin);
     }
 
-    /* reveal animations (intersection observer) */
-    .reveal {
+    .fade-section {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+      transform: translateY(22px);
+      transition: opacity 0.75s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.75s ease;
+      will-change: opacity, transform;
     }
-    
-    .reveal.revealed {
+
+    .fade-section.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* ==================== FULLY RESPONSIVE BREAKPOINTS ==================== */
-    
-    /* Tablet Landscape / Small Desktop */
-    @media (max-width: 1024px) {
-      .home-grid {
-        grid-template-columns: 1fr 1.8fr;
-        gap: var(--space-sm);
-      }
-      
-      .masonry-gallery {
-        grid-auto-rows: minmax(100px, 130px);
-      }
+    /* ----- HOME — ASYMMETRIC HERO (NO GENERIC CENTERED) ----- */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: var(--spacing-lg);
+      align-items: end;
+      min-height: 70vh;
     }
-    
-    /* Tablet Portrait */
+
+    .home-left {
+      padding-bottom: var(--spacing-lg);
+    }
+
+    .home-left h1 {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .home-left .highlight {
+      color: var(--electric-teal);
+      border-left: 6px solid var(--sunset-orange);
+      padding-left: var(--spacing-sm);
+    }
+
+    .home-right {
+      position: relative;
+    }
+
+    .motion-quote {
+      font-size: 1.6rem;
+      font-weight: 320;
+      background: rgba(42, 42, 42, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: var(--spacing-md);
+      border-radius: 32px 8px 32px 8px;
+      border: 1px solid var(--electric-teal);
+      color: var(--studio-white);
+      transform: rotate(1deg);
+      box-shadow: 20px 20px 0 -5px rgba(15, 201, 192, 0.1);
+    }
+
+    /* ----- ABOUT — ASYMMETRIC GRID WITH SUBTLE PARALLAX-LIKE ----- */
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: var(--spacing-xl);
+    }
+
+    .about-highlight {
+      font-size: 2.2rem;
+      line-height: 1.3;
+      color: var(--sunset-orange);
+    }
+
+    .about-text p {
+      margin-bottom: var(--spacing-sm);
+      font-size: 1.15rem;
+      color: #dddcd8;
+    }
+
+    /* ----- SERVICES — INSPIRED BY SWIRL, LAYOUT BREAKS GRID SYMMETRY ----- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .service-item {
+      padding: var(--spacing-md);
+      background: rgba(30, 30, 30, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(247, 108, 62, 0.15);
+      border-radius: 24px 8px 24px 8px;
+      transition: transform 0.25s, border-color 0.2s;
+    }
+
+    .service-item:hover {
+      border-color: var(--electric-teal);
+      transform: translateY(-6px);
+    }
+
+    .service-item h3 {
+      color: var(--electric-teal);
+      margin-bottom: 0.75rem;
+      font-size: 1.8rem;
+    }
+
+    /* ----- CONTACT — MINIMALIST ----- */
+    .contact-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xl);
+    }
+
+    .contact-details {
+      flex: 2;
+    }
+
+    .contact-meta {
+      flex: 1;
+      background: rgba(26, 31, 78, 0.4);
+      padding: var(--spacing-md);
+      border-radius: 32px 8px 32px 8px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .contact-link {
+      display: block;
+      margin: var(--spacing-sm) 0;
+      font-size: 1.25rem;
+      border-bottom: 1px dotted var(--electric-teal);
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover {
+      color: var(--sunset-orange);
+    }
+
+    /* ----- FOOTER ----- */
+    .site-footer {
+      padding: var(--spacing-md) 0;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    /* ----- RESPONSIVENESS (320px → 4K) ----- */
     @media (max-width: 900px) {
-      .home-grid { 
-        grid-template-columns: 1fr; 
-        gap: var(--space-lg);
-      }
-      
-      .hero-block {
-        padding-right: 0;
-        max-width: 600px;
-      }
-      
-      .hero__desc {
-        max-width: 100%;
-      }
-      
-      .masonry-gallery { 
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: minmax(140px, 180px);
-      }
-      
-      .item-1, .item-2, .item-3, .item-4, 
-      .item-5, .item-6, .item-7, .item-8 {
-        grid-column: span 1;
-        grid-row: span 1;
-      }
-      
-      .item-1 { grid-row: span 2; }
-      
-      .about-container { 
+      .home-grid, .about-wrap {
         grid-template-columns: 1fr;
-        gap: var(--space-md);
+        gap: var(--spacing-md);
       }
-      
-      .about-visual {
-        display: none;
+      .services-grid {
+        grid-template-columns: 1fr 1fr;
       }
-      
-      .contact-container { 
-        grid-template-columns: 1fr;
-        gap: var(--space-md);
-      }
-      
-      .contact-legal { 
-        text-align: left; 
+      .nav-list {
+        gap: var(--spacing-sm);
       }
     }
-    
-    /* Mobile Large */
-    @media (max-width: 640px) {
-      :root {
-        --space-xl: clamp(3rem, 10vw, 6rem);
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 var(--spacing-sm);
       }
-      
-      .header__container {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .nav__list {
-        justify-content: center;
-        gap: 1.2rem;
-      }
-      
-      .home-section {
-        padding-top: calc(7rem + 60px);
-      }
-      
-      .hero__meta {
-        gap: 1rem;
-      }
-      
-      .masonry-gallery {
-        grid-template-columns: 1fr;
-        grid-auto-rows: minmax(200px, 250px);
-      }
-      
-      .item-1, .item-2, .item-3, .item-4, 
-      .item-5, .item-6, .item-7, .item-8 {
-        grid-column: span 1;
-        grid-row: span 1;
-      }
-      
       .services-grid {
         grid-template-columns: 1fr;
       }
-      
-      .contact-link {
-        font-size: 1.3rem;
-        width: 100%;
-      }
-      
-      .social-links {
-        justify-content: flex-start;
-      }
-      
-      .footer__note {
+      .site-header {
         flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
       }
-    }
-    
-    /* Mobile Small */
-    @media (max-width: 480px) {
-      .nav__list { 
-        gap: 0.8rem;
+      .nav-list {
+        flex-wrap: wrap;
       }
-      
-      .nav__link {
-        font-size: 0.75rem;
-        letter-spacing: 0.1em;
-      }
-      
-      .hero__supertitle {
-        letter-spacing: 0.3em;
-      }
-      
-      .hero__title {
-        font-size: clamp(2rem, 8vw, 3rem);
-      }
-      
-      .masonry-gallery {
-        grid-auto-rows: minmax(180px, 220px);
-      }
-      
-      .service-name {
+      .motion-quote {
         font-size: 1.3rem;
-      }
-      
-      .service-price {
-        font-size: 1.5rem;
-      }
-      
-      .contact-link {
-        font-size: 1.1rem;
+        transform: rotate(0deg);
       }
     }
-    
-    /* Ultra Wide Screens */
-    @media (min-width: 2000px) {
-      .home-grid {
-        gap: var(--space-lg);
-      }
-      
-      .masonry-gallery {
-        grid-auto-rows: 200px;
-      }
+
+    /* ----- HAND-CRAFTED UTILITIES ----- */
+    .text-balance {
+      text-wrap: balance;
     }
-    
-    /* Landscape mode on mobile */
-    @media (max-height: 600px) and (orientation: landscape) {
-      .home-section {
-        min-height: auto;
-        padding-top: calc(5rem + 40px);
-        padding-bottom: 2rem;
-      }
-      
-      .masonry-gallery {
-        grid-auto-rows: minmax(120px, 150px);
-      }
+
+    .mt-4 {
+      margin-top: var(--spacing-md);
     }
-    
-    /* Print styles */
-    @media print {
-      .header, .footer, .custom-cursor, .parallax-bg {
-        display: none !important;
-      }
-      
-      body {
-        background: white;
-        color: black;
-        cursor: auto;
-      }
-      
-      .section {
-        page-break-inside: avoid;
-      }
-    }
-    
-    /* Reduced motion preference */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-      
-      .reveal {
-        opacity: 1;
-        transform: none;
-      }
-    }
+
+    /* 60fps optimisation: use transform and opacity */
   </style>
 </head>
 <body>
-  <!-- Custom cursor (minimal, high-end) - hidden on touch devices -->
-  <div class="custom-cursor" id="cursor" aria-hidden="true"></div>
-  
-  <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to content</a>
+  <div class="swirl-accent" aria-hidden="true"></div>
+  <div class="swirl-accent-left" aria-hidden="true"></div>
 
-  <header class="header" role="banner">
-    <div class="header__container">
-      <div class="header__logo">
-        <a href="#" class="logo-link" aria-label="ÆON Barbershop, home">
-          <span class="logo-symbol">◈</span>
-          <span class="logo-text">ÆON</span>
-        </a>
-      </div>
-      <nav class="nav" aria-label="Primary navigation">
-        <ul class="nav__list" role="list">
-          <li><a href="#home" class="nav__link" data-text="Home" aria-label="Home section">Home</a></li>
-          <li><a href="#about" class="nav__link" data-text="About" aria-label="About section">About</a></li>
-          <li><a href="#services" class="nav__link" data-text="Services" aria-label="Services section">Services</a></li>
-          <li><a href="#contact" class="nav__link" data-text="Contact" aria-label="Contact section">Contact</a></li>
+  <div class="container">
+    <header class="site-header">
+      <div class="logo" id="studioLogo">Simple Web Studio</div>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <main id="main-content">
-    <!-- HOME / HERO + MASONRY GALLERY (BENTO/MASONRY STYLE) -->
-    <section id="home" class="section home-section" aria-labelledby="home-heading">
-      <div class="home-grid">
-        <!-- Cinematic hero text + offset layout -->
-        <div class="hero-block">
-          <div class="hero__supertitle reveal" data-reveal>BLACK LABEL</div>
-          <h1 id="home-heading" class="hero__title reveal" data-reveal>
-            <span class="title-line">THE ART OF</span>
-            <span class="title-line title-line--bold">PRECISION</span>
-          </h1>
-          <p class="hero__desc reveal" data-reveal>
-            Architectural cuts for the modern individual. <br class="hero-br"> Crafted in deep focus.
-          </p>
-          <div class="hero__meta reveal" data-reveal>
-            <span class="meta-item">— EST. 2016</span>
-            <span class="meta-item">MILAN • NYC</span>
+    <main>
+      <!-- HOME -->
+      <section id="home" class="fade-section">
+        <div class="home-grid">
+          <div class="home-left">
+            <span class="section-tag">Creative direction</span>
+            <h1>
+              <span class="highlight">Build</span> with<br>kinetic clarity
+            </h1>
+            <p style="font-size: 1.25rem; max-width: 32ch; margin-top: 1.5rem;">
+              We craft digital experiences where modern security meets fluid motion.
+            </p>
           </div>
-        </div>
-
-        <!-- Bento / Masonry gallery (8 images) -->
-        <!-- ============================================ -->
-        <!-- GALLERY IMAGES - REPLACE THESE URLS WITH YOUR OWN IMAGES -->
-        <!-- Look for "images.pexels.com" below and replace with your image paths -->
-        <!-- ============================================ -->
-        <div class="masonry-gallery">
-          <!-- IMAGE PLACEHOLDERS WITH COMMENTS -->
-          <!-- GALLERY NOTE: USE OBJECT-FIT COVER / CONTAIN AS PER DESIGN INTENTION. 
-               PLACEHOLDERS USE PEXELS IMAGES - REPLACE WITH YOUR BARBERSHOP PHOTOS -->
-          <!-- CSS NOTE: ADJUST OBJECT-FIT FOR CROPPING HERE -->
-          <div class="gallery-item item-1" data-reveal>
-            <!-- IMAGE 1: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/3998420/pexels-photo-3998420.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Barber detail – precision clipper work" loading="lazy" decoding="async">
-            <div class="gallery-overlay"></div>
-          </div>
-          <div class="gallery-item item-2" data-reveal>
-            <!-- IMAGE 2: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Barber chair and tools" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-3" data-reveal>
-            <!-- IMAGE 3: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Fresh fade haircut" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-4" data-reveal>
-            <!-- IMAGE 4: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/2040189/pexels-photo-2040189.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Barber shop interior with vintage mirror" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-5" data-reveal>
-            <!-- IMAGE 5: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/897271/pexels-photo-897271.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Hair product and scissors" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-6" data-reveal>
-            <!-- IMAGE 6: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/8467982/pexels-photo-8467982.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Close up of beard trim" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-7" data-reveal>
-            <!-- IMAGE 7: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/2076930/pexels-photo-2076930.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Classic straight razor shave" loading="lazy" decoding="async">
-          </div>
-          <div class="gallery-item item-8" data-reveal>
-            <!-- IMAGE 8: REPLACE THIS SRC WITH YOUR IMAGE -->
-            <img src="https://images.pexels.com/photos/5490903/pexels-photo-5490903.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                 alt="Barber hands styling hair" loading="lazy" decoding="async">
-          </div>
-        </div>
-        <!-- ============================================ -->
-        <!-- END GALLERY - REPLACE ALL 8 IMAGE URLS ABOVE -->
-        <!-- ============================================ -->
-      </div>
-      <!-- subtle parallax hint (bg stays fixed) -->
-      <div class="parallax-bg" aria-hidden="true"></div>
-    </section>
-
-    <!-- ABOUT — high contrast, negative space, bold typography -->
-    <section id="about" class="section about-section" aria-labelledby="about-heading">
-      <div class="about-container">
-        <div class="about-visual" data-reveal>
-          <div class="about-placeholder" aria-hidden="true">
-            <span class="accent-line"></span>
-          </div>
-        </div>
-        <div class="about-content">
-          <h2 id="about-heading" class="section-title reveal" data-reveal>
-            <span class="title-decor">⌲</span> BEYOND<br>THE CUT
-          </h2>
-          <div class="about-text reveal" data-reveal>
-            <p class="lead">ÆON is a sanctuary of sharp lines and darker aesthetics. We merge barbering discipline with architectural restraint.</p>
-            <p>Every fade, every detail is considered. Negative space, texture, and light — the same elements that define our space.</p>
-          </div>
-          <div class="about-signature reveal" data-reveal>
-            <span class="sig">— M. VENTRIS, MASTER BARBER</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SERVICES — glassmorphism, interactive grid -->
-    <section id="services" class="section services-section" aria-labelledby="services-heading">
-      <div class="services__header reveal" data-reveal>
-        <h2 id="services-heading" class="section-title">
-          <span class="title-decor">⌲</span> PRECISION<br>SERVICES
-        </h2>
-      </div>
-      <div class="services-grid">
-        <!-- Service cards with glass effect + crazy hover -->
-        <div class="service-card glass-card reveal" data-reveal>
-          <div class="card-inner">
-            <h3 class="service-name">THE SIGNATURE CUT</h3>
-            <p class="service-desc">Consultation, shampoo, hot towel & precision scissor work.</p>
-            <span class="service-price">$75+</span>
-          </div>
-        </div>
-        <div class="service-card glass-card reveal" data-reveal>
-          <div class="card-inner">
-            <h3 class="service-name">SKIN FADE</h3>
-            <p class="service-desc">Zero fade, meticulous blending. Includes straight razor line-up.</p>
-            <span class="service-price">$60+</span>
-          </div>
-        </div>
-        <div class="service-card glass-card reveal" data-reveal>
-          <div class="card-inner">
-            <h3 class="service-name">BEARD SCULPT</h3>
-            <p class="service-desc">Steamed towel, shaping, and conditioning. Edge definition.</p>
-            <span class="service-price">$45+</span>
-          </div>
-        </div>
-        <div class="service-card glass-card reveal" data-reveal>
-          <div class="card-inner">
-            <h3 class="service-name">THE RITUAL</h3>
-            <p class="service-desc">Cut, beard, facial cleanse, and premium spirit. 90min.</p>
-            <span class="service-price">$140</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT — direct action links -->
-    <section id="contact" class="section contact-section" aria-labelledby="contact-heading">
-      <div class="contact-container">
-        <div class="contact-info reveal" data-reveal>
-          <h2 id="contact-heading" class="section-title">
-            <span class="title-decor">⌲</span> CONNECT
-          </h2>
-          <div class="contact-links">
-            <a href="tel:+12125551234" class="contact-link" aria-label="Call us at +1 212 555 1234">
-              <span class="link-icon">📞</span> +1 212 555 1234
-            </a>
-            <a href="mailto:cuts@aeonbarber.com" class="contact-link" aria-label="Email us at cuts@aeonbarber.com">
-              <span class="link-icon">✉</span> cuts@aeonbarber.com
-            </a>
-            <div class="social-links">
-              <a href="https://instagram.com/aeonbarber" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram (opens in new tab)">IG</a>
-              <a href="https://x.com/aeonbarber" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X (Twitter) (opens in new tab)">X</a>
-              <a href="https://maps.google.com/?q=aeon+barber" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Location on map (opens in new tab)">📍</a>
+          <div class="home-right">
+            <div class="motion-quote">
+              “Design is not just what it looks like. Design is how it <span style="color: var(--electric-teal);">works</span> — and stays secure.”
             </div>
           </div>
         </div>
-        <div class="contact-legal reveal" data-reveal>
-          <p class="hours">TUE–SAT 10:00 – 20:00<br>SUN 11:00 – 18:00</p>
-          <p class="address">117 BLEECKER ST, NY</p>
-          <p class="copy">© 2026 ÆON BARBER</p>
-        </div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer class="footer" role="contentinfo">
-    <div class="footer__note">
-      <span>// ZERO AI TEMPLATE — ASYMMETRIC LUXURY</span>
-      <span class="footer-security">SECURE CONNECTION</span>
-    </div>
-  </footer>
+      <!-- ABOUT -->
+      <section id="about" class="fade-section">
+        <span class="section-tag">Studio ethos</span>
+        <div class="about-wrap">
+          <div class="about-highlight">
+            No templates.<br>Just intention.
+          </div>
+          <div class="about-text">
+            <p>Simple Web Studio is a boutique practice focused on high‑performance, hand‑crafted frontend architecture. We believe in zero bloat, system fonts, and layouts that breathe.</p>
+            <p>Our approach merges deep security awareness with an obsession for smooth 60fps animations. Every line is written with purpose — no lorem ipsum, no fake promises.</p>
+            <p style="color: var(--electric-teal);">Deep indigo · electric teal · sunset orange</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services" class="fade-section">
+        <span class="section-tag">What we do</span>
+        <h2>Precision & motion</h2>
+        <div class="services-grid">
+          <div class="service-item">
+            <h3>01</h3>
+            <h3>Design engineering</h3>
+            <p>Asymmetric layouts, fluid typography, and unique interactive identities — all with vanilla CSS.</p>
+          </div>
+          <div class="service-item">
+            <h3>02</h3>
+            <h3>Secure frontend</h3>
+            <p>Strict CSP, zero‑trust DOM handling. We build with .textContent and system‑native security.</p>
+          </div>
+          <div class="service-item">
+            <h3>03</h3>
+            <h3>Performance culture</h3>
+            <p>60fps scroll animations, parallax‑aware transitions, and no external requests.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="fade-section">
+        <span class="section-tag">Let’s connect</span>
+        <div class="contact-flex">
+          <div class="contact-details">
+            <h2 style="margin-bottom: 0.5rem;">Talk to a human.</h2>
+            <p style="font-size: 1.3rem;">We answer every inquiry within a day.</p>
+          </div>
+          <div class="contact-meta">
+            <p style="margin-bottom: 1rem;">📬 studio@simpleweb.work</p>
+            <p style="margin-bottom: 1rem;">📍 remote · worldwide</p>
+            <a href="#" class="contact-link" id="dummyEmailLink">hello@simpleweb.studio</a>
+            <a href="#" class="contact-link" id="dummyPhoneLink">+1 (415) 867‑5309</a>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">(all communication encrypted via secure channels)</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Simple Web Studio — kinetic, secure, independent.</p>
+    </footer>
+  </div>
 
   <script>
-    /* ==================== script.js ==================== */
-    ;(function() {
+    (function() {
       "use strict";
 
-      // ---------- CUSTOM CURSOR (high-end effect) - only on non-touch ----------
-      const cursor = document.getElementById('cursor');
-      if (cursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        document.addEventListener('mousemove', (e) => {
-          cursor.style.left = e.clientX + 'px';
-          cursor.style.top = e.clientY + 'px';
-        });
-        // enlarge on links/buttons
-        const hoverTargets = document.querySelectorAll('a, button, .service-card, .nav__link');
-        hoverTargets.forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            cursor.style.width = '48px';
-            cursor.style.height = '48px';
-            cursor.style.backgroundColor = 'rgba(255,255,255,0.05)';
-          });
-          el.addEventListener('mouseleave', () => {
-            cursor.style.width = '32px';
-            cursor.style.height = '32px';
-            cursor.style.backgroundColor = 'transparent';
-          });
-        });
-      } else if (cursor) {
-        cursor.style.display = 'none';
-      }
+      // ---------- SECURITY FIRST: Only .textContent / .innerText ----------
+      // Ensure that dynamic text updates are safe (no .innerHTML used anywhere)
 
-      // ---------- INTERSECTION OBSERVER (scroll reveals) ----------
-      const revealElements = document.querySelectorAll('.reveal');
-      if (revealElements.length) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('revealed');
-            }
-          });
-        }, { threshold: 0.15, rootMargin: '0px 0px -10px 0px' });
-        revealElements.forEach(el => observer.observe(el));
-      }
-
-      // ---------- SECURITY: textContent only ----------
-      function setSecureText(selector, text) {
-        const el = document.querySelector(selector);
-        if (el) el.textContent = text;
-      }
-      setSecureText('.copy', '© 2026 ÆON BARBER');
-
-      // ---------- parallax effect ----------
-      const parallaxBg = document.querySelector('.parallax-bg');
-      if (parallaxBg) {
-        window.addEventListener('scroll', () => {
-          const scrolled = window.pageYOffset;
-          parallaxBg.style.transform = `translateY(${scrolled * 0.2}px)`;
-        });
-      }
-
-      // ---------- ARIA / accessibility enhancement ----------
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.nav__link');
-      function updateActiveNav() {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop - 100;
-          if (scrollY >= sectionTop) current = section.getAttribute('id');
-        });
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          const href = link.getAttribute('href').substring(1);
-          if (href === current) link.classList.add('active');
-        });
-      }
-      window.addEventListener('scroll', updateActiveNav);
+      // 1) FADE ON SCROLL (Intersection Observer, 60fps friendly)
+      const fadeElements = document.querySelectorAll('.fade-section');
       
-      const styleActive = document.createElement('style');
-      styleActive.textContent = `.nav__link.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 1px; background: var(--cool-white); }`;
-      document.head.appendChild(styleActive);
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // optional: keep visible after first appearance
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -10px 0px' });
+      
+      fadeElements.forEach(el => observer.observe(el));
 
-      // Handle orientation changes
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-          window.scrollTo(0, window.scrollY);
-        }, 100);
+      // 2) SMOOTH SCROLL FOR NAVIGATION (prevent default, use vanilla)
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href'); // e.g. #home
+          if (!targetId || targetId === '#') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+          // Update URL without page reload (pushState)
+          history.pushState(null, '', targetId);
+        });
       });
+
+      // 3) SUBTLE PARALLAX EFFECT (kinetic, performance: requestAnimationFrame)
+      const swirlRight = document.querySelector('.swirl-accent');
+      const swirlLeft = document.querySelector('.swirl-accent-left');
+      
+      function parallaxSwirl() {
+        if (!swirlRight || !swirlLeft) return;
+        const scrolled = window.scrollY;
+        // limit transformations to keep performance, use translate3d for gpu
+        const moveY = scrolled * 0.02;
+        const moveX = scrolled * 0.005;
+        swirlRight.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotate(${scrolled * 0.01}deg)`;
+        swirlLeft.style.transform = `translate3d(${-moveX * 0.8}px, ${-moveY * 0.3}px, 0) rotate(${scrolled * -0.008}deg)`;
+      }
+
+      // throttled with rAF
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            parallaxSwirl();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      // 4) FIX FOR INITIAL VISIBLE SECTIONS (if they are already visible)
+      // Also ensure all sections have base class
+      window.addEventListener('load', () => {
+        fadeElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+            el.classList.add('visible');
+          }
+        });
+        // run parallax once
+        parallaxSwirl();
+      });
+
+      // 5) SECURITY: contact dummy interaction (no actual email sent, just demo)
+      // Using .textContent to display message (no XSS)
+      const emailLink = document.getElementById('dummyEmailLink');
+      const phoneLink = document.getElementById('dummyPhoneLink');
+      
+      function showSecureNotice(text) {
+        // create temporary notification using textContent
+        const existing = document.querySelector('.secure-toast');
+        if (existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'secure-toast';
+        toast.setAttribute('role', 'status');
+        // styling inline (vanilla)
+        toast.style.position = 'fixed';
+        toast.style.bottom = '24px';
+        toast.style.right = '24px';
+        toast.style.background = '#1a1f4e';
+        toast.style.color = '#f9f7f5';
+        toast.style.padding = '12px 24px';
+        toast.style.borderRadius = '40px 8px 40px 8px';
+        toast.style.border = '1px solid #0fc9c0';
+        toast.style.backdropFilter = 'blur(12px)';
+        toast.style.zIndex = '999';
+        toast.style.fontSize = '0.95rem';
+        toast.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.5)';
+        toast.style.transition = 'opacity 0.3s';
+        
+        // USE textContent (safe)
+        toast.textContent = `🔒 ${text} (demo — no actual data sent)`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 400);
+        }, 2600);
+      }
+      
+      if (emailLink) {
+        emailLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          showSecureNotice('Contact request via email: secure form simulation');
+        });
+      }
+      if (phoneLink) {
+        phoneLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          showSecureNotice('Call simulation: secure line demo');
+        });
+      }
+
+      // 6) Additional small touch: active nav highlight (optional)
+      // Not required but adds sophistication.
+      const sections = document.querySelectorAll('section[id]');
+      
+      function updateActiveNav() {
+        const scrollPos = window.scrollY + 120;
+        sections.forEach(section => {
+          const id = section.getAttribute('id');
+          const offset = section.offsetTop;
+          const height = section.offsetHeight;
+          if (scrollPos >= offset && scrollPos < offset + height) {
+            navLinks.forEach(link => {
+              link.style.borderBottomColor = 'transparent';
+              if (link.getAttribute('href') === `#${id}`) {
+                link.style.borderBottomColor = 'var(--sunset-orange)';
+              }
+            });
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateActiveNav);
+      });
+      window.addEventListener('load', updateActiveNav);
+
+      // 7) Ensure all dynamic text content is safe. 
+      // The logo is static; contact fields use .textContent.
+      // No innerHTML in this script. Zero external.
+      
     })();
   </script>
+  <!-- no external fonts, no CDN. 100% self-contained -->
 </body>
   </html>
