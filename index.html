@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Simple Web Studio · kinetic clarity</title>
-  <!-- _headers file for Netlify / security (place in _headers) -->
+  <!-- _headers file for Netlify / security -->
   <!--
   / *
     Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
@@ -13,7 +13,7 @@
     Referrer-Policy: strict-origin-when-cross-origin
   -->
   <style>
-    /* ----- RESET & VARIABLES (hand-crafted, zero external) ----- */
+    /* ----- RESET & ORIGINAL COLOR PALETTE ----- */
     * {
       margin: 0;
       padding: 0;
@@ -21,13 +21,14 @@
     }
 
     :root {
-      --deep-indigo: #1c1f3a;
-      --electric-teal: #0bb5a8;
-      --sunset-orange: #f25c3b;
-      --studio-white: #f6f4f1;
-      --light-gray: #eae7e2;
-      --text-dark: #1a1817;
-      --text-soft: #2c2a28;
+      --deep-indigo: #1a1f4e;
+      --electric-teal: #0fc9c0;
+      --sunset-orange: #f76c3e;
+      --studio-white: #f9f7f5;
+      --cool-charcoal: #1e1e1e;
+      --charcoal-soft: #2a2a2a;
+      --text-light: #f0eee9;
+      --text-muted: #b8b6b2;
       
       --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
       --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
@@ -37,47 +38,44 @@
       --space-md: 2rem;
       --space-lg: 4rem;
       --space-xl: 6rem;
-      --space-xxl: 8rem;
+      --space-xxl: 10rem;
       
-      --border-light: 1px solid rgba(28, 31, 58, 0.08);
-      --transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      --border-glow: 1px solid rgba(15, 201, 192, 0.15);
+      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     body {
-      background-color: var(--studio-white);
-      color: var(--text-dark);
+      background-color: var(--cool-charcoal);
+      color: var(--text-light);
       font-family: var(--font-sans);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ----- TYPOGRAPHY (system stack, editorial) ----- */
-    h1, h2, h3 {
-      font-weight: 450;
+    /* ----- TYPOGRAPHY ----- */
+    h1, h2, h3, h4 {
+      font-weight: 400;
       letter-spacing: -0.02em;
     }
 
     h1 {
-      font-size: clamp(3.4rem, 12vw, 6.5rem);
-      line-height: 1.05;
-      color: var(--deep-indigo);
+      font-size: clamp(4rem, 10vw, 7rem);
+      line-height: 1;
+      color: var(--studio-white);
     }
 
     h2 {
-      font-size: clamp(2.6rem, 7vw, 4.2rem);
-      margin-bottom: var(--space-md);
-      color: var(--deep-indigo);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.15;
     }
 
-    .accent-tag {
+    .eyebrow {
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 3.5px;
-      color: var(--sunset-orange);
-      display: inline-block;
-      margin-bottom: var(--space-xs);
+      letter-spacing: 4px;
+      color: var(--electric-teal);
     }
 
     a {
@@ -85,302 +83,322 @@
       text-decoration: none;
     }
 
-    /* ----- STRUCTURE: ASYMMETRIC GRID, EDITORIAL, BROKEN LAYOUT ----- */
-    .wrapper {
-      max-width: 1600px;
+    /* ----- COMPLETELY RESTRUCTURED LAYOUT (no repetition) ----- */
+    .canvas {
+      max-width: 1800px;
       margin: 0 auto;
       padding: 0 var(--space-md);
+      position: relative;
     }
 
-    /* header — minimal with kinetic underline */
-    .site-header {
+    /* Header — ultra minimal, right-aligned nav */
+    .top-bar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       padding: var(--space-md) 0;
-      border-bottom: var(--border-light);
       margin-bottom: var(--space-lg);
-      position: relative;
-      z-index: 5;
+      border-bottom: var(--border-glow);
     }
 
-    .logo {
-      font-size: 1.9rem;
-      font-weight: 430;
-      background: linear-gradient(145deg, var(--deep-indigo) 0%, var(--electric-teal) 80%);
+    .wordmark {
+      font-size: 1.6rem;
+      font-weight: 350;
+      background: linear-gradient(135deg, var(--electric-teal) 0%, var(--sunset-orange) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: -0.02em;
     }
 
-    .nav-list {
+    .nav-row {
       display: flex;
       gap: var(--space-lg);
       list-style: none;
     }
 
-    .nav-link {
-      font-size: 1.2rem;
-      font-weight: 370;
-      padding-bottom: 6px;
-      border-bottom: 2px solid transparent;
+    .nav-row a {
+      font-size: 1rem;
+      font-weight: 380;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid transparent;
       transition: border-color var(--transition), color var(--transition);
     }
 
-    .nav-link:hover {
-      border-bottom: 2px solid var(--sunset-orange);
-      color: var(--deep-indigo);
+    .nav-row a:hover {
+      border-bottom-color: var(--sunset-orange);
+      color: var(--studio-white);
     }
 
-    /* ----- SWIRL BACKGROUND ELEMENTS (kinetic, subtle rotation) ----- */
-    .swirl-orbit {
+    /* Dynamic swirl backgrounds (original vibrant) */
+    .swirl-primary {
       position: fixed;
-      top: -5vh;
-      right: -5vw;
-      width: 75vmax;
-      height: 75vmax;
-      background: radial-gradient(circle at 30% 20%, rgba(11, 181, 168, 0.05) 0%, transparent 60%),
-                  radial-gradient(circle at 70% 60%, rgba(242, 92, 59, 0.04) 0%, transparent 55%);
-      border-radius: 62% 38% 42% 58% / 48% 41% 59% 52%;
-      z-index: 0;
-      animation: swirlMotion 30s infinite alternate ease-in-out;
+      top: -10vh;
+      right: -10vw;
+      width: 80vmax;
+      height: 80vmax;
+      background: radial-gradient(circle at 35% 25%, rgba(15, 201, 192, 0.08) 0%, transparent 55%),
+                  radial-gradient(circle at 65% 70%, rgba(247, 108, 62, 0.05) 0%, transparent 60%);
+      border-radius: 55% 45% 35% 65% / 45% 55% 45% 55%;
+      z-index: -2;
+      animation: swirlFloat 26s infinite alternate ease-in-out;
       pointer-events: none;
     }
 
-    .swirl-orbit-left {
+    .swirl-secondary {
       position: fixed;
-      bottom: -10vh;
-      left: -8vw;
-      width: 80vmin;
-      height: 80vmin;
-      background: radial-gradient(circle at 25% 40%, rgba(28, 31, 58, 0.06) 0%, transparent 65%);
-      border-radius: 38% 62% 58% 42% / 55% 38% 62% 45%;
-      z-index: 0;
-      animation: swirlReverse 35s infinite alternate;
+      bottom: -15vh;
+      left: -15vw;
+      width: 90vmin;
+      height: 90vmin;
+      background: radial-gradient(circle at 30% 40%, rgba(26, 31, 78, 0.5) 0%, transparent 65%);
+      border-radius: 40% 60% 70% 30% / 50% 45% 55% 50%;
+      z-index: -2;
+      animation: swirlFloatReverse 32s infinite alternate;
       pointer-events: none;
+      mix-blend-mode: overlay;
     }
 
-    @keyframes swirlMotion {
-      0% { transform: rotate(0deg) scale(1); border-radius: 62% 38% 42% 58% / 48% 41% 59% 52%; }
-      100% { transform: rotate(12deg) scale(1.04); border-radius: 45% 55% 65% 35% / 40% 60% 40% 60%; }
+    @keyframes swirlFloat {
+      0% { transform: rotate(0deg) scale(1); border-radius: 55% 45% 35% 65% / 45% 55% 45% 55%; }
+      100% { transform: rotate(15deg) scale(1.06); border-radius: 35% 65% 55% 45% / 65% 35% 65% 35%; }
     }
-    @keyframes swirlReverse {
+    @keyframes swirlFloatReverse {
       0% { transform: rotate(0deg) scale(1); }
-      100% { transform: rotate(-14deg) scale(1.05); }
+      100% { transform: rotate(-18deg) scale(1.08); }
     }
 
-    /* ----- SECTIONS — scroll animations (fade + slight rotate) ----- */
-    .reveal-section {
+    /* Scroll reveal animation */
+    .fade-rotate {
       opacity: 0;
-      transform: translateY(28px) rotate(-0.6deg);
-      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.8s cubic-bezier(0.2, 0.9, 0.1, 1);
+      transform: translateY(30px) rotate(-0.5deg);
+      transition: opacity 0.75s cubic-bezier(0.2, 0.9, 0.1, 1), transform 0.75s cubic-bezier(0.2, 0.9, 0.1, 1);
       will-change: opacity, transform;
     }
 
-    .reveal-section.visible {
+    .fade-rotate.visible {
       opacity: 1;
       transform: translateY(0) rotate(0deg);
     }
 
-    /* ----- ASYMMETRIC HOME LAYOUT (no centered hero) ----- */
-    .home-panel {
+    /* ----- NEW STRUCTURE: MAGAZINE / EDITORIAL FLOW (no repetitive sections) ----- */
+    
+    /* Hero — staggered columns */
+    .hero-spread {
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
+      grid-template-columns: 2fr 1.2fr;
       gap: var(--space-xl);
-      align-items: start;
       margin: var(--space-xl) 0 var(--space-xxl);
-      position: relative;
-      z-index: 2;
+      align-items: end;
     }
 
-    .home-left {
-      padding-top: var(--space-lg);
+    .hero-main h1 {
+      margin-bottom: var(--space-sm);
     }
 
-    .home-left .lead {
-      font-size: 1.5rem;
-      max-width: 26ch;
-      margin-top: var(--space-sm);
-      color: var(--text-soft);
+    .hero-main .accent-line {
+      width: 120px;
+      height: 3px;
+      background: var(--sunset-orange);
+      margin: var(--space-md) 0;
     }
 
-    .home-right {
-      position: relative;
+    .hero-side {
+      padding-bottom: var(--space-lg);
     }
 
-    .editorial-card {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: var(--space-lg);
-      border-radius: 60px 20px 60px 20px;
-      border: 1px solid rgba(11, 181, 168, 0.25);
-      box-shadow: 30px 30px 0 -10px rgba(28, 31, 58, 0.06);
-      transform: rotate(1.2deg);
-      transition: transform 0.25s;
+    .stat-block {
+      border-left: 2px solid var(--electric-teal);
+      padding-left: var(--space-md);
     }
 
-    .editorial-card:hover {
-      transform: rotate(0.8deg) translateY(-5px);
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--electric-teal);
+      line-height: 1;
     }
 
-    .editorial-card p {
-      font-size: 1.7rem;
-      font-weight: 350;
-      line-height: 1.4;
-    }
-
-    /* ----- ABOUT + SERVICES INTERTWINED (break grid, overlap) ----- */
-    .intertwine-grid {
+    /* About + philosophy — broken grid with overlap */
+    .philosophy-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr 1.1fr;
-      gap: var(--space-md);
-      align-items: start;
+      grid-template-columns: 1fr 1.5fr 1fr;
       margin: var(--space-xxl) 0;
       position: relative;
-      z-index: 2;
     }
 
-    .about-block {
+    .phil-left {
       grid-column: 1 / 2;
-      padding: var(--space-lg) var(--space-md);
-      background: var(--light-gray);
-      border-radius: 40px 8px 40px 8px;
-      transform: translateY(-2rem);
+      padding-top: var(--space-xl);
     }
 
-    .service-overlap {
+    .phil-center {
       grid-column: 2 / 4;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-md);
-      margin-top: 3rem;
+      background: rgba(42, 42, 42, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: var(--space-xl);
+      border-radius: 80px 20px 80px 20px;
+      border: var(--border-glow);
+      margin-left: -4rem;
+      margin-top: 2rem;
     }
 
-    .service-item {
-      background: var(--studio-white);
-      padding: var(--space-md);
-      border-radius: 24px 4px 24px 4px;
-      border: 1px solid rgba(11, 181, 168, 0.2);
-      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.08);
-      transition: all 0.25s;
+    .large-quote {
+      font-size: 2.2rem;
+      line-height: 1.3;
+      font-weight: 320;
+      color: var(--studio-white);
     }
 
-    .service-item:hover {
-      border-color: var(--sunset-orange);
-      transform: scale(0.98) rotate(-0.4deg);
-    }
-
-    .service-item h3 {
-      font-size: 2rem;
-      color: var(--electric-teal);
-      margin-bottom: 0.5rem;
-    }
-
-    /* contact panel — asymmetric */
-    .contact-panel {
+    /* Services — diagonal flow, not three cards */
+    .services-diagonal {
       display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-xl);
-      margin: var(--space-xl) 0 var(--space-lg);
-      background: rgba(234, 231, 226, 0.3);
-      backdrop-filter: blur(4px);
-      padding: var(--space-lg);
-      border-radius: 30px 60px 30px 60px;
-      border-left: 6px solid var(--sunset-orange);
+      flex-direction: column;
+      gap: var(--space-xs);
+      margin: var(--space-xxl) 0;
     }
 
-    .contact-left {
-      flex: 2;
+    .service-row {
+      display: grid;
+      grid-template-columns: 0.5fr 2fr 1fr;
+      align-items: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid rgba(15, 201, 192, 0.1);
+      transition: transform 0.2s;
     }
 
-    .contact-right {
-      flex: 1.2;
+    .service-row:hover {
+      transform: translateX(8px);
     }
 
-    .contact-link {
-      display: inline-block;
-      margin-top: var(--space-sm);
-      border-bottom: 1.5px dotted var(--electric-teal);
-      font-size: 1.3rem;
-      transition: color 0.2s;
-    }
-
-    .contact-link:hover {
+    .service-index {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
       color: var(--sunset-orange);
     }
 
-    /* footer */
-    .site-footer {
-      margin-top: var(--space-xl);
-      padding: var(--space-md) 0;
-      border-top: var(--border-light);
-      font-size: 0.9rem;
-      color: #4a4846;
+    .service-title {
+      font-size: 2.5rem;
+      font-weight: 350;
+      color: var(--electric-teal);
     }
 
-    /* ----- RESPONSIVENESS (fluid 320px → 4K) ----- */
+    .service-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Contact — asymmetric panel */
+    .contact-slab {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: var(--space-xl);
+      margin: var(--space-xl) 0 var(--space-lg);
+      padding: var(--space-lg);
+      background: linear-gradient(145deg, rgba(26, 31, 78, 0.3) 0%, rgba(30, 30, 30, 0.2) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 40px 8px 40px 8px;
+      border-top: 4px solid var(--sunset-orange);
+    }
+
+    .contact-cta h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .contact-methods p {
+      font-size: 1.3rem;
+      margin: var(--space-sm) 0;
+    }
+
+    .demo-link {
+      display: inline-block;
+      margin-top: var(--space-md);
+      padding-bottom: 3px;
+      border-bottom: 2px dotted var(--electric-teal);
+      transition: border-color 0.2s;
+    }
+
+    .demo-link:hover {
+      border-bottom-color: var(--sunset-orange);
+    }
+
+    /* Footer — ultra minimal */
+    .footer-note {
+      margin-top: var(--space-xl);
+      padding: var(--space-md) 0;
+      border-top: var(--border-glow);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ----- RESPONSIVE (320px → 4K) ----- */
     @media (max-width: 1000px) {
-      .home-panel {
+      .hero-spread {
         grid-template-columns: 1fr;
         gap: var(--space-md);
       }
-      .intertwine-grid {
+      .philosophy-grid {
         grid-template-columns: 1fr;
       }
-      .about-block {
-        transform: translateY(0);
-        grid-column: auto;
-      }
-      .service-overlap {
-        grid-column: auto;
+      .phil-center {
+        grid-column: 1;
+        margin-left: 0;
         margin-top: var(--space-md);
+      }
+      .service-row {
+        grid-template-columns: 0.5fr 1.5fr 1fr;
+      }
+      .service-title {
+        font-size: 2rem;
       }
     }
 
-    @media (max-width: 650px) {
-      .wrapper {
+    @media (max-width: 700px) {
+      .canvas {
         padding: 0 var(--space-sm);
       }
-      .site-header {
+      .top-bar {
         flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-xs);
+        gap: var(--space-sm);
       }
-      .nav-list {
+      .nav-row {
         flex-wrap: wrap;
         gap: var(--space-md);
       }
-      .service-overlap {
+      .service-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+      }
+      .contact-slab {
         grid-template-columns: 1fr;
       }
-      .editorial-card p {
-        font-size: 1.4rem;
+      .large-quote {
+        font-size: 1.6rem;
       }
-      .editorial-card {
-        transform: rotate(0deg);
+      .phil-center {
+        padding: var(--space-md);
       }
     }
 
-    /* utilities */
-    .text-large {
-      font-size: 1.3rem;
-    }
-    .text-indigo {
-      color: var(--deep-indigo);
+    @media (min-width: 2000px) {
+      .canvas {
+        max-width: 2000px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="swirl-orbit" aria-hidden="true"></div>
-  <div class="swirl-orbit-left" aria-hidden="true"></div>
+  <div class="swirl-primary" aria-hidden="true"></div>
+  <div class="swirl-secondary" aria-hidden="true"></div>
 
-  <div class="wrapper">
-    <header class="site-header">
-      <div class="logo">Simple Web Studio</div>
+  <div class="canvas">
+    <header class="top-bar">
+      <div class="wordmark">Simple Web Studio</div>
       <nav>
-        <ul class="nav-list">
+        <ul class="nav-row">
           <li><a href="#home" class="nav-link">Home</a></li>
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#services" class="nav-link">Services</a></li>
@@ -390,84 +408,104 @@
     </header>
 
     <main>
-      <!-- HOME SECTION (asymmetric, no generic hero) -->
-      <section id="home" class="reveal-section">
-        <div class="home-panel">
-          <div class="home-left">
-            <span class="accent-tag">kinetic design & security</span>
-            <h1>
-              Clarity in<br>motion.
-            </h1>
-            <p class="lead">
-              We build digital spaces where every scroll feels intentional — fast, secure, and human.
+      <!-- HOME — staggered spread -->
+      <section id="home" class="fade-rotate">
+        <div class="hero-spread">
+          <div class="hero-main">
+            <span class="eyebrow">Kinetic design studio</span>
+            <h1>Make it<br>move with<br>purpose.</h1>
+            <div class="accent-line"></div>
+            <p style="font-size: 1.25rem; max-width: 38ch; color: var(--text-muted);">
+              We engineer digital experiences where security meets fluid motion — no bloat, no templates.
             </p>
           </div>
-          <div class="home-right">
-            <div class="editorial-card">
-              <p>“The swirl is a reminder: good design moves, but never distracts.”</p>
-              <div style="margin-top: 1.5rem; font-size: 1rem; color: var(--electric-teal);">— studio principle</div>
+          <div class="hero-side">
+            <div class="stat-block">
+              <div class="stat-number">100%</div>
+              <p style="color: var(--text-muted);">Vanilla code<br>Zero frameworks</p>
+            </div>
+            <div class="stat-block" style="margin-top: var(--space-lg);">
+              <div class="stat-number">60fps</div>
+              <p style="color: var(--text-muted);">Scroll animations<br>Always smooth</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- INTERTWINED ABOUT + SERVICES (editorial overlap) -->
-      <div class="intertwine-grid">
-        <!-- About block, shifted up -->
-        <section id="about" class="about-block reveal-section">
-          <span class="accent-tag">Studio ethos</span>
-          <h2 style="font-size: 2.8rem; margin-bottom: 1rem;">Less noise, more signal.</h2>
-          <p style="font-size: 1.25rem; margin-bottom: 1rem;">We’re a small team of frontend engineers who believe in hand‑crafted code. No page builders. No bloated libraries.</p>
-          <p style="margin-bottom: 1rem;">Every site we deliver runs on system fonts, strict security headers, and zero third‑party requests. That’s the boutique difference.</p>
-          <p style="color: var(--sunset-orange); font-weight: 450;">Deep indigo · electric teal · sunset orange</p>
-        </section>
-
-        <!-- Services overlap into next columns -->
-        <div id="services" class="service-overlap">
-          <div class="service-item reveal-section">
-            <span class="accent-tag" style="font-size:0.7rem;">01</span>
-            <h3>Design<br>engineering</h3>
-            <p>Asymmetrical layouts, kinetic grids, and typography that breathes — all with vanilla CSS.</p>
+      <!-- ABOUT — broken grid philosophy -->
+      <section id="about" class="fade-rotate">
+        <div class="philosophy-grid">
+          <div class="phil-left">
+            <span class="eyebrow">Studio ethos</span>
+            <h2 style="color: var(--sunset-orange); font-size: 2.2rem; margin-top: var(--space-sm);">
+              Boutique<br>engineering.
+            </h2>
           </div>
-          <div class="service-item reveal-section">
-            <span class="accent-tag" style="font-size:0.7rem;">02</span>
-            <h3>Frontend<br>security</h3>
-            <p>Strict CSP, no innerHTML, .textContent only. We bake security into every interaction.</p>
-          </div>
-          <div class="service-item reveal-section">
-            <span class="accent-tag" style="font-size:0.7rem;">03</span>
-            <h3>Performance<br>culture</h3>
-            <p>60fps scroll animations, fluid responsiveness from 320px to 4K — without frameworks.</p>
-          </div>
-          <div class="service-item reveal-section">
-            <span class="accent-tag" style="font-size:0.7rem;">04</span>
-            <h3>Editorial<br>flow</h3>
-            <p>We break the grid intentionally. Your content, not a template, leads the experience.</p>
+          <div class="phil-center">
+            <div class="large-quote">
+              "We don't do corporate templates. Every line is hand-crafted, every interaction intentional — from CSP headers to the final swirl."
+            </div>
+            <p style="margin-top: var(--space-lg); color: var(--electric-teal);">
+              Deep indigo · electric teal · sunset orange
+            </p>
+            <p style="margin-top: var(--space-md); color: var(--text-muted);">
+              Simple Web Studio exists at the intersection of security engineering and motion design. We use system fonts, vanilla JS, and strict Content-Security-Policy. No external dependencies — just pure, fast, human code.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- CONTACT SECTION -->
-      <section id="contact" class="reveal-section">
-        <div class="contact-panel">
-          <div class="contact-left">
-            <span class="accent-tag">Connect directly</span>
-            <h2 style="margin-bottom: 0.5rem;">Let’s make something that moves.</h2>
-            <p style="font-size: 1.3rem;">No forms, no tracking. Just email or call.</p>
+      <!-- SERVICES — diagonal rows (not boring cards) -->
+      <section id="services" class="fade-rotate">
+        <span class="eyebrow">What we build</span>
+        <div class="services-diagonal">
+          <div class="service-row">
+            <div class="service-index">01</div>
+            <div class="service-title">Design engineering</div>
+            <div class="service-desc">Asymmetric grids, editorial flow, fluid type</div>
           </div>
-          <div class="contact-right">
-            <p style="font-size: 1.2rem;">📬 hello@simpleweb.studio</p>
-            <p style="font-size: 1.2rem;">📞 +1 (415) 867‑5309</p>
-            <a href="#" class="contact-link" id="secureEmailTrigger">studio@simpleweb.work</a>
-            <a href="#" class="contact-link" id="securePhoneTrigger">secure line (demo)</a>
-            <p style="margin-top: 1.8rem; font-size: 0.9rem;">All communication encrypted · PGP available</p>
+          <div class="service-row">
+            <div class="service-index">02</div>
+            <div class="service-title">Frontend security</div>
+            <div class="service-desc">Strict CSP, no innerHTML, XSS prevention</div>
+          </div>
+          <div class="service-row">
+            <div class="service-index">03</div>
+            <div class="service-title">Performance culture</div>
+            <div class="service-desc">60fps parallax, responsive 320px → 4K</div>
+          </div>
+          <div class="service-row">
+            <div class="service-index">04</div>
+            <div class="service-title">Motion design</div>
+            <div class="service-desc">Subtle scroll reveals, kinetic backgrounds</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT — asymmetric slab -->
+      <section id="contact" class="fade-rotate">
+        <div class="contact-slab">
+          <div class="contact-cta">
+            <span class="eyebrow">Let's work</span>
+            <h2>Start the<br>conversation.</h2>
+            <p style="font-size: 1.2rem; margin-top: var(--space-md);">No forms. No tracking. Just email or call — we're humans.</p>
+          </div>
+          <div class="contact-methods">
+            <p>📬 hello@simpleweb.studio</p>
+            <p>📞 +1 (415) 867‑5309</p>
+            <a href="#" class="demo-link" id="emailDemo">studio@simpleweb.work (demo)</a><br>
+            <a href="#" class="demo-link" id="phoneDemo">secure line simulation</a>
+            <p style="margin-top: var(--space-lg); font-size: 0.85rem; color: var(--text-muted);">
+              PGP available · All comms encrypted
+            </p>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <p>© 2026 Simple Web Studio — kinetic, secure, independent.</p>
+    <footer class="footer-note">
+      <span>© 2026 Simple Web Studio</span>
+      <span>Kinetic · Secure · Independent</span>
     </footer>
   </div>
 
@@ -475,125 +513,114 @@
     (() => {
       "use strict";
 
-      // ---------- SECURITY: ZERO innerHTML, only .textContent ----------
+      // ----- SECURITY: .textContent ONLY, NO innerHTML -----
       
-      // 1) Scroll reveal (fade + subtle rotation)
-      const revealElements = document.querySelectorAll('.reveal-section');
-      
+      // 1) Intersection Observer for fade + rotate reveal
+      const fadeElements = document.querySelectorAll('.fade-rotate');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
           }
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -5px 0px' });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8px 0px' });
       
-      revealElements.forEach(el => observer.observe(el));
+      fadeElements.forEach(el => observer.observe(el));
 
-      // 2) Smooth scroll navigation (prevent default, use vanilla)
+      // 2) Smooth scroll navigation
       const navLinks = document.querySelectorAll('.nav-link');
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           const targetId = link.getAttribute('href');
           if (!targetId || targetId === '#') return;
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             history.pushState(null, '', targetId);
           }
         });
       });
 
-      // 3) Kinetic parallax effect on swirl backgrounds (requestAnimationFrame)
-      const swirlRight = document.querySelector('.swirl-orbit');
-      const swirlLeft = document.querySelector('.swirl-orbit-left');
+      // 3) Parallax swirl (kinetic motion)
+      const swirl1 = document.querySelector('.swirl-primary');
+      const swirl2 = document.querySelector('.swirl-secondary');
       
-      function updateSwirlParallax() {
-        if (!swirlRight || !swirlLeft) return;
-        const scrolled = window.scrollY;
-        // subtle movement with translate3d for performance
-        const shiftY = scrolled * 0.015;
-        const shiftX = scrolled * 0.006;
-        swirlRight.style.transform = `translate3d(${shiftX}px, ${shiftY}px, 0) rotate(${scrolled * 0.008}deg)`;
-        swirlLeft.style.transform = `translate3d(${-shiftX * 0.7}px, ${-shiftY * 0.4}px, 0) rotate(${scrolled * -0.01}deg)`;
+      function updateParallax() {
+        if (!swirl1 || !swirl2) return;
+        const scrollY = window.scrollY;
+        const moveX = scrollY * 0.004;
+        const moveY = scrollY * 0.012;
+        swirl1.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotate(${scrollY * 0.006}deg)`;
+        swirl2.style.transform = `translate3d(${-moveX * 0.6}px, ${-moveY * 0.3}px, 0) rotate(${scrollY * -0.009}deg)`;
       }
 
       let ticking = false;
       window.addEventListener('scroll', () => {
         if (!ticking) {
-          window.requestAnimationFrame(() => {
-            updateSwirlParallax();
+          requestAnimationFrame(() => {
+            updateParallax();
             ticking = false;
           });
           ticking = true;
         }
       });
 
-      // 4) Pre-check visibility on load
+      // 4) Initial visibility check
       window.addEventListener('load', () => {
-        revealElements.forEach(el => {
+        fadeElements.forEach(el => {
           const rect = el.getBoundingClientRect();
-          if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+          if (rect.top < window.innerHeight * 0.75 && rect.bottom > 0) {
             el.classList.add('visible');
           }
         });
-        updateSwirlParallax();
+        updateParallax();
       });
 
-      // 5) Safe contact interaction (demo, no actual data transmission)
-      function showSecureMessage(messageText) {
-        // remove existing toast if any
-        const oldToast = document.querySelector('.secure-toast');
-        if (oldToast) oldToast.remove();
+      // 5) Safe demo interactions (textContent only)
+      function showToast(msg) {
+        const existing = document.querySelector('.demo-toast');
+        if (existing) existing.remove();
         
         const toast = document.createElement('div');
-        toast.className = 'secure-toast';
+        toast.className = 'demo-toast';
         toast.setAttribute('role', 'status');
         toast.style.position = 'fixed';
-        toast.style.bottom = '24px';
-        toast.style.left = '24px';
-        toast.style.background = '#1c1f3a';
-        toast.style.color = '#f6f4f1';
+        toast.style.bottom = '20px';
+        toast.style.right = '20px';
+        toast.style.background = '#1a1f4e';
+        toast.style.color = '#f9f7f5';
         toast.style.padding = '14px 28px';
-        toast.style.borderRadius = '40px 8px 40px 8px';
-        toast.style.border = '1px solid #0bb5a8';
-        toast.style.backdropFilter = 'blur(12px)';
+        toast.style.borderRadius = '50px 8px 50px 8px';
+        toast.style.border = '1px solid #0fc9c0';
+        toast.style.backdropFilter = 'blur(16px)';
         toast.style.zIndex = '9999';
-        toast.style.fontSize = '1rem';
-        toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
-        toast.style.transition = 'opacity 0.4s';
+        toast.style.fontSize = '0.95rem';
+        toast.style.boxShadow = '0 12px 30px rgba(0,0,0,0.4)';
+        toast.style.transition = 'opacity 0.3s';
         
-        // ONLY textContent (secure)
-        toast.textContent = `🔐 ${messageText} (demo simulation)`;
+        toast.textContent = `🔒 ${msg}`;
         document.body.appendChild(toast);
         
         setTimeout(() => {
           toast.style.opacity = '0';
           setTimeout(() => toast.remove(), 400);
-        }, 2800);
+        }, 2600);
       }
 
-      const emailTrigger = document.getElementById('secureEmailTrigger');
-      const phoneTrigger = document.getElementById('securePhoneTrigger');
-      
-      if (emailTrigger) {
-        emailTrigger.addEventListener('click', (e) => {
-          e.preventDefault();
-          showSecureMessage('Contact request: studio@simpleweb.work — secure channel ready.');
-        });
-      }
-      if (phoneTrigger) {
-        phoneTrigger.addEventListener('click', (e) => {
-          e.preventDefault();
-          showSecureMessage('Secure line demo: +1 (415) 867‑5309 (no actual call placed).');
-        });
-      }
+      document.getElementById('emailDemo')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Email simulation: secure channel ready (no data sent)');
+      });
+      document.getElementById('phoneDemo')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Secure line demo: +1 (415) 867‑5309 (call simulation)');
+      });
 
-      // 6) Active nav state (minimal, hand-crafted)
+      // 6) Active nav highlight
       const sections = document.querySelectorAll('section[id]');
-      function highlightNav() {
-        const scrollPos = window.scrollY + 150;
+      function updateActiveNav() {
+        const scrollPos = window.scrollY + 120;
         sections.forEach(section => {
           const id = section.getAttribute('id');
           const offset = section.offsetTop;
@@ -608,12 +635,9 @@
           }
         });
       }
-      window.addEventListener('scroll', () => requestAnimationFrame(highlightNav));
-      window.addEventListener('load', highlightNav);
-      
-      // Ensure no innerHTML used anywhere: all text updates safe.
-      // The contact panel static, logo static. Zero external resources.
+      window.addEventListener('scroll', () => requestAnimationFrame(updateActiveNav));
+      window.addEventListener('load', updateActiveNav);
     })();
   </script>
 </body>
-          </html>
+</html>
