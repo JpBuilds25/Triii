@@ -60,13 +60,13 @@
     }
 
     h1 {
-      font-size: clamp(3.5rem, 9vw, 6rem);
-      line-height: 1;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      line-height: 1.1;
     }
 
     h2 {
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      line-height: 1.15;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.2;
     }
 
     .eyebrow {
@@ -82,14 +82,13 @@
       text-decoration: none;
     }
 
-    /* ----- RADICAL NEW STRUCTURE: VERTICAL SIDEBAR + FLOATING PANELS ----- */
+    /* ----- VERTICAL SIDEBAR NAVIGATION (RESPONSIVE FIXED) ----- */
     .viewport {
       display: flex;
       min-height: 100vh;
       position: relative;
     }
 
-    /* Fixed vertical navigation sidebar */
     .nav-vertical {
       position: fixed;
       left: 0;
@@ -142,15 +141,16 @@
       letter-spacing: 2px;
     }
 
-    /* Main content area with left margin for sidebar */
+    /* Main content area */
     .content-main {
       flex: 1;
       margin-left: 80px;
       padding: 0;
       position: relative;
+      width: calc(100% - 80px);
     }
 
-    /* Swirl backgrounds (unchanged colors) */
+    /* Swirl backgrounds (unchanged) */
     .swirl-primary {
       position: fixed;
       top: -10vh;
@@ -201,14 +201,12 @@
       transform: translateY(0) rotate(0deg);
     }
 
-    /* ----- COMPLETELY NEW LAYOUT: FLOATING PANELS & ASYMMETRIC BLOCKS ----- */
-    
-    /* Home — massive typography with floating elements */
+    /* ----- HOME SECTION (RESPONSIVE) ----- */
     .home-panel {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: var(--space-xl) var(--space-xl) var(--space-xl) var(--space-xxl);
+      padding: var(--space-xl) var(--space-lg);
       position: relative;
     }
 
@@ -219,7 +217,7 @@
     .floating-badge {
       position: absolute;
       top: 20%;
-      right: 8%;
+      right: 5%;
       background: rgba(26, 31, 78, 0.6);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -235,18 +233,13 @@
       100% { transform: translateY(-20px) rotate(5deg); }
     }
 
-    .floating-badge p {
-      font-size: 1.1rem;
-      color: var(--electric-teal);
-    }
-
-    /* About — staggered timeline style */
+    /* ----- ABOUT TIMELINE (RESPONSIVE) ----- */
     .about-timeline {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: var(--space-xl) var(--space-xxl);
+      padding: var(--space-xl) var(--space-lg);
       position: relative;
     }
 
@@ -271,79 +264,86 @@
       color: var(--electric-teal);
     }
 
-    /* Services — overlapping circles layout */
-    .services-circles {
+    .timeline-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* ----- SERVICES SECTION - REPLACED CIRCLES WITH OVERLAPPING PANELS ----- */
+    .services-panels {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: var(--space-xl) var(--space-xxl);
+      padding: var(--space-xl) var(--space-lg);
       position: relative;
     }
 
-    .circle-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-xl);
-      justify-content: center;
+    .panels-container {
       width: 100%;
-    }
-
-    .circle-item {
-      flex: 0 1 280px;
-      aspect-ratio: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      gap: var(--space-xs);
+    }
+
+    .panel-item {
+      display: grid;
+      grid-template-columns: 100px 1fr 2fr;
       align-items: center;
-      text-align: center;
-      padding: var(--space-lg);
-      border-radius: 60% 40% 50% 50% / 45% 55% 45% 55%;
-      background: rgba(42, 42, 42, 0.4);
+      padding: var(--space-md) var(--space-lg);
+      background: rgba(42, 42, 42, 0.3);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 2px solid var(--electric-teal);
+      border-left: 4px solid var(--electric-teal);
+      margin-bottom: 2px;
       transition: all 0.3s;
-      animation: morphShape 12s infinite alternate;
+      transform: skewX(-5deg);
     }
 
-    .circle-item:nth-child(2) {
-      animation-duration: 14s;
-      border-color: var(--sunset-orange);
-      margin-top: -3rem;
+    .panel-item:nth-child(even) {
+      transform: skewX(3deg);
+      border-left-color: var(--sunset-orange);
+      margin-left: var(--space-lg);
     }
 
-    .circle-item:nth-child(3) {
-      animation-duration: 16s;
-      margin-left: -2rem;
+    .panel-item:nth-child(3) {
+      margin-left: calc(var(--space-lg) * 1.5);
     }
 
-    .circle-item:nth-child(4) {
-      animation-duration: 11s;
-      border-color: var(--deep-indigo);
-      margin-top: 2rem;
+    .panel-item:hover {
+      transform: skewX(-5deg) translateX(10px);
+      background: rgba(26, 31, 78, 0.4);
+      border-left-width: 8px;
     }
 
-    @keyframes morphShape {
-      0% { border-radius: 60% 40% 50% 50% / 45% 55% 45% 55%; }
-      100% { border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%; }
+    .panel-item:nth-child(even):hover {
+      transform: skewX(3deg) translateX(-10px);
     }
 
-    .circle-item:hover {
-      transform: scale(1.05) rotate(-2deg);
-      border-color: var(--sunset-orange);
-    }
-
-    .circle-item h3 {
+    .panel-number {
+      font-family: var(--font-mono);
       font-size: 2rem;
-      color: var(--studio-white);
-      margin-bottom: var(--space-sm);
+      color: var(--sunset-orange);
+      font-weight: 300;
     }
 
-    /* Contact — diagonal split screen */
+    .panel-title {
+      font-size: 1.8rem;
+      color: var(--electric-teal);
+      font-weight: 350;
+    }
+
+    .panel-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      text-align: right;
+    }
+
+    /* ----- CONTACT SPLIT (RESPONSIVE) ----- */
     .contact-split {
       min-height: 100vh;
       display: flex;
       align-items: center;
+      padding: var(--space-xl) var(--space-lg);
       position: relative;
     }
 
@@ -355,7 +355,7 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       padding: var(--space-xl);
-      clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 92%);
+      clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
     }
 
     .contact-left {
@@ -370,7 +370,7 @@
     .contact-link {
       display: block;
       margin: var(--space-md) 0;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       border-bottom: 1px dotted var(--electric-teal);
       transition: border-color 0.2s;
     }
@@ -394,77 +394,263 @@
       border: 1px solid var(--electric-teal);
     }
 
-    /* ----- RESPONSIVE (320px → 4K) ----- */
-    @media (max-width: 1000px) {
-      .nav-vertical {
-        width: 60px;
+    /* ----- FULLY RESPONSIVE BREAKPOINTS ----- */
+    
+    /* Tablet Landscape */
+    @media (max-width: 1200px) {
+      .panel-item {
+        grid-template-columns: 80px 1fr 1.5fr;
       }
-      .content-main {
-        margin-left: 60px;
-      }
-      .home-panel,
-      .about-timeline,
-      .services-circles {
-        padding: var(--space-lg);
+      .panel-title {
+        font-size: 1.5rem;
       }
       .timeline-entry {
-        grid-template-columns: 0.5fr 1fr;
+        grid-template-columns: 0.4fr 1fr 1.2fr;
         gap: var(--space-md);
-      }
-      .timeline-title {
-        grid-column: 2;
-      }
-      .contact-diagonal {
-        clip-path: polygon(0 0, 100% 3%, 100% 100%, 0 97%);
       }
     }
 
+    /* Tablet Portrait */
+    @media (max-width: 900px) {
+      .nav-vertical {
+        width: 70px;
+        padding: var(--space-md) var(--space-xs);
+      }
+      
+      .content-main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+      }
+      
+      .home-panel,
+      .about-timeline,
+      .services-panels,
+      .contact-split {
+        padding: var(--space-lg) var(--space-md);
+      }
+      
+      .timeline-entry {
+        grid-template-columns: 0.5fr 1fr;
+        gap: var(--space-sm);
+      }
+      
+      .timeline-desc {
+        grid-column: 1 / -1;
+        margin-top: var(--space-xs);
+      }
+      
+      .panel-item {
+        grid-template-columns: 70px 1fr 1.2fr;
+        padding: var(--space-sm) var(--space-md);
+        transform: skewX(-3deg);
+      }
+      
+      .panel-item:nth-child(even) {
+        transform: skewX(2deg);
+        margin-left: var(--space-md);
+      }
+      
+      .panel-item:nth-child(3) {
+        margin-left: var(--space-lg);
+      }
+      
+      .panel-number {
+        font-size: 1.5rem;
+      }
+      
+      .panel-title {
+        font-size: 1.3rem;
+      }
+      
+      .floating-badge {
+        display: none;
+      }
+      
+      .contact-diagonal {
+        clip-path: polygon(0 0, 100% 2%, 100% 100%, 0 98%);
+        padding: var(--space-lg);
+      }
+    }
+
+    /* Mobile Landscape */
     @media (max-width: 700px) {
       .nav-vertical {
         position: relative;
         width: 100%;
         height: auto;
+        min-height: 60px;
         flex-direction: row;
-        padding: var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
       }
+      
       .nav-stack {
         writing-mode: horizontal-tb;
         transform: rotate(0deg);
         flex-direction: row;
-        gap: var(--space-sm);
+        gap: var(--space-md);
       }
+      
+      .nav-stack a {
+        border-right: none;
+        border-bottom: 2px solid transparent;
+        padding: var(--space-xs);
+      }
+      
+      .nav-stack a:hover {
+        border-right-color: transparent;
+        border-bottom-color: var(--sunset-orange);
+      }
+      
       .logo-vertical {
         writing-mode: horizontal-tb;
         transform: rotate(0deg);
       }
+      
       .content-main {
         margin-left: 0;
+        width: 100%;
       }
+      
       .viewport {
         flex-direction: column;
       }
-      .circle-grid {
-        gap: var(--space-md);
+      
+      .home-panel {
+        min-height: auto;
+        padding: var(--space-xl) var(--space-md);
       }
-      .circle-item {
-        flex: 0 1 100%;
+      
+      .about-timeline {
+        min-height: auto;
       }
-      .circle-item:nth-child(n) {
-        margin: 0;
+      
+      .timeline-entry {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
       }
+      
+      .timeline-year {
+        font-size: 1rem;
+      }
+      
+      .timeline-title {
+        font-size: 1.5rem;
+      }
+      
+      .services-panels {
+        min-height: auto;
+      }
+      
+      .panel-item {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+        transform: skewX(0deg) !important;
+        margin-left: 0 !important;
+        padding: var(--space-md);
+      }
+      
+      .panel-item:nth-child(even) {
+        transform: skewX(0deg) !important;
+      }
+      
+      .panel-item:hover {
+        transform: translateX(5px) !important;
+      }
+      
+      .panel-number {
+        font-size: 1.2rem;
+      }
+      
+      .panel-title {
+        font-size: 1.4rem;
+      }
+      
+      .panel-desc {
+        text-align: left;
+      }
+      
+      .contact-split {
+        min-height: auto;
+      }
+      
       .contact-diagonal {
         grid-template-columns: 1fr;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        padding: var(--space-md);
       }
+      
+      .contact-left {
+        padding-right: 0;
+        margin-bottom: var(--space-lg);
+      }
+      
       .contact-right {
+        padding-left: 0;
         border-left: none;
         border-top: 2px solid var(--sunset-orange);
-        padding-left: 0;
         padding-top: var(--space-md);
-        margin-top: var(--space-md);
       }
-      .floating-badge {
-        display: none;
+      
+      .contact-link {
+        font-size: 1rem;
+      }
+    }
+
+    /* Mobile Portrait */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+      
+      .nav-stack {
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .nav-stack a {
+        font-size: 0.8rem;
+      }
+      
+      .home-panel,
+      .about-timeline,
+      .services-panels,
+      .contact-split {
+        padding: var(--space-lg) var(--space-sm);
+      }
+      
+      .timeline-title {
+        font-size: 1.3rem;
+      }
+      
+      .panel-title {
+        font-size: 1.2rem;
+      }
+      
+      .footer-float {
+        bottom: var(--space-sm);
+        right: var(--space-sm);
+        font-size: 0.7rem;
+        padding: var(--space-xs) var(--space-sm);
+      }
+    }
+
+    /* 4K Screens */
+    @media (min-width: 2000px) {
+      .content-main {
+        max-width: 2000px;
+        margin-left: 80px;
+      }
+      
+      .home-panel,
+      .about-timeline,
+      .services-panels,
+      .contact-split {
+        padding: var(--space-xxl) calc(var(--space-xxl) * 1.5);
       }
     }
   </style>
@@ -487,7 +673,7 @@
     </nav>
 
     <main class="content-main">
-      <!-- HOME — massive type + floating element -->
+      <!-- HOME SECTION -->
       <section id="home" class="fade-rotate home-panel">
         <div class="home-content">
           <span class="eyebrow">Kinetic engineering studio</span>
@@ -507,7 +693,7 @@
         </div>
       </section>
 
-      <!-- ABOUT — timeline style -->
+      <!-- ABOUT SECTION -->
       <section id="about" class="fade-rotate about-timeline">
         <span class="eyebrow" style="margin-bottom: var(--space-xl);">Our philosophy</span>
         <div class="timeline-entry">
@@ -530,32 +716,36 @@
         </div>
       </section>
 
-      <!-- SERVICES — morphing circles -->
-      <section id="services" class="fade-rotate services-circles">
+      <!-- SERVICES SECTION - REPLACED WITH OVERLAPPING PANELS -->
+      <section id="services" class="fade-rotate services-panels">
         <div style="width: 100%;">
-          <span class="eyebrow">What we craft</span>
-          <div class="circle-grid">
-            <div class="circle-item">
-              <h3>Design</h3>
-              <p>Asymmetric grids, fluid type, editorial flow</p>
+          <span class="eyebrow" style="margin-bottom: var(--space-xl); display: block;">What we craft</span>
+          <div class="panels-container">
+            <div class="panel-item">
+              <div class="panel-number">01</div>
+              <div class="panel-title">Design engineering</div>
+              <div class="panel-desc">Asymmetric grids, fluid type, editorial flow</div>
             </div>
-            <div class="circle-item">
-              <h3>Security</h3>
-              <p>CSP headers, XSS prevention, .textContent only</p>
+            <div class="panel-item">
+              <div class="panel-number">02</div>
+              <div class="panel-title">Frontend security</div>
+              <div class="panel-desc">CSP headers, XSS prevention, .textContent only</div>
             </div>
-            <div class="circle-item">
-              <h3>Performance</h3>
-              <p>Parallax, responsive 320px→4K, zero lag</p>
+            <div class="panel-item">
+              <div class="panel-number">03</div>
+              <div class="panel-title">Performance culture</div>
+              <div class="panel-desc">Parallax, responsive 320px→4K, zero lag</div>
             </div>
-            <div class="circle-item">
-              <h3>Motion</h3>
-              <p>Kinetic reveals, subtle rotations, organic feel</p>
+            <div class="panel-item">
+              <div class="panel-number">04</div>
+              <div class="panel-title">Motion design</div>
+              <div class="panel-desc">Kinetic reveals, subtle rotations, organic feel</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- CONTACT — diagonal split -->
+      <!-- CONTACT SECTION -->
       <section id="contact" class="fade-rotate contact-split">
         <div class="contact-diagonal">
           <div class="contact-left">
@@ -700,8 +890,13 @@
           if (scrollPos >= offset && scrollPos < offset + height) {
             navLinks.forEach(link => {
               link.style.borderRightColor = 'transparent';
+              link.style.borderBottomColor = 'transparent';
               if (link.getAttribute('href') === `#${id}`) {
-                link.style.borderRightColor = 'var(--sunset-orange)';
+                if (window.innerWidth > 700) {
+                  link.style.borderRightColor = 'var(--sunset-orange)';
+                } else {
+                  link.style.borderBottomColor = 'var(--sunset-orange)';
+                }
               }
             });
           }
@@ -709,7 +904,8 @@
       }
       window.addEventListener('scroll', () => requestAnimationFrame(updateActiveNav));
       window.addEventListener('load', updateActiveNav);
+      window.addEventListener('resize', updateActiveNav);
     })();
   </script>
 </body>
-  </html>
+            </html>
